@@ -10,50 +10,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-black border-bottom border-secondary px-4 pt-3 pb-0">
-        <a class="navbar-brand fw-bold fs-4 pb-3 d-flex align-items-center" href="#">
-            <span class="me-2">iR</span> InkReserve
-        </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-3">
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom active text-white py-3 px-3 d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-grid-1x2"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-person"></i> Artistas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-calendar-event"></i> Citas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-people"></i> Clientes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" href="#">
-                        <i class="bi bi-gear"></i> Configuración
-                    </a>
-                </li>               
-            </ul>
-            
-            <div class="d-flex text-white align-items-center" style="cursor: pointer;">
-                <i class="bi bi-person-circle fs-5 me-2 text-secondary"></i>
-                <span th:text="${usuario.username} ?: 'Salesianos'" class="fw-bold fs-6">Salesianos</span>
-                <i class="bi bi-chevron-down ms-2 text-secondary" style="font-size: 0.7rem;"></i>
-            </div>
-        </div>
-    </nav>
+    
+	<div th:replace="fragments/Nav :: nav"></div>
 
     <div class="container-fluid px-4 pb-5">
         <h1 class="fw-semibold my-4 fs-3">Principal</h1>
