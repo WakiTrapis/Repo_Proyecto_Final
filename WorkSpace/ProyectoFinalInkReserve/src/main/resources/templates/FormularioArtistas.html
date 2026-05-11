@@ -1,31 +1,78 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InkReserve - Dashboard</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-	<div class="modal" id="ModalFormArtistas">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-			<form method="POST" th:action="@{/nuevoArtistaCompleto}" th:object="${formularioArtista}">
-				<input type="text" name="nombre" th:field="*{nombre}" placeholder="Nombre..." />
-				<input type="text" name="especialidad" th:field="*{especialidad}" placeholder="Especialidad..." />
-				<input type="number" name="preciHora" th:field="*{precioHora}" placeholder="Precio por hora..." />
-				<input type="text" name="dni" th:field="*{dni}" placeholder="DNI..." />
-				<input type="text" name="telefono" th:field="*{telefono}" placeholder="Telefono..." />
-				<input type="text" name="numeroHigienico" th:field="*{numeroHigienico}" placeholder="Nº Higiénico Sanitario..." />
-				<input type="number" name="experiencia" th:field="*{experiencia}" placeholder="Experiencia..." />
-				<input type="submit" name="enviar" value="Enviar" />
-			</form>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	<div th:fragment="modalNuevoArtista" class="modal fade" id="ModalFormArtistas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-centered">
+	    <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg">
+			
+			<div class="modal-header border-bottom border-dark px-4 py-3">
+				<h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+					<i class="bi bi-person-plus-fill text-success"></i> Nuevo Artista
+				</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
+			
+			<form method="POST" th:action="@{/nuevoArtistaCompleto}" th:object="${formularioArtista}" enctype="multipart/form-data">
+				<div class="modal-body p-4">
+					<div class="row g-3">
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
+							<div class="input-group">
+								<span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
+								<input type="text" th:field="*{nombreArtista}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez" />
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Especialidad</label>
+						    <input type="text" th:field="*{especialidad}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Realismo, Tradicional">
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Precio/Hora (€)</label>
+							<input type="number" step="0.01" th:field="*{precioHora}" class="form-control bg-dark border-secondary text-white" placeholder="0.00">
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Años Experiencia</label>
+							<input type="number" th:field="*{experiencia}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 5">
+                        </div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">DNI</label>
+							<input type="text" th:field="*{dni}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Teléfono</label>
+							<input type="tel" th:field="*{telefono}" class="form-control bg-dark border-secondary text-white" placeholder="000 000 000">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Nº Registro Higiénico</label>
+							<input type="text" th:field="*{numeroHigienico}" class="form-control bg-dark border-secondary text-white" placeholder="Nº Higiénico Sanitario">
+						</div>
+
+						<div class="col-12 mt-3">
+							<label class="form-label text-secondary small fw-bold">Fotografía del Artista</label>
+							<div class="border border-dashed border-secondary rounded-3 p-3 text-center bg-dark bg-opacity-25">
+								<i class="bi bi-cloud-arrow-up fs-2 text-secondary mb-2"></i>
+							    <input type="file" name="imagenArtista" class="form-control form-control-sm bg-transparent border-0 text-secondary">
+							    <p class="small text-secondary mb-0">Formatos aceptados: JPG, PNG (Max. 2MB)</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal-footer border-top border-dark px-4">
+					<button type="button" class="btn btn-outline-secondary fw-medium px-4" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" style="background-color: #00a86b;">
+						Guardar Artista
+					</button>
+				</div>
+			</form>
         </div>
       </div>
 	</div> 
