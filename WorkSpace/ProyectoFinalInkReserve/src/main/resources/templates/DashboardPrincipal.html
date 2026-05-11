@@ -46,17 +46,17 @@
 
                             <div class="border-bottom border-dark pb-3 mb-3">
                                 <div class="text-secondary fs-6 mb-1">Tatuajes en Proceso</div>
-                                <div class="fs-1 fw-bold" /*th:text="${stats.enProceso} ?: '8'"*/>8</div>
+                                <div class="fs-1 fw-bold" >8</div>
                             </div>
 
                             <div class="border-bottom border-dark pb-3 mb-3">
                                 <div class="text-secondary fs-6 mb-1">Nuevos Clientes (Mes)</div>
-                                <div class="fs-1 fw-bold" /*th:text="${stats.nuevosClientes} ?: '15'"*/>15</div>
+                                <div class="fs-1 fw-bold">15</div>
                             </div>
 
                                 <div class="">
                                     <div class="text-secondary fs-6 mb-1">Tatuajes en Clientes (Mes)</div>
-                                    <div class="fs-1 fw-bold" /*th:text="${stats.tatuajesMes} ?: '12'"*/>12</div>
+                                    <div class="fs-1 fw-bold">12</div>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevoCliente">
                                     <i class="bi bi-person-plus"></i> Nuevo Cliente
                                 </button>
-                                <button class="btn btn-dark btn-action-hover w-100 mb-0 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevoArtista">
+                                <button type="button" class="btn btn-dark btn-action-hover w-100 mb-0 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormArtistas">
                                     <i class="bi bi-person-badge"></i> Nuevo Artista
                                 </button>
                             </div>
