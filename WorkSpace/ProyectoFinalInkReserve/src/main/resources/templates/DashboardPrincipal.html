@@ -68,13 +68,14 @@
                                 <button class="btn btn-success btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevaCita">
                                     <i class="bi bi-calendar-plus"></i> Nueva Cita
                                 </button>
-                                <button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevoCliente">
+                                <button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormClientes">
                                     <i class="bi bi-person-plus"></i> Nuevo Cliente
                                 </button>
+								<div th:replace="~{fragments/FormularioClientes :: modalNuevoCliente}"></div>
                                 <button type="button" class="btn btn-dark btn-action-hover w-100 mb-0 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormArtistas">
                                     <i class="bi bi-person-badge"></i> Nuevo Artista
                                 </button>
-								<div th:replace="~{FormularioArtistas :: modalNuevoArtista}"></div>
+								<div th:replace="~{fragments/FormularioArtistas :: modalNuevoArtista}"></div>
                             </div>
 
                             <div class="card bg-black border-0 shadow rounded-4 p-4">

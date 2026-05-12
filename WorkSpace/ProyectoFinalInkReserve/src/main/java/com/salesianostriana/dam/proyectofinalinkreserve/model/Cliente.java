@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,34 +12,31 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas")
-public class Artista {
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Clientes")
+public class Cliente {
 
 	@Id
 	@GeneratedValue
 	private long id;
 	
+	private String nombreCliente;
 	
-	private String nombreArtista;
+	private String telefonoCliente;
 	
-	private String especialidad;
+	private LocalDate fechaNacimiento;
 	
-
-	private Double precioHora;
+	private String direccion;
+	
+	private String codigoPostal;
+	
+	private String poblacion;
 	
 	@Column(unique = true, length=9)
-	private String dniArtista;
+	private String dniCliente;
 	
-	private String telefonoArtista;
-	
-	@Column(name = "nº Higiénico Sanitario")
-	private String numeroHigienico;
-	
-	private Integer experiencia;
+	private String email;
 	
 	
-
-
+	
 	
 }
-

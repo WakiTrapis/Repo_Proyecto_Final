@@ -14,11 +14,11 @@
 	
 	<div class="container-fluid px-4 py-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h1 class="fs-3 fw-bold">Artistas</h1>
-			<button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormArtistas">
-                <i class="bi bi-plus-lg me-2"></i> Agregar Artista
+			<h1 class="fs-3 fw-bold">Clientes</h1>
+			<button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormClientes">
+                <i class="bi bi-plus-lg me-2"></i> Agregar Cliente
 			</button>
-			<div th:replace="~{fragments/FormularioArtistas :: modalNuevoArtista}"></div>
+			<div th:replace="~{fragments/FormularioClientes :: modalNuevoCliente}"></div>
 		</div>
 	</div>
 	
@@ -30,19 +30,17 @@
 						<tr>
 							<th>Id</th>
 							<th>Nombre</th>
-							<th>Especialidad</th>
-							<th>Experiencia</th>
-							<th>€/h</th>
+							<th>Teléfono</th>
+							<th>Email</th>
 							<th class="text-center">Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="border-bottom border-dark" th:each="artista : ${listaArtistas}">
-							<td class="fw-semibold" th:text="${artista.id}">1</td> 
-                            <td class="fw-semibold" th:text="${artista.nombreArtista}">Nombre Artista</td>
-							<td th:text="${artista.especialidad}"><span class="badge badge-specialty px-3">Especialidad</span></td>
-							<td th:text="${artista.experiencia} + ' años'">Años de experiencia</td>
-							<td th:text="${artista.precioHora} + '€'">€/h</td>
+						<tr class="border-bottom border-dark" th:each="cliente : ${listaClientes}">
+							<td class="fw-semibold" th:text="${cliente.id}">1</td> 
+                            <td class="fw-semibold" th:text="${cliente.nombreCliente}">Nombre Cliente</td>
+							<td th:text="${cliente.telefonoCliente}">Teléfono</td>
+							<td th:text="${cliente.email}">Email</td>
 							<td class="text-center">
 								<a href="#" class="btn btn-outline-info"><i class="bi bi-pencil"></i></a>
 								<a href="#" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
@@ -54,7 +52,7 @@
 		</div>
 		<div class="col-lg-4">
             <div class="card bg-black border-0 shadow rounded-4 p-4 h-100">
-                <h2 class="fs-5 fw-semibold mb-4">Top Artistas este Mes</h2>
+                <h2 class="fs-5 fw-semibold mb-4">Clientes Nuevos</h2>
                 <div class="d-flex align-items-end justify-content-between h-75 px-2">
                     <div class="bg-success rounded-top" style="width: 40px; height: 90%;"></div>
                     <div class="bg-success rounded-top opacity-75" style="width: 40px; height: 60%;"></div>
