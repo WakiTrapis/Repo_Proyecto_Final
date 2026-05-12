@@ -36,7 +36,6 @@ public class Artista {
 	
 	private Integer experiencia;
 	
-	private String foto;
 	
 
 

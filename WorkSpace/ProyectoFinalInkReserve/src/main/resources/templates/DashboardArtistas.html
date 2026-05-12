@@ -28,7 +28,7 @@
 				<table class="table table-dark table-hover align-middle mb-0">
 					<thead class="text-secondary small border-bottom border-dark">
 						<tr>
-							<th>Foto</th>
+							<th>Id</th>
 							<th>Nombre</th>
 							<th>Especialidad</th>
 							<th>Experiencia</th>
@@ -38,10 +38,7 @@
 					</thead>
 					<tbody>
 						<tr class="border-bottom border-dark" th:each="artista : ${listaArtistas}">
-                            <td>
-								<img th:src="${artista.foto != null} ? @{/uploads/{f}(f=${artista.foto})} : @{/img/default-avatar.png}"src="https://via.placeholder.com/40" 
-								alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
-							</td>
+							<td class="fw-semibold" th:text="${artista.id}">1</td> 
                             <td class="fw-semibold" th:text="${artista.nombreArtista}">Nombre Artista</td>
 							<td th:text="${artista.especialidad}"><span class="badge badge-specialty px-3">Especialidad</span></td>
 							<td th:text="${artista.experiencia} + ' años'">Años de experiencia</td>
