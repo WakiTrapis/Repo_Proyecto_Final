@@ -15,5 +15,7 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 		super(repository);
 		this.tatuajeRepository = tatuajeRepository;
 	}
+	
+	
 
 }

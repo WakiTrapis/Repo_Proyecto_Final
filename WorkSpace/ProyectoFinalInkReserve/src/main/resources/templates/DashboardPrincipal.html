@@ -68,6 +68,10 @@
                                 <button class="btn btn-success btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevaCita">
                                     <i class="bi bi-calendar-plus"></i> Nueva Cita
                                 </button>
+								<button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormTatuajes">
+                                    <i class="bi bi-alipay"></i> Nuevo Tatuaje
+                                </button>
+								<div th:replace="~{fragments/FormularioTatuajes :: modalNuevoTatuaje}"></div>
                                 <button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormClientes">
                                     <i class="bi bi-person-plus"></i> Nuevo Cliente
                                 </button>
