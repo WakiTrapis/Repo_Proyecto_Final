@@ -44,7 +44,7 @@
 							<td th:text="${artista.experiencia} + ' años'">Años de experiencia</td>
 							<td th:text="${artista.precioHora} + '€'">€/h</td>
 							<td class="text-center">
-								<a href="#" class="btn btn-outline-info"><i class="bi bi-pencil"></i></a>
+								<a th:href="@{Dashboard/Artistas/Editar/{id}(id=${artista.id})}" class="btn btn-outline-info"><i class="bi bi-pencil"></i></a>
 								<a href="#" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
 							</td>
 						</tr>    
