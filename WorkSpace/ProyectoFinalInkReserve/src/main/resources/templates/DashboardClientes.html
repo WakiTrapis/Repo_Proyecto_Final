@@ -42,7 +42,7 @@
 							<td th:text="${cliente.telefonoCliente}">Teléfono</td>
 							<td th:text="${cliente.email}">Email</td>
 							<td class="text-center">
-								<a href="#" class="btn btn-outline-info"><i class="bi bi-pencil"></i></a>
+								<a th:href="@{/Dashboard/Clientes(idEditar=${cliente.id})}" class="btn btn-outline-info" data-bs-target="#ModalFormClientes"><i class="bi bi-pencil"></i></a>
 								<a href="#" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
 							</td>
 						</tr>    
@@ -67,14 +67,12 @@
 	</div>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	<script th:if="${formularioCliente.id != null && formularioCliente.id != 0}">
+		    window.onload = function() {
+		        var myModal = new bootstrap.Modal(document.getElementById('ModalFormClientes'));
+		        myModal.show();
+		    };
+	</script>
 	
 	
 	
