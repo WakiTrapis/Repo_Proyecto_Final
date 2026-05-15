@@ -6,8 +6,12 @@ import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.EstadoTatuaje;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.TipoTintaTatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.ArtistaRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.ClienteRepository;
+import com.salesianostriana.dam.proyectofinalinkreserve.repository.TatuajeRepository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ public class DataSeed {
 
 	private final ArtistaRepository artistaRepository;
 	private final ClienteRepository clienteRepository;
+	private final TatuajeRepository tatuajeRepository;
 	
 	
 	@PostConstruct
@@ -97,6 +102,40 @@ public class DataSeed {
 				.build();
 		
 		clienteRepository.save(c3);
+		
+		
+		Tatuaje t1 = Tatuaje.builder()
+				.cliente(c3)
+				.artista(a3)
+				.imagenTatuaje("tatuaje1.jpg")
+				.nombreTatuaje("Dragon")
+				.descripcionTatuaje("Tatuaje bombona de butano")
+				.estiloTatuaje("Manga")
+				.estado(EstadoTatuaje.DISENO)
+				.zonaCuerpoTatuaje("brazo")
+				.sesionesTatuaje(2)
+				.tipoTintaTatuaje(TipoTintaTatuaje.BLACK)
+				.precioTatuaje(200.0)
+				.build();
+		
+		tatuajeRepository.save(t1);
+		
+		Tatuaje t2 = Tatuaje.builder()
+				.cliente(c2)
+				.artista(a3)
+				.imagenTatuaje("tatuaje2.jpg")
+				.nombreTatuaje("Break Brain")
+				.descripcionTatuaje("Desata tu mente")
+				.estiloTatuaje("Simplista")
+				.estado(EstadoTatuaje.DISENO)
+				.zonaCuerpoTatuaje("pecho")
+				.sesionesTatuaje(3)
+				.tipoTintaTatuaje(TipoTintaTatuaje.BLACK)
+				.precioTatuaje(250.0)
+				.build();
+		
+		tatuajeRepository.save(t2);
+				
 	}
 	
 }

@@ -13,8 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Tatuajes")
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Tatuajes") @ToString(exclude = {"cliente", "artista"})
 public class Tatuaje {
 
 	@Id
@@ -35,14 +36,13 @@ public class Tatuaje {
 	private String estiloTatuaje;
 	private String zonaCuerpoTatuaje;
 	private int sesionesTatuaje;
+	private Double precioTatuaje;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoTintaTatuaje  tipoTintaTatuaje;
 	
 	@Enumerated(EnumType.STRING)
 	private EstadoTatuaje estado;
-	
-	private Double precioTatuaje;
 	
 	
 	public enum EstadoTatuaje{
