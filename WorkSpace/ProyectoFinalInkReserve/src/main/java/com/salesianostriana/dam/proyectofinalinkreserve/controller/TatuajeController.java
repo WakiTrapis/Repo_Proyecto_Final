@@ -55,8 +55,8 @@ public class TatuajeController {
 	}
 	
 	@PostMapping("/Dashboard/Tatuajes/Editar/submit")
-	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje ) {
-		tatuajeService.edit(tatuaje);
+	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, @RequestParam("archivoImagen") MultipartFile archivo) {
+		tatuajeService.editarTatuaje(tatuaje, archivo);
 		return "redirect:/Dashboard/Tatuajes";
 	}
 	
