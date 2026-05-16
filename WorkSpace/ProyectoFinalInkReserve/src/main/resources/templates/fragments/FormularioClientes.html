@@ -8,12 +8,12 @@
 			
 			<div class="modal-header border-bottom border-dark px-4 py-3">
 				<h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
-					<i class="bi bi-person-plus-fill text-success"></i> Nuevo Cliente
+					<i class="bi bi-person-plus-fill text-success"></i> Cliente
 				</h5>
 				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			
-			<form method="POST" th:action="@{/nuevoClienteCompleto}" th:object="${formularioCliente}" enctype="multipart/form-data">
+			<form method="POST" th:action="${formularioCliente.id != null && formularioCliente.id != 0} ? @{/Dashboard/Clientes/Editar/submit} : @{/nuevoClienteCompleto}" th:object="${formularioCliente}" enctype="multipart/form-data">
 				<div class="modal-body p-4">
 					<div class="row g-3">
 						
