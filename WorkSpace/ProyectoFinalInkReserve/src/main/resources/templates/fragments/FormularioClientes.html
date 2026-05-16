@@ -16,6 +16,7 @@
 			<form method="POST" th:action="${formularioCliente.id != null && formularioCliente.id != 0} ? @{/Dashboard/Clientes/Editar/submit} : @{/nuevoClienteCompleto}" th:object="${formularioCliente}" enctype="multipart/form-data">
 				<div class="modal-body p-4">
 					<div class="row g-3">
+						<input type="hidden" th:field="*{id}">
 						
 						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
