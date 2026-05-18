@@ -20,106 +20,105 @@
 			</button>
 			<div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
 		</div>
-	</div>
-	
-	<div class="row g-4">
-		<div class="col-lg-8">
-		    
-		    <div class="d-flex justify-content-between align-items-center bg-black p-3 mb-3 rounded-4 shadow-sm border border-secondary border-opacity-25">
-		        
-		        <a th:href="@{/Dashboard/Citas(fecha=${diaAnteriorStr})}" class="btn btn-outline-secondary border-0 px-3 fs-5 text-white">
-		            <i class="bi bi-chevron-left"></i>
-		        </a>
-		        
-		        <div class="d-flex align-items-center gap-3">
-		            <h3 class="fs-5 fw-bold m-0 text-capitalize" 
-		                th:text="${#temporals.format(fechaActual, 'dd ''de'' MMMM ''de'' yyyy', #locale.forLanguageTag('es'))}">
-		                16 de Mayo de 2026
-		            </h3>
-		            
-		            <div class="position-relative">
-		                <input type="date" 
-		                       id="datepickerRapido" 
-		                       th:value="${#temporals.format(fechaActual, 'yyyy-MM-dd')}" 
-		                       class="form-control form-control-sm bg-dark border-secondary text-white cursor-pointer"
-		                       style="width: 45px; height: 35px; padding: 0 0 0 8px;"
-		                       onchange="window.location.href='/Dashboard/Citas?fecha=' + this.value">
-		                </div>
-		        </div>
-		        
-		        <a th:href="@{/Dashboard/Citas(fecha=${diaSiguienteStr})}" class="btn btn-outline-secondary border-0 px-3 fs-5 text-white">
-		            <i class="bi bi-chevron-right"></i>
-		        </a>
-		        
-		    </div>
 
-		    <div class="table-responsive table-dark-custom shadow p-3 mb-4">
-		        <table class="table table-dark table-hover align-middle mb-0">
-		            <thead class="text-secondary small border-bottom border-dark">
-		                <tr>
-		                    <th>Id</th>
-		                    <th>Hora</th>
-		                    <th>Tatuaje / Diseño</th>
-		                    <th>Cliente</th>
-		                    <th>Artista</th>
-		                    <th>Box</th>
-		                    <th>Precio</th>
-		                    <th class="text-center">Acciones</th>
-		                </tr>
-		            </thead>
-		            <tbody>
-		                <tr class="border-bottom border-dark" th:each="cita : ${listaCitas}">
-		                    <td class="fw-semibold" th:text="${cita.id}">1</td> 
-		                    
-		                    <td class="fw-bold text-info" th:text="${#temporals.format(cita.fechaInicio, 'HH:mm') + ' - ' + #temporals.format(cita.fechaFinal, 'HH:mm')}">16:00 - 19:00</td>
-		                    
-		                    <td th:text="${cita.tatuaje != null ? cita.tatuaje.nombreTatuaje : 'Sin diseño'}">Break Brain</td>
-		                    <td th:text="${cita.cliente != null ? cita.cliente.nombrecliente : 'Sin cliente'}">Gonzalo Luna</td>
-		                    <td th:text="${cita.artista != null ? cita.artista.nombreArtista : 'Sin artista'}">Paco Porras</td>
-		                    
-		                    <td class="fw-bold text-success" th:text="${cita.precioTotal} + '€'">120€</td>
-		                    
-		                    <td class="text-center">
-		                        <a th:href="@{/Dashboard/Citas(idEditar=${cita.id}, fecha=${fechaActual})}" class="btn btn-outline-info btn-sm me-1">
-		                            <i class="bi bi-pencil"></i>
-		                        </a>
-		                        <a th:href="" class="btn btn-outline-danger btn-sm">
-		                            <i class="bi bi-trash"></i>
-		                        </a>
-		                    </td>
-		                </tr>
-		                <tr th:if="${#lists.isEmpty(listaCitas)}">
-		                    <td colspan="8" class="text-center text-secondary py-5">
-		                        <i class="bi bi-calendar-check fs-2 d-block mb-2 text-muted"></i>
-		                        No hay ninguna cita programada para este día.
-		                    </td>
-		                </tr>
-		            </tbody>
-		        </table>
-		    </div>
+		<div class="row g-4">
+			
+			<div class="col-lg-8">
+			    
+			    <div class="d-flex justify-content-between align-items-center bg-black p-3 mb-3 rounded-4 shadow-sm border border-secondary border-opacity-25">
+			        
+			        <a th:href="@{/Dashboard/Citas(fecha=${diaAnteriorStr})}" class="btn btn-outline-secondary border-0 px-3 fs-5 text-white">
+			            <i class="bi bi-chevron-left"></i>
+			        </a>
+			        
+			        <div class="d-flex align-items-center gap-3">
+			            <h3 class="fs-5 fw-bold m-0 text-capitalize" 
+			                th:text="${#temporals.format(fechaActual, 'dd ''de'' MMMM ''de'' yyyy', #locale.forLanguageTag('es'))}">
+			                16 de Mayo de 2026
+			            </h3>
+			            
+			            <div class="position-relative">
+			                <input type="date" 
+			                       id="datepickerRapido" 
+			                       th:value="${#temporals.format(fechaActual, 'yyyy-MM-dd')}" 
+			                       class="form-control form-control-sm bg-dark border-secondary text-white cursor-pointer"
+			                       style="width: 45px; height: 35px; padding: 0 0 0 8px;"
+			                       onchange="window.location.href='/Dashboard/Citas?fecha=' + this.value">
+			            </div>
+			        </div>
+			        
+			        <a th:href="@{/Dashboard/Citas(fecha=${diaSiguienteStr})}" class="btn btn-outline-secondary border-0 px-3 fs-5 text-white">
+			            <i class="bi bi-chevron-right"></i>
+			        </a>
+			        
+			    </div>
+
+			    <div class="table-responsive table-dark-custom shadow p-3 mb-4">
+			        <table class="table table-dark table-hover align-middle mb-0">
+			            <thead class="text-secondary small border-bottom border-dark">
+			                <tr>
+			                    <th>Id</th>
+			                    <th>Hora</th>
+			                    <th>Tatuaje / Diseño</th>
+			                    <th>Cliente</th>
+			                    <th>Artista</th>
+			                    <th>Precio</th>
+			                    <th class="text-center">Acciones</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			                <tr class="border-bottom border-dark" th:each="cita : ${listaCitas}">
+			                    <td class="fw-semibold" th:text="${cita.id}">1</td> 
+			                    
+			                    <td class="fw-bold text-info" th:text="${#temporals.format(cita.fechaInicio, 'HH:mm') + ' - ' + #temporals.format(cita.fechaFinal, 'HH:mm')}">16:00 - 19:00</td>
+			                    
+			                    <td th:text="${cita.tatuaje != null ? cita.tatuaje.nombreTatuaje : 'Sin diseño'}">Break Brain</td>
+			                    <td th:text="${cita.cliente != null ? cita.cliente.nombreCliente : 'Sin cliente'}">Gonzalo Luna</td>
+			                    <td th:text="${cita.artista != null ? cita.artista.nombreArtista : 'Sin artista'}">Paco Porras</td>
+			                    
+			                    <td class="fw-bold text-success" th:text="${cita.precioSesion} + '€'">120€</td>
+			                    
+			                    <td class="text-center">
+			                        <a th:href="@{/Dashboard/Citas(idEditar=${cita.id}, fecha=${fechaActual})}" class="btn btn-outline-info btn-sm me-1">
+			                            <i class="bi bi-pencil"></i>
+			                        </a>
+			                        <a class="btn btn-outline-danger btn-sm">
+			                            <i class="bi bi-trash"></i>
+			                        </a>
+			                    </td>
+			                </tr>
+			                <tr th:if="${#lists.isEmpty(listaCitas)}">
+			                    <td colspan="7" class="text-center text-secondary py-5">
+			                        <i class="bi bi-calendar-check fs-2 d-block mb-2 text-muted"></i>
+			                        No hay ninguna cita programada para este día.
+			                    </td>
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			</div> <div class="col-lg-4">
+	            <div class="card bg-black border-0 shadow rounded-4 p-4 h-100">
+	                <h2 class="fs-5 fw-semibold mb-4">Nº de Citas Totales Programadas</h2>
+	                <div class="d-flex align-items-end justify-content-between h-75 px-2">
+	                    <div class="bg-success rounded-top" style="width: 40px; height: 90%;"></div>
+	                    <div class="bg-success rounded-top opacity-75" style="width: 40px; height: 60%;"></div>
+	                    <div class="bg-success rounded-top opacity-50" style="width: 40px; height: 40%;"></div>
+	                    <div class="bg-success rounded-top opacity-25" style="width: 40px; height: 20%;"></div>
+	                </div>
+	                <div class="d-flex justify-content-between mt-2 text-secondary small px-1">
+	                    <span>Top</span><span>Art</span><span>Mar</span><span>Mes</span>
+	                </div>
+	            </div>
+	        </div> 
 		</div>
-		<div class="col-lg-4">
-            <div class="card bg-black border-0 shadow rounded-4 p-4 h-100">
-                <h2 class="fs-5 fw-semibold mb-4">Nº de Citas Totales Programadas</h2>
-                <div class="d-flex align-items-end justify-content-between h-75 px-2">
-                    <div class="bg-success rounded-top" style="width: 40px; height: 90%;"></div>
-                    <div class="bg-success rounded-top opacity-75" style="width: 40px; height: 60%;"></div>
-                    <div class="bg-success rounded-top opacity-50" style="width: 40px; height: 40%;"></div>
-                    <div class="bg-success rounded-top opacity-25" style="width: 40px; height: 20%;"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2 text-secondary small px-1">
-                    <span>Top</span><span>Art</span><span>Mar</span><span>Mes</span>
-                </div>
-            </div>
-        </div>
-	</div>
-	
-	<script th:if="${formularioCita.id != null && formularioCita.id != 0}">
+	 </div> 
+	 <script th:if="${formularioCita.id != null && formularioCita.id != 0}">
 	    window.onload = function() {
 	        var myModal = new bootstrap.Modal(document.getElementById('ModalFormCitas'));
 	        myModal.show();
 	    };
 	</script>
+	
 	<script>
 	document.addEventListener("DOMContentLoaded", function() {
 	    const modalCitas = document.getElementById('ModalFormCitas');
@@ -130,13 +129,6 @@
 	            const selectTatuaje = document.getElementById("selectTatuaje");
 	            const selectCliente = document.getElementById("selectCliente");
 	            const selectArtista = document.getElementById("selectArtista");
-	            
-
-	            console.log("¡Modal completamente abierto! Detectando selectores...", {
-	                tatuajeExistente: !!selectTatuaje,
-	                clienteExistente: !!selectCliente,
-	                artistaExistente: !!selectArtista
-	            });
 
 	            if (selectTatuaje) {
 	                selectTatuaje.addEventListener("change", function () {
@@ -144,8 +136,6 @@
 	                    
 	                    const idClienteAsociado = opcionSeleccionada.getAttribute("data-cliente");
 	                    const idArtistaAsociado = opcionSeleccionada.getAttribute("data-artista");
-	                    
-	                    console.log("Tatuaje cambiado detectado. IDs a clonar -> Cliente:", idClienteAsociado, "Artista:", idArtistaAsociado);
 	                    
 	                    if (selectCliente && idClienteAsociado) {
 	                        selectCliente.value = idClienteAsociado;
@@ -165,11 +155,7 @@
 	});
 	</script>
 	
-	
-	
-	
 	<div th:replace="fragments/FooterApp :: footer"></div>
-
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

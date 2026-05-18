@@ -1,5 +1,8 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -8,4 +11,5 @@ import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 public interface CitaRepository extends JpaRepository<Cita, Long> {
 
 	
+	List<Cita> findByFechaInicioBetween(LocalDateTime inicio, LocalDateTime fin);
 }

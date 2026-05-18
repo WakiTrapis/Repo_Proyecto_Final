@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
@@ -27,9 +28,15 @@ public class CitaController {
     private final ArtistaService artistaService;
 	
 	@GetMapping("/Dashboard/Citas")
-	public String PintarDashboardCitas(Model model) {
-		List<Cita> lista = citaService.findAll();
-		model.addAttribute("listaCitas", lista);
+	public String PintarDashboardCitas(@RequestParam(name = "fecha", required = false) String fechaStr,Model model) {
+		
+		AgendaCitas agenda = citaService.getAgendaCitasDia(fechaStr);
+	    
+	    model.addAttribute("listaCitas", agenda.getListaCitas());
+	    model.addAttribute("fechaActual", agenda.getFechaActual());
+	    model.addAttribute("diaAnteriorStr", agenda.getDiaAnteriorStr());
+	    model.addAttribute("diaSiguienteStr", agenda.getDiaSiguienteStr());
+	    
 		model.addAttribute("formularioCita", new Cita());
 		model.addAttribute("listaTatuajes", tatuajeService.findAll());
         model.addAttribute("listaClientes", clienteService.findAll());
