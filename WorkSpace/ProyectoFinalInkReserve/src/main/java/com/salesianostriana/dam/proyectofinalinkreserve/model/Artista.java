@@ -1,19 +1,22 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
 
+import java.util.List;
+import java.util.ArrayList;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder 
-@Table(name = "Artistas")
+
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas")
 public class Artista {
 
 	@Id
@@ -37,6 +40,10 @@ public class Artista {
 	private String numeroHigienico;
 	
 	private Integer experiencia;
+	
+	@OneToMany(mappedBy = "artista")
+    @Builder.Default
+    private List<Tatuaje> tatuajes = new ArrayList<>();
 	
 	
 

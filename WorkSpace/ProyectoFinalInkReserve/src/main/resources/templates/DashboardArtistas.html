@@ -19,6 +19,7 @@
                 <i class="bi bi-plus-lg me-2"></i> Agregar Artista
 			</button>
 			<div th:replace="~{fragments/FormularioArtistas :: modalNuevoArtista}"></div>
+			<div th:replace="~{fragments/ConfirmacionEliminarArtista :: modalEliminarArtista}"></div>
 		</div>
 	</div>
 	
@@ -45,7 +46,7 @@
 							<td th:text="${artista.precioHora} + '€'">€/h</td>
 							<td class="text-center">
 								<a th:href="@{/Dashboard/Artistas(idEditar=${artista.id})}" class="btn btn-outline-info"  data-bs-target="#ModalFormArtistas"><i class="bi bi-pencil"></i></a>
-								<a href="#" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+								<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarArtista"  th:data-bs-id="${artista.id}"><i class="bi bi-trash"></i></button>
 							</td>
 						</tr>    
 					</tbody>

@@ -64,9 +64,10 @@
                             
                             <div class="card bg-black border-0 shadow rounded-4 p-4">
                                 <h2 class="fs-5 fw-semibold mb-3">Acciones Rápidas</h2>
-                                <button class="btn btn-success btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" id="btnNuevaCita">
+                                <button class="btn btn-success btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormCitas">
                                     <i class="bi bi-calendar-plus"></i> Nueva Cita
                                 </button>
+								<div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
 								<button class="btn btn-dark btn-action-hover w-100 mb-3 py-2 fw-medium d-flex justify-content-center align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#ModalFormTatuajes">
                                     <i class="bi bi-alipay"></i> Nuevo Tatuaje
                                 </button>

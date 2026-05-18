@@ -1,15 +1,21 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
+import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +25,7 @@ public class ArtistaController {
 
 	
 	private final ArtistaService artistaService;
+	private final TatuajeService tatuajeService;
 	
 	
 	@GetMapping("/Dashboard/Artistas")
@@ -45,10 +52,27 @@ public class ArtistaController {
 	
 
 	
-	@PostMapping("/Dashboard/Artistas/Editar/submit")
+	@GetMapping("/Dashboard/Artistas/Editar/{id}")
 	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista ) {
 		artistaService.edit(artista);
 		return "redirect:/Dashboard/Artistas";
+	}
+	
+	
+	@GetMapping("/Dashboard/Artistas/Eliminar/{id}")
+	public String submitEliminar(@PathVariable("id") Long id, Model model) {
+	    Optional<Artista> artistaEncontrado = artistaService.findById(id);
+	    if (artistaEncontrado.isPresent()) {
+	    	Artista artista = artistaEncontrado.get();
+	    	if(artista.getTatuajes() !=null) {
+	    		for(Tatuaje tatuaje : artista.getTatuajes()) {
+	    			tatuaje.setArtista(null);
+	    			tatuajeService.save(tatuaje);
+	    		}
+	    	}
+	        artistaService.delete(artista);
+	    }
+	    return "redirect:/Dashboard/Artistas";
 	}
 }
 

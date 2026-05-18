@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
@@ -27,6 +28,7 @@ public class DashboardController {
 		model.addAttribute("formularioArtista", new Artista());
 		model.addAttribute("formularioCliente", new Cliente());
 		model.addAttribute("formularioTatuaje", new Tatuaje());
+		model.addAttribute("formularioCita", new Cita());
 		model.addAttribute("listaArtistas", artistaService.findAll());
 		model.addAttribute("listaClientes", clienteService.findAll());
 		return "DashboardPrincipal";

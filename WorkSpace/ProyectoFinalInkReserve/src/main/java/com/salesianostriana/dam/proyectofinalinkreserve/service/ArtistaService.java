@@ -23,14 +23,7 @@ public class ArtistaService extends BaseServiceImpl <Artista, Long, ArtistaRepos
 	}
 	
 	
-	public Artista devolverArtista( Long id) {
-		Optional<Artista> artista = findById(id);
-		if (artista.isPresent()) {
-			return artista.get();
-		} else {
-			return null;
-		}
-	}
+	
 	
 	
 	

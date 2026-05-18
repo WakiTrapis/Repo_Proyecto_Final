@@ -19,14 +19,7 @@ public class ClienteService extends BaseServiceImpl <Cliente, Long, ClienteRepos
 		this.clienteRepository = clienteRepository;
 	}
 
-	public Cliente devolverArtista( Long id) {
-		Optional<Cliente> cliente = findById(id);
-		if (cliente.isPresent()) {
-			return cliente.get();
-		} else {
-			return null;
-		}
-	}
+	
 	
 	
 	
