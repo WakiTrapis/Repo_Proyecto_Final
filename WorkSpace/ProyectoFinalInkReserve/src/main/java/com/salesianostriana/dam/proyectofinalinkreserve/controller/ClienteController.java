@@ -1,11 +1,13 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,8 +33,7 @@ public class ClienteController {
 			model.addAttribute("formularioCliente", clienteService.findById(idEditar).get());
 		} else {
 			model.addAttribute("formularioCliente", new Cliente());
-	    }
-		
+		}
 		
 		return "DashboardClientes";
 	}
@@ -43,10 +44,19 @@ public class ClienteController {
 		return "redirect:/Dashboard/Clientes";
 	}
 	
-	@PostMapping("/Dashboard/Clientes/Editar/submit")
+	@GetMapping("/Dashboard/Clientes/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioCliente") Cliente cliente ) {
 		clienteService.edit(cliente);
 		return "redirect:/Dashboard/Clientes";
+	}
+	
+	@GetMapping("/Dashboard/Clientes/Eliminar/{id}")
+	public String submitEliminar(@PathVariable("id") Long id, Model model) {
+	    Optional<Cliente> cliente = clienteService.findById(id);
+	    if (cliente.isPresent()) {
+	        clienteService.delete(cliente.get());
+	    }
+	    return "redirect:/Dashboard/Clientes";
 	}
 	
 }

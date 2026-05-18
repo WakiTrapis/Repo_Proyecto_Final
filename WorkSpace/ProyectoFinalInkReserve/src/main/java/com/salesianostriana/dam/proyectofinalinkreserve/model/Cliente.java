@@ -48,9 +48,9 @@ public class Cliente {
     @Builder.Default
     private List<Tatuaje> tatuajes = new ArrayList<>();
 	
-	//@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-	//@Builder.Default
-	//private List<Cita> citas = new ArrayList<>();
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
+	private List<Cita> citas = new ArrayList<>();
 	
 	
 	
