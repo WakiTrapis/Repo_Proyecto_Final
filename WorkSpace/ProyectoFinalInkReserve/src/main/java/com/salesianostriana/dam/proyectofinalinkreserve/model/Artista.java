@@ -12,7 +12,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas")
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder 
+@Table(name = "Artistas")
 public class Artista {
 
 	@Id

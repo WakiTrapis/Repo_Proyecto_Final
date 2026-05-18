@@ -18,7 +18,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Clientes") @ToString(exclude = {"tatuajes"})
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Clientes") 
+@ToString(exclude = {"tatuajes"})
 public class Cliente {
 
 	@Id

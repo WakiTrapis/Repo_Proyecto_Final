@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="modalNuevaCita" class="modal fade" id="ModalFormCitas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-centered">
+	    <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg">
+			
+			<div class="modal-header border-bottom border-dark px-4 py-3">
+				<h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+					<i class="bi bi-person-plus-fill text-success"></i> Cita
+				</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<form method="POST" th:action="${formularioCita.id != null && formularioCita.id != 0} ? @{/Dashboard/Citas/Editar/submit} : @{/nuevaCitaCompleta}" th:object="${formularioCita}" >
+				<div class="modal-body p-4">
+					<div class="row g-3">
+					                            
+                        <div class="col-md-12">
+                            <label class="form-label text-secondary small fw-bold">Diseño / Tatuaje Relacionado</label>
+							<select th:field="*{tatuaje}" id="selectTatuaje" class="form-select bg-dark border-secondary text-white" required>
+							    <option value="" hidden>Selecciona el diseño del tatuaje...</option>
+							    <option th:each="tatuaje : ${listaTatuajes}" 
+							            th:value="${tatuaje.id}" 
+							            th:text="${tatuaje.nombreTatuaje}"
+							            th:attr="data-cliente=${tatuaje.cliente != null ? tatuaje.cliente.id : ''}, data-artista=${tatuaje.artista != null ? tatuaje.artista.id : ''}">
+							        Diseño
+							    </option>
+							</select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small fw-bold">Cliente</label>
+                            <select th:field="*{cliente}" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
+                                <option value="" hidden>Selecciona el cliente...</option>
+                                <option th:each="cliente : ${listaClientes}" th:value="${cliente.id}" th:text="${cliente.nombreCliente}">Cliente</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
+                            <select th:field="*{artista}" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
+                                <option value="" hidden>Selecciona al artista...</option>
+                                <option th:each="artista : ${listaArtistas}" th:value="${artista.id}" th:text="${artista.nombreArtista}">Artista</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small fw-bold">Fecha y Hora de Inicio</label>
+                            <input type="datetime-local" th:field="*{fechaInicio}" class="form-control bg-dark border-secondary text-white" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small fw-bold">Fecha y Hora de Fin</label>
+                            <input type="datetime-local" th:field="*{fechaFinal}" class="form-control bg-dark border-secondary text-white" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-secondary small fw-bold">Duración (Horas)</label>
+                            <input type="number" step="0.5" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-secondary small fw-bold">Precio Sesión (€)</label>
+                            <input type="number" step="0.01" th:field="*{precioSesion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 150.00" required>
+                        </div>
+
+                    </div>
+				</div>
+				
+				<div class="modal-footer border-top border-dark px-4">
+					<button type="button" class="btn btn-outline-secondary fw-medium px-4" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" style="background-color: #00a86b;">
+						Guardar Cita
+					</button>
+				</div>
+			</form>
+        </div>
+      </div>
+	</div>
+	
+	
+</body>
+</html>
