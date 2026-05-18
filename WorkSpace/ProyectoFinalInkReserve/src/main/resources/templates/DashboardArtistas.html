@@ -69,11 +69,15 @@
 	</div>
 	
 	<script th:if="${formularioArtista.id != null && formularioArtista.id != 0}">
-	    window.onload = function() {
-	        var myModal = new bootstrap.Modal(document.getElementById('ModalFormArtistas'));
-	        myModal.show();
-	    };
-	</script>
+			window.onload = function() {
+				const modalElement = document.getElementById('ModalFormArtistas');
+				const myModal = new bootstrap.Modal(modalElement);
+				myModal.show();
+				modalElement.addEventListener('hidden.bs.modal', function () {
+		            window.location.href = '/Dashboard/Artistas';
+		        });
+			};
+		</script>
 	
 	
 	

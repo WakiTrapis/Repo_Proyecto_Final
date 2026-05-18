@@ -113,11 +113,15 @@
 		</div>
 	 </div> 
 	 <script th:if="${formularioCita.id != null && formularioCita.id != 0}">
-	    window.onload = function() {
-	        var myModal = new bootstrap.Modal(document.getElementById('ModalFormCitas'));
-	        myModal.show();
-	    };
-	</script>
+	 		window.onload = function() {
+	 			const modalElement = document.getElementById('ModalFormCitas');
+	 			const myModal = new bootstrap.Modal(modalElement);
+	 			myModal.show();
+	 			modalElement.addEventListener('hidden.bs.modal', function () {
+	 	            window.location.href = '/Dashboard/Citas';
+	 	        });
+	 		};
+	 	</script>
 	
 	<script>
 	document.addEventListener("DOMContentLoaded", function() {
