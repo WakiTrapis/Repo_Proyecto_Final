@@ -22,13 +22,6 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 		this.fotosService = new FotosService();
 	}
 	
-	public Tatuaje devolverTatuaje( Long id) {
-		Optional<Tatuaje> tatuaje = findById(id);
-		
-			return tatuaje.get();
-		
-	}
-	
 	public void editarTatuaje(Tatuaje tatuajeEditado, MultipartFile archivo) {
 	    Tatuaje tatuajeOriginal = findById(tatuajeEditado.getId()).get();
 	    if (archivo != null && !archivo.isEmpty()) {

@@ -50,14 +50,14 @@ public class ArtistaController {
 	}
 	
 	@PostMapping("/nuevoArtistaCompleto")
-	public String submit(@ModelAttribute("formularioArtista") Artista artista, Model model){
+	public String submit(@ModelAttribute("formularioArtista") Artista artista){
 		artistaService.save(artista);
 		return "redirect:/Dashboard/Artistas";
 	}
 	
 
 	
-	@GetMapping("/Dashboard/Artistas/Editar/{id}")
+	@PostMapping("/Dashboard/Artistas/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista ) {
 		artistaService.edit(artista);
 		return "redirect:/Dashboard/Artistas";

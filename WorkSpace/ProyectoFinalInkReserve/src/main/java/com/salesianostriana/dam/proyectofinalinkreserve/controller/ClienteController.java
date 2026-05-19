@@ -53,7 +53,7 @@ public class ClienteController {
 		return "redirect:/Dashboard/Clientes";
 	}
 	
-	@GetMapping("/Dashboard/Clientes/Editar/submit")
+	@PostMapping("/Dashboard/Clientes/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioCliente") Cliente cliente ) {
 		clienteService.edit(cliente);
 		return "redirect:/Dashboard/Clientes";
