@@ -13,37 +13,44 @@
 				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			
-			<form method="POST" th:action="${formularioCita.id != null && formularioCita.id != 0} ? @{/Dashboard/Citas/Editar/submit} : @{/nuevaCitaCompleta}" th:object="${formularioCita}" >
+			<form method="POST" th:action="${formularioCita.id != 0} ? @{/Dashboard/Citas/Editar/submit} : @{/nuevaCitaCompleta}" th:object="${formularioCita}" >
 				<div class="modal-body p-4">
 					<div class="row g-3">
-					                            
-                        <div class="col-md-12">
-                            <label class="form-label text-secondary small fw-bold">Diseño / Tatuaje Relacionado</label>
-							<select th:field="*{tatuaje}" id="selectTatuaje" class="form-select bg-dark border-secondary text-white" required>
-							    <option value="" hidden>Selecciona el diseño del tatuaje...</option>
-							    <option th:each="tatuaje : ${listaTatuajes}" 
-							            th:value="${tatuaje.id}" 
-							            th:text="${tatuaje.nombreTatuaje}"
-							            th:attr="data-cliente=${tatuaje.cliente != null ? tatuaje.cliente.id : ''}, data-artista=${tatuaje.artista != null ? tatuaje.artista.id : ''}">
+						<input type="hidden" th:field="*{id}">                         
+						<div class="col-md-12">
+							<label class="form-label text-secondary small fw-bold">Diseño / Tatuaje Relacionado</label>
+							<select name="tatuaje" id="selectTatuaje" class="form-select bg-dark border-secondary text-white">
+							    <option value="">Selecciona el diseño del tatuaje...</option>
+							    <option th:each="t : ${listaTatuajes}" 
+							            th:value="${t.id}" 
+							            th:selected="${formularioCita.tatuaje != null && formularioCita.tatuaje.id == t.id}"
+							            th:text="${t.nombreTatuaje}"
+							            th:attr="data-cliente=${t.cliente != null ? t.cliente.id : ''}, data-artista=${t.artista != null ? t.artista.id : ''}">
 							        Diseño
 							    </option>
+							</select>
+						</div>
+
+                        <div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Cliente</label>
+							<select name="cliente" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
+							    <option value="" hidden>Selecciona el cliente...</option>
+							    <option th:each="c : ${listaClientes}" 
+							            th:value="${c.id}" 
+							            th:selected="${formularioCita.cliente != null && formularioCita.cliente.id == c.id}"
+							            th:text="${c.nombreCliente}">Cliente</option>
 							</select>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-secondary small fw-bold">Cliente</label>
-                            <select th:field="*{cliente}" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
-                                <option value="" hidden>Selecciona el cliente...</option>
-                                <option th:each="cliente : ${listaClientes}" th:value="${cliente.id}" th:text="${cliente.nombreCliente}">Cliente</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
-                            <select th:field="*{artista}" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
-                                <option value="" hidden>Selecciona al artista...</option>
-                                <option th:each="artista : ${listaArtistas}" th:value="${artista.id}" th:text="${artista.nombreArtista}">Artista</option>
-                            </select>
+							<label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
+							<select name="artista" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
+							    <option value="" hidden>Selecciona al artista...</option>
+							    <option th:each="a : ${listaArtistas}" 
+							            th:value="${a.id}" 
+							            th:selected="${formularioCita.artista != null && formularioCita.artista.id == a.id}"
+							            th:text="${a.nombreArtista}">Artista</option>
+							</select>
                         </div>
 
                         <div class="col-md-6">

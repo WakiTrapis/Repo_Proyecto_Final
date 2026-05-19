@@ -2,6 +2,8 @@ package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class Cita {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@ManyToOne
 	@JoinColumn(name = "tatuaje_id")
@@ -36,9 +38,11 @@ public class Cita {
     private Artista artista;
 	
 	@Column(name = "fecha_inicio")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fechaInicio;
 	
 	@Column(name = "fecha_final")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fechaFinal;
 	
 	private Double duracion;
