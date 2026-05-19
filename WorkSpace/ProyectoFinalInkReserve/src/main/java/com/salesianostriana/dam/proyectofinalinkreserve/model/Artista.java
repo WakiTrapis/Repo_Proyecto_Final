@@ -41,6 +41,8 @@ public class Artista {
 	
 	private Integer experiencia;
 	
+	private String fotoArtista;
+	
 	@OneToMany(mappedBy = "artista")
     @Builder.Default
     private List<Tatuaje> tatuajes = new ArrayList<>();

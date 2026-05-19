@@ -40,6 +40,7 @@ public class DataSeed {
 				.telefonoArtista("345345678")
 				.numeroHigienico("123456789")
 				.experiencia(5)
+				.fotoArtista("fotoArtista1.png")
 				.build();
 		
 		artistaRepository.save(a1);
@@ -52,6 +53,7 @@ public class DataSeed {
 				.telefonoArtista("494528367")
 				.numeroHigienico("2670953246")
 				.experiencia(10)
+				.fotoArtista("fotoArtista2.png")
 				.build();
 		
 		artistaRepository.save(a2);
@@ -64,6 +66,7 @@ public class DataSeed {
 				.telefonoArtista("298678326")
 				.numeroHigienico("346845433323")
 				.experiencia(2)
+				.fotoArtista("fotoArtista4.png")
 				.build();
 		
 		artistaRepository.save(a3);
@@ -76,6 +79,7 @@ public class DataSeed {
 				.telefonoArtista("495678234")
 				.numeroHigienico("346845433323")
 				.experiencia(8)
+				.fotoArtista("fotoArtista3.png")
 				.build();
 		
 		artistaRepository.save(a4);
@@ -88,6 +92,7 @@ public class DataSeed {
 				.telefonoArtista("356834567")
 				.numeroHigienico("123953923940")
 				.experiencia(15)
+				.fotoArtista("fotoArtista5.png")
 				.build();
 		
 		artistaRepository.save(a5);

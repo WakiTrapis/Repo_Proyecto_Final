@@ -29,6 +29,7 @@
 				<table class="table table-dark table-hover align-middle mb-0">
 					<thead class="text-secondary small border-bottom border-dark">
 						<tr>
+							<th>Foto</th>
 							<th>Id</th>
 							<th>Nombre</th>
 							<th>Especialidad</th>
@@ -39,6 +40,20 @@
 					</thead>
 					<tbody>
 						<tr class="border-bottom border-dark" th:each="artista : ${listaArtistas}">
+							<td class="py-3 text-center" style="width: 90px;">
+								<img th:if="${artista.fotoArtista != null}" 
+								     th:src="@{/uploads/{filename}(filename=${artista.fotoArtista})}" 
+								     onerror="this.src='/img/no-image.png';"
+								     class="rounded-circle" 
+								     style="width: 65px; height: 65px; object-fit: cover;" 
+								     alt="Avatar">
+
+								<img th:unless="${artista.fotoArtista != null}" 
+								     th:src="@{/img/no-image.png}" 
+								     class="rounded-circle" 
+								     style="width: 65px; height: 65px; object-fit: cover;" 
+								     alt="Predeterminado">
+							</td>
 							<td class="fw-semibold" th:text="${artista.id}">1</td> 
                             <td class="fw-semibold" th:text="${artista.nombreArtista}">Nombre Artista</td>
 							<td th:text="${artista.especialidad}"><span class="badge badge-specialty px-3">Especialidad</span></td>

@@ -52,7 +52,7 @@ public class TatuajeController {
 	}
 	
 	@PostMapping("/nuevoTatuajeCompleto")
-	public String submit(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, Model model,@RequestParam("archivoImagen") MultipartFile archivo){
+	public String submit(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje,@RequestParam("archivoImagen") MultipartFile archivo){
 		if (!archivo.isEmpty()) {
 	        String nombreFoto = fotosService.store(archivo);
 	        tatuaje.setImagenTatuaje(nombreFoto);

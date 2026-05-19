@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -19,6 +20,7 @@ import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
+import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class ArtistaController {
 	private final ArtistaService artistaService;
 	private final TatuajeService tatuajeService;
 	private final CitaService citaService;
+	private final FotosService fotosService; 
 	
 	
 	@GetMapping("/Dashboard/Artistas")
@@ -50,7 +53,11 @@ public class ArtistaController {
 	}
 	
 	@PostMapping("/nuevoArtistaCompleto")
-	public String submit(@ModelAttribute("formularioArtista") Artista artista){
+	public String submit(@ModelAttribute("formularioArtista") Artista artista,@RequestParam("archivoFoto") MultipartFile archivo){
+		if (!archivo.isEmpty()) {
+	        String nombreFoto = fotosService.store(archivo);
+	        artista.setFotoArtista(nombreFoto);
+	    }
 		artistaService.save(artista);
 		return "redirect:/Dashboard/Artistas";
 	}
@@ -58,8 +65,8 @@ public class ArtistaController {
 
 	
 	@PostMapping("/Dashboard/Artistas/Editar/submit")
-	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista ) {
-		artistaService.edit(artista);
+	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista, @RequestParam("archivoFoto") MultipartFile archivo ) {
+		artistaService.editarArtista(artista, archivo);
 		return "redirect:/Dashboard/Artistas";
 	}
 	

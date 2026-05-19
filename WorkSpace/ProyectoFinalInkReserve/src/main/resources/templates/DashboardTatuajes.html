@@ -31,10 +31,18 @@
                 <div class="card bg-dark border-secondary h-100 shadow-sm rounded-4 overflow-hidden position-relative">
     
                     <div style="cursor: pointer;" data-bs-toggle="modal" th:attr="data-bs-target='#ModalDetalle' + ${tatuaje.id}">
-                        <img th:src="${tatuaje.imagenTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.imagenTatuaje})} : @{/img/no-image.jpg}" 
-                            class="card-img-top" 
-                            style="height: 250px; object-fit: cover;"
-                            alt="Diseño de tatuaje">
+						<img th:if="${tatuaje.imagenTatuaje != null}" 
+						     th:src="@{/uploads/{img}(img=${tatuaje.imagenTatuaje})}" 
+						     onerror="this.src='/img/no-image.png';"
+						     class="card-img-top" 
+						     style="height: 250px; object-fit: cover;" 
+						     alt="Diseño de tatuaje">
+
+						<img th:unless="${tatuaje.imagenTatuaje != null}" 
+						     th:src="@{/img/no-image.png}" 
+						     class="card-img-top" 
+						     style="height: 250px; object-fit: cover;" 
+						     alt="Sin diseño disponible">
                     </div>
 
 					<div class="card-body p-3">
