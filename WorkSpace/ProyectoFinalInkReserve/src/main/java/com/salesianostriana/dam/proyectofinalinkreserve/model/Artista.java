@@ -45,6 +45,10 @@ public class Artista {
     @Builder.Default
     private List<Tatuaje> tatuajes = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "artista")
+	@Builder.Default
+	private List<Cita> citas = new ArrayList<>();
+	
 	
 
 
