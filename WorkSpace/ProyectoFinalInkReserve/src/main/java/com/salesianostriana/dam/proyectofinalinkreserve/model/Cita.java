@@ -46,5 +46,6 @@ public class Cita {
 	@Column(name = "precio_sesion")
     private Double precioSesion;
 	
+	
 
 }
