@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -62,6 +63,14 @@ public class CitaController {
 	public String submitEditarCita(@ModelAttribute("formularioCita") Cita cita) {
 		citaService.edit(cita);
 			
+		return "redirect:/Dashboard/Citas";
+	}
+	
+	@GetMapping("/Dashboard/Citas/Eliminar/{id}")
+	public String eliminarCita(@PathVariable("id") Long id) {
+		if (citaService.findById(id).isPresent()) {
+			citaService.deleteById(id);
+		}
 		return "redirect:/Dashboard/Citas";
 	}
 }

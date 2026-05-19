@@ -19,6 +19,7 @@
                 <i class="bi bi-plus-lg me-2"></i> Agregar Cita
 			</button>
 			<div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
+			<div th:replace="~{fragments/ConfirmacionEliminarCita :: modalEliminarCita}"></div>
 		</div>
 
 		<div class="row g-4">
@@ -80,9 +81,7 @@
 			                    
 			                    <td class="text-center">
 									<a th:href="@{/Dashboard/Citas(idEditar=${cita.id})}" class="btn btn-outline-info"  data-bs-target="#ModalFormCitas"><i class="bi bi-pencil"></i></a>
-			                        <a class="btn btn-outline-danger btn-sm">
-			                            <i class="bi bi-trash"></i>
-			                        </a>
+									<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarCita"  th:data-bs-id="${cita.id}"><i class="bi bi-trash"></i></button>															
 			                    </td>
 			                </tr>
 			                <tr th:if="${#lists.isEmpty(listaCitas)}">
