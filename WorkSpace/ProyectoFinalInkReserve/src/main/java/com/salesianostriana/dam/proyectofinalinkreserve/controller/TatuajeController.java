@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
@@ -35,7 +36,7 @@ public class TatuajeController {
 	private final CitaService citaService;
 	
 	@GetMapping("/Dashboard/Tatuajes")
-	public String PintarDashboardTatuajes(@RequestParam(name = "idEditar", required = false) Long idEditar,Model model) {
+	public String PintarDashboardTatuajes(@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verTatuId", required = false) Long verTatuId,Model model) {
 		List<Tatuaje> lista = tatuajeService.findAll();
 		model.addAttribute("listaTatuajes", lista);
 		model.addAttribute("formularioTatuaje", new Tatuaje());
@@ -47,7 +48,12 @@ public class TatuajeController {
 		} else {
 			model.addAttribute("formularioTatuaje", new Tatuaje());
 	    }
-		
+		if (verTatuId != null && tatuajeService.findById(verTatuId).isPresent()) {
+	        Tatuaje tatuaje = tatuajeService.findById(verTatuId).get();
+	        model.addAttribute("fichaTatuaje", tatuaje);
+	    } else {
+	        model.addAttribute("fichaTatuaje", null);
+	    }
 		return "DashboardTatuajes";
 	}
 	
