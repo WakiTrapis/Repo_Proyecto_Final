@@ -128,7 +128,7 @@
 					        <div class="row g-3">
 					            <div class="col-4 col-sm-3 text-center" th:each="tatuaje : ${perfilArtista.tatuajes}" th:if="${tatuaje != null}">
 					                <div class="position-relative border border-secondary rounded p-1 bg-black">
-					                    <img th:src="${tatuaje.fotoTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.fotoTatuaje})} : @{/img/no-image.png}" 
+					                    <img th:src="${tatuaje.ImagenTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.ImagenTatuaje})} : @{/img/no-image.png}" 
 					                         class="img-fluid rounded" 
 					                         style="height: 90px; width: 100%; object-fit: cover;"
 					                         th:title="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Diseño'">

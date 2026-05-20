@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
 import java.util.List;
+
 import java.util.ArrayList;
 
 import jakarta.persistence.Entity;
@@ -19,14 +20,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder 
-@Table(name = "Tatuajes") @ToString(exclude = {"cliente", "artista"}) @ToString.Exclude
-@EqualsAndHashCode.Exclude
+@Table(name = "Tatuajes") 
 public class Tatuaje {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ToString.Include       
+    @EqualsAndHashCode.Include
 	private long id;
 	
 	@ManyToOne

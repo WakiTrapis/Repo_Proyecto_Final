@@ -3,6 +3,7 @@ package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
 import java.util.List;
 
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas") @ToString(exclude = {"cliente", "artista"})
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas") 
 public class Artista {
 
 	@Id
