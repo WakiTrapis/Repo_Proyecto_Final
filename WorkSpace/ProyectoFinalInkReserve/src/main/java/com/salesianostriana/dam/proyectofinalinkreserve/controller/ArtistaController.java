@@ -37,16 +37,22 @@ public class ArtistaController {
 	
 	
 	@GetMapping("/Dashboard/Artistas")
-	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar, Model model) {
+	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verPerfilId", required = false) Long verPerfilId, Model model) {
 		List<Artista> lista = artistaService.findAll();
 		
 		model.addAttribute("listaArtistas", lista);
 		model.addAttribute("formularioArtista", new Artista());
 		
-		if (idEditar != null) {
-			model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
-		} else {
-			model.addAttribute("formularioArtista", new Artista());
+		if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
+	        model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
+	    } else {
+	        model.addAttribute("formularioArtista", new Artista());
+	    }
+		if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
+	        Artista artista = artistaService.findById(verPerfilId).get();
+	        model.addAttribute("perfilArtista", artista);
+	    } else {
+	        model.addAttribute("perfilArtista", null);
 	    }
 		return "DashboardArtistas";
 		
@@ -105,5 +111,7 @@ public class ArtistaController {
 	    
 	    return "redirect:/Dashboard/Artistas";
 	}
+	
+	
 }
 

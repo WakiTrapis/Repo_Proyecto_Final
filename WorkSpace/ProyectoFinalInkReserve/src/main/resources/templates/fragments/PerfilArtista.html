@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="modalPerfilArtista" class="modal fade" id="ModalPerfilArtistas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white">
+                
+                <div class="modal-header d-flex align-items-center justify-content-between border-bottom border-dark pb-3 mb-4">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2 mb-0 text-white">
+                        <i class="bi bi-person-badge-fill text-success" style="color: #00a86b !important;"></i> Ficha Técnica del Artista
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" th:if="${perfilArtista != null}">
+                    <div class="row g-4 mb-4">
+                        
+                        <div class="col-md-4 text-center border-end border-dark pe-md-4">
+                            <div class="position-relative d-inline-block mb-3">
+                                <img th:src="${perfilArtista.fotoArtista != null} ? @{/uploads/{img}(img=${perfilArtista.fotoArtista})} : @{/img/no-image.png}" 
+                                     class="img-fluid rounded-4 border border-secondary shadow-sm" 
+                                     style="width: 160px; height: 160px; object-fit: cover;" 
+                                     alt="Fotografía del artista">
+                            </div>
+                            <h3 class="fw-bold text-white mb-1" th:text="${perfilArtista.nombreArtista}">Nombre</h3>
+                            <span class="badge px-3 py-2 small fw-bold text-success mb-2" style="background-color: rgba(0, 168, 107, 0.1); border: 1px solid #00a86b;" th:text="${perfilArtista.especialidad}">Especialidad</span>
+                            <p class="text-secondary small mt-2"><i class="bi bi-fingerprint me-1"></i> ID Artista: <span th:text="${perfilArtista.id}">0</span></p>
+                        </div>
+
+                        <div class="col-md-8 ps-md-4">
+                            <div class="row g-3">
+                                
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Precio / Hora</label>
+                                        <span class="fs-5 fw-bold text-white" th:text="${perfilArtista.precioHora} + ' €'">0.00 €</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Años de Experiencia</label>
+                                        <span class="fs-5 fw-bold text-white" th:text="${perfilArtista.experiencia} + ' años'">0 años</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Teléfono de Contacto</label>
+                                        <span class="fs-6 text-white d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-telephone text-secondary"></i>
+                                            <span th:text="${perfilArtista.telefonoArtista}">000 000 000</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Documento Identidad (DNI)</label>
+                                        <span class="fs-6 text-white text-uppercase d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-card-text text-secondary"></i>
+                                            <span th:text="${perfilArtista.dniArtista}">12345678X</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Nº Registro Higiénico Sanitario</label>
+                                        <span class="fs-6 text-white d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-shield-check text-success" style="color: #00a86b !important;"></i>
+                                            <span th:text="${perfilArtista.numeroHigienico}">Nº Registro</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button class="btn btn-dark border-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2 fw-medium" 
+                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseCitas">
+                                    <i class="bi bi-calendar-event text-success"></i> Mostrar Citas
+                                </button>
+                                <button class="btn btn-dark border-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2 fw-medium" 
+                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseTatuajes">
+                                    <i class="bi bi-brush text-success"></i> Ver Tatuajes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+					<div class="collapse mb-3" id="collapseCitas" data-bs-parent="#ModalPerfilArtistas">
+					    <div class="bg-dark p-3 rounded-3 border border-secondary shadow-sm">
+					        <h6 class="fw-bold mb-3 border-bottom border-secondary pb-2 text-white">
+					            <i class="bi bi-clock-history me-2 text-success"></i>Historial y Próximas Citas
+					        </h6>
+					        <div class="table-responsive">
+					            <table class="table table-dark table-sm table-hover small mb-0">
+					                <thead>
+					                    <tr class="text-secondary border-bottom border-secondary">
+					                        <th>ID Cita</th>
+					                        <th>Cliente</th>
+					                        <th>Fecha y Hora</th>
+					                    </tr>
+					                </thead>
+					                <tbody>
+					                    <tr th:each="cita : ${perfilArtista.citas}" class="align-middle" th:if="${cita != null}">
+					                        <td th:text="${cita.id}">ID</td>
+					                        
+					                        <td th:text="${cita.cliente != null} ? ${cita.cliente.nombreCliente} : 'Cliente no asignado'">Cliente</td>
+					                        
+					                        <td th:text="${cita.fechaInicio != null} ? ${#temporals.format(cita.fechaInicio, 'dd/MM/yyyy HH:mm')} : 'Fecha sin definir'">Fecha</td>
+					                    </tr>
+					                    <tr th:if="${#lists.isEmpty(perfilArtista.citas)}">
+					                        <td colspan="3" class="text-center text-muted py-3">No hay citas agendadas con este artista</td>
+					                    </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					    </div>
+					</div>
+
+					<div class="collapse mb-3" id="collapseTatuajes" data-bs-parent="#ModalPerfilArtistas">
+					    <div class="bg-dark p-3 rounded-3 border border-secondary shadow-sm">
+					        <h6 class="fw-bold mb-3 border-bottom border-secondary pb-2 text-white">
+					            <i class="bi bi-images me-2 text-success"></i>Galería de Diseños y Trabajos
+					        </h6>
+					        <div class="row g-3">
+					            <div class="col-4 col-sm-3 text-center" th:each="tatuaje : ${perfilArtista.tatuajes}" th:if="${tatuaje != null}">
+					                <div class="position-relative border border-secondary rounded p-1 bg-black">
+					                    <img th:src="${tatuaje.fotoTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.fotoTatuaje})} : @{/img/no-image.png}" 
+					                         class="img-fluid rounded" 
+					                         style="height: 90px; width: 100%; object-fit: cover;"
+					                         th:title="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Diseño'">
+					                    
+					                    <small class="d-block text-truncate text-secondary small mt-1" 
+					                           th:text="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Sin título'">Diseño</small>
+					                </div>
+					            </div>
+					            <div class="col-12 text-center text-muted py-3" th:if="${#lists.isEmpty(perfilArtista.tatuajes)}">
+					                Este artista aún no tiene tatuajes asociados en su catálogo
+					            </div>
+					        </div>
+					    </div>
+					</div>
+
+                </div>
+
+                <div class="modal-footer border-top border-dark pt-3">
+                    <button type="button" class="btn btn-outline-secondary px-4 fw-medium rounded-3" data-bs-dismiss="modal">
+                        Cerrar Ventana
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

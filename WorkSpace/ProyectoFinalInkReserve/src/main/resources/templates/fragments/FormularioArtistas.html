@@ -13,7 +13,7 @@
 				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			
-			<form method="POST" th:action="${formularioArtista.id != null && formularioArtista.id != 0} ? @{/Dashboard/Artistas/Editar/submit} : @{/nuevoArtistaCompleto}" th:object="${formularioArtista}" enctype="multipart/form-data">
+			<form method="POST" th:action="${formularioArtista != null && formularioArtista.id != null && formularioArtista.id != 0} ? @{/Dashboard/Artistas/Editar/submit} : @{/nuevoArtistaCompleto}" th:object="${formularioArtista}" enctype="multipart/form-data">
 				<div class="modal-body p-4">
 					<div class="row g-3">
 						<input type="hidden" th:field="*{id}">

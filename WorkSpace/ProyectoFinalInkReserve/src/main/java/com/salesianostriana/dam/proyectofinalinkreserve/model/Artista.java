@@ -2,6 +2,10 @@ package com.salesianostriana.dam.proyectofinalinkreserve.model;
 
 
 import java.util.List;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.ArrayList;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,14 +17,18 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
-@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas")
+@Data @NoArgsConstructor @AllArgsConstructor @Entity @Builder @Table(name = "Artistas") @ToString(exclude = {"cliente", "artista"})
 public class Artista {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ToString.Include
+    @EqualsAndHashCode.Include
 	private long id;
 	
 	
@@ -44,10 +52,12 @@ public class Artista {
 	private String fotoArtista;
 	
 	@OneToMany(mappedBy = "artista")
+	@Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     private List<Tatuaje> tatuajes = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "artista")
+	@Fetch(FetchMode.SUBSELECT)
 	@Builder.Default
 	private List<Cita> citas = new ArrayList<>();
 	
