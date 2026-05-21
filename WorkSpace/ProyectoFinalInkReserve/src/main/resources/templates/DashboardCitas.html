@@ -20,6 +20,7 @@
 			</button>
 			<div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
 			<div th:replace="~{fragments/ConfirmacionEliminarCita :: modalEliminarCita}"></div>
+			<div th:replace="~{fragments/FichaCita :: modalFichaCitas}"></div>
 		</div>
 
 		<div class="row g-4">
@@ -68,15 +69,14 @@
 			                </tr>
 			            </thead>
 			            <tbody>
-			                <tr class="border-bottom border-dark" th:each="cita : ${listaCitas}">
+			                <tr class="border-bottom border-dark clickable-row" th:each="cita : ${listaCitas}" th:data-href="@{/Dashboard/Citas(verPerfilId=${cita.id})}" style="cursor: pointer;">
 			                    <td class="fw-semibold" th:text="${cita.id}">1</td> 
 			                    
 			                    <td class="fw-bold text-info" th:text="${#temporals.format(cita.fechaInicio, 'HH:mm') + ' - ' + #temporals.format(cita.fechaFinal, 'HH:mm')}">16:00 - 19:00</td>
 			                    
 			                    <td th:text="${cita.tatuaje != null ? cita.tatuaje.nombreTatuaje : 'Diseño Eliminado (Historial)'}">Break Brain</td>
 			                    <td th:text="${cita.cliente != null ? cita.cliente.nombreCliente : 'Sin cliente'}">Gonzalo Luna</td>
-			                    <td th:text="${cita.artista != null ? cita.artista.nombreArtista : 'Artista Eliminado'}">Paco Porras</td>
-			                    
+			                    <td th:text="${cita.artista != null ? cita.artista.nombreArtista : 'Artista Eliminado'}">Paco Porras</td>	                    
 			                    <td class="fw-bold text-success" th:text="${cita.precioSesion} + '€'">120€</td>
 			                    
 			                    <td class="text-center">

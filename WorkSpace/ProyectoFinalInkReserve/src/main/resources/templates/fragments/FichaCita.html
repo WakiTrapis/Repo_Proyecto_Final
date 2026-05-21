@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="modalFichaCitas" class="modal fade" id="ModalFichaCitas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white">
+                
+                <div class="modal-header d-flex align-items-center justify-content-between border-bottom border-dark pb-3 mb-4">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2 mb-0 text-white">
+                        <i class="bi bi-palette-fill" style="color: #00a86b !important;"></i> 
+                        Ficha Técnica de la Cita: <span class="text-secondary fw-normal" th:text="${fichaCita != null} ? ${fichaCita.id} : 'Detalles'">id</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" th:if="${fichaCita != null}">
+                    <div class="row g-4">           
+
+                        <div ass="col-md-7 ps-md-4">
+                            <div class="row g-3">                                                               
+                                <div class="col-sm-6">
+                                    <label class="text-secondary small d-block mb-1">Duracion</label>
+                                    <div class="p-2 bg-dark rounded border border-dark text-white fw-medium">
+                                        <i class="bi bi-clock-history me-2 text-muted"></i>
+                                        <span th:text="${fichaCita.duracion} + ' h'">1 h</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label class="text-secondary small d-block mb-1">Precio Sesión</label>
+                                    <div class="p-2 bg-dark rounded border border-dark fw-bold" style="color: #00a86b;">
+                                        <i class="bi bi-currency-euro me-1"></i>
+                                        <span th:text="${fichaCita.precioSesion != null} ? ${fichaCita.precioSesion} : '0.0'">120.0</span>
+                                    </div>
+                                </div>
+								<div class="col-sm-6">
+							    	<div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+	                                    <label class="form-label text-secondary small fw-bold d-block mb-1">Fecha de Inicio</label>
+	                                    <span class="fs-5 fw-bold text-white" th:text="${fichaCita.fechaInicio}">DD/MM/AAAA</span>
+                               		</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+									     <label class="form-label text-secondary small fw-bold d-block mb-1">Fecha de Final</label>
+									     <span class="fs-5 fw-bold text-white" th:text="${fichaCita.fechaFinal}">DD/MM/AAAA</span>
+								    </div>
+								</div>
+
+                                <div class="col-12">
+                                    <label class="text-secondary small d-block mb-1">Artista Responsable</label>
+                                    <div class="p-2 bg-dark rounded border border-dark text-white fw-medium d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="bi bi-person-vcard me-2 text-muted"></i>
+                                            <span th:text="${fichaCita.artista != null} ? ${fichaCita.artista.nombreArtista} : 'Sin artista asignado'">Tatuador</span>
+                                        </div>
+                                        <span th:if="${fichaCita.artista != null}" class="badge bg-black text-secondary border border-secondary small">ID: [[${fichaCita.artista.id}]]</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="text-secondary small d-block mb-1">Cliente Solicitante</label>
+                                    <div class="p-2 bg-dark rounded border border-dark text-white fw-medium d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="bi bi-person-heart me-2 text-muted"></i>
+                                            <span th:text="${fichaCita.cliente != null} ? ${fichaCita.cliente.nombreCliente} : 'Sin cliente asignado'">Cliente</span>
+                                        </div>
+                                        <span th:if="${fichaCita.cliente != null}" class="badge bg-black text-secondary border border-secondary small">ID: [[${fichaCita.cliente.id}]]</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top border-dark pt-3 mt-4">
+                    <button type="button" class="btn btn-outline-secondary px-4 fw-medium rounded-3" data-bs-dismiss="modal">
+                        Cerrar Vista
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
