@@ -97,6 +97,19 @@ public class DataSeed {
 		
 		artistaRepository.save(a5);
 		
+		Artista a6 = Artista.builder()
+				.nombreArtista("Pajaro Azul")
+				.especialidad("Hiperrealismo")
+				.precioHora(54.0)
+				.dniArtista("46216879D")
+				.telefonoArtista("345676767")
+				.numeroHigienico("123435788")
+				.experiencia(10)
+				.fotoArtista("fotoArtista6.png")
+				.build();
+		
+		artistaRepository.save(a6);
+		
 		Cliente c1 = Cliente.builder()
 				.nombreCliente("Leonardo Martinez")
 				.telefonoCliente("285923785")

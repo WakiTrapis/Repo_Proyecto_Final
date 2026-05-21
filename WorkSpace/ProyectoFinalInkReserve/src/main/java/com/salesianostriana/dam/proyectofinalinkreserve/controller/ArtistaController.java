@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +40,24 @@ public class ArtistaController {
 	
 	
 	@GetMapping("/Dashboard/Artistas")
-	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verPerfilId", required = false) Long verPerfilId, Model model) {
-		List<Artista> lista = artistaService.findAll();
+	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar,
+			@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,
+			@RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            Model model) {
+		Pageable pageable = PageRequest.of(page, size);
+        Page<Artista> artistaPage;
 		
-		model.addAttribute("listaArtistas", lista);
+        if (search != null && !search.trim().isEmpty()) {
+            artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
+            model.addAttribute("search", search);
+        } else {
+            artistaPage = artistaService.findAllPaginado(pageable);
+        }
+        model.addAttribute("listaArtistas", artistaPage.getContent());
+        model.addAttribute("currentPage", artistaPage.getNumber());
+        model.addAttribute("totalPages", artistaPage.getTotalPages());
 		model.addAttribute("formularioArtista", new Artista());
 		
 		if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
@@ -48,6 +65,7 @@ public class ArtistaController {
 	    } else {
 	        model.addAttribute("formularioArtista", new Artista());
 	    }
+		
 		if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
 	        Artista artista = artistaService.findById(verPerfilId).get();
 	        model.addAttribute("perfilArtista", artista);

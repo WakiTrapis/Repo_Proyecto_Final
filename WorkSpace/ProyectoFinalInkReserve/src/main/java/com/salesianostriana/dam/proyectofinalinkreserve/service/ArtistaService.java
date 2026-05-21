@@ -2,7 +2,8 @@ package com.salesianostriana.dam.proyectofinalinkreserve.service;
 
 import java.util.Optional;
 
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,13 @@ public class ArtistaService extends BaseServiceImpl <Artista, Long, ArtistaRepos
 	    this.edit(artistaEditado);
 	}
 	
+	public Page<Artista> findAllPaginado(Pageable pageable) {
+        return artistaRepository.findAll(pageable);
+    }
 	
-	
+	public Page<Artista> buscarPorNombreArtistaPaginado(String criterio, Pageable pageable) {
+        return artistaRepository.findByNombreArtistaContainingIgnoreCase(criterio, pageable);
+    }
 	
 	
 
