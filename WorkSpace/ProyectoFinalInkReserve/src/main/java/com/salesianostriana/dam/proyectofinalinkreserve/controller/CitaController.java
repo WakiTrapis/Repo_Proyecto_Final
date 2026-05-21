@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
@@ -30,7 +31,7 @@ public class CitaController {
     private final ArtistaService artistaService;
 	
 	@GetMapping("/Dashboard/Citas")
-	public String PintarDashboardCitas(@RequestParam(name = "fecha", required = false) String fechaStr,@RequestParam(name = "idEditar", required = false) Long idEditar,Model model) {
+	public String PintarDashboardCitas(@RequestParam(name = "fecha", required = false) String fechaStr,@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,Model model) {
 		
 		AgendaCitas agenda = citaService.getAgendaCitasDia(fechaStr);
 	    
@@ -49,6 +50,12 @@ public class CitaController {
 		} else {
 			model.addAttribute("formulariocita", new Cita());
 		}
+        if (verPerfilId != null && citaService.findById(verPerfilId).isPresent()) {
+	        Cita cita = citaService.findById(verPerfilId).get();
+	        model.addAttribute("fichaCita", cita);
+	    } else {
+	        model.addAttribute("fichaCita", null);
+	    }
         return "DashboardCitas";
 	}
 	
