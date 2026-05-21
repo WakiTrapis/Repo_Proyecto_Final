@@ -175,6 +175,19 @@ public class DataSeed {
 		
 		clienteRepository.save(c5);
 		
+		Cliente c6 = Cliente.builder()
+				.nombreCliente("Marta Blazquez")
+				.telefonoCliente("665757577")
+				.fechaNacimiento(LocalDate.of(1996, 7, 12))
+				.direccion("C/Sor Milagros, 5")
+				.codigoPostal("41001")
+				.poblacion("Sevilla")
+				.dniCliente("77844090S")
+				.email("mastabs@gmail.com")
+				.build();
+		
+		clienteRepository.save(c6);
+		
 		
 		Tatuaje t1 = Tatuaje.builder()
 				.cliente(c3)

@@ -10,7 +10,7 @@
 
 <body>
     
-	<div th:replace="fragments/Nav :: nav"></div>
+	<div th:replace="~{fragments/Nav :: nav}"></div>
 	
 	<div class="container-fluid px-4 py-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
@@ -27,6 +27,27 @@
 	<div class="row g-4">
 		<div class="col-lg-8">
 			<div class="table-responsive table-dark-custom shadow p-3">
+				<div class="row mb-4">
+				    <div class="col-md-6 col-lg-4">
+				        <form th:action="@{/Dashboard/Clientes}" method="get" class="input-group">
+				            <input type="text" 
+				                   name="search" 
+				                   th:value="${search}" 
+				                   class="form-control bg-dark text-white border-secondary border-opacity-50" 
+				                   placeholder="Buscar por nombre o apellidos...">
+				            
+				            <button class="btn btn-success px-4 fw-bold" type="submit" style="background-color: #00a86b; border: none;">
+				                <i class="bi bi-search me-1"></i> Buscar
+				            </button>
+				            
+				            <a th:if="${search != null && !search.isEmpty()}" 
+				               th:href="@{/Dashboard/Clientes}" 
+				               class="btn btn-outline-secondary d-flex align-items-center justify-content-center border-opacity-50 text-secondary">
+				                <i class="bi bi-x-lg"></i>
+				            </a>
+				        </form>
+				    </div>
+				</div>
 				<table class="table table-dark table-hover align-middle mb-0">
 					<thead class="text-secondary small border-bottom border-dark">
 						<tr>
@@ -50,6 +71,38 @@
 						</tr>    
 					</tbody>
 				</table>
+				<nav aria-label="Navegación de clientes" th:if="${totalPages > 1}" class="mt-4">
+				    <ul class="pagination justify-content-center gap-1">
+				        
+				        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+				            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+				               th:href="@{/Dashboard/Clientes(page=${currentPage - 1}, search=${search})}">
+				                &laquo; Anterior
+				            </a>
+				        </li>
+
+				        <li class="page-item" 
+				            th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+				            th:classappend="${currentPage == i} ? 'active'">
+				            
+				            <a class="page-link border-secondary border-opacity-25 rounded-3 px-3 py-2 fw-medium"
+				               th:classappend="${currentPage == i} ? 'bg-success text-white border-success' : 'bg-dark text-white'"
+				               th:href="@{/Dashboard/Clientes(page=${i}, search=${search})}" 
+				               th:text="${i + 1}"
+				               th:style="${currentPage == i} ? 'background-color: #00a86b !important; border-color: #00a86b !important;' : ''">
+				               1
+				            </a>
+				        </li>
+
+				        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+				            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+				               th:href="@{/Dashboard/Clientes(page=${currentPage + 1}, search=${search})}">
+				                Siguiente &raquo;
+				            </a>
+				        </li>
+				        
+				    </ul>
+				</nav>
 			</div>
 		</div>
 		<div class="col-lg-4">
@@ -67,6 +120,8 @@
             </div>
         </div>
 	</div>
+	
+	<div th:replace="~{fragments/FooterApp :: footer}"></div>
 	
 	<script>
 		    document.addEventListener("DOMContentLoaded", function () {
@@ -105,12 +160,6 @@
 		            }
 		        };
     </script>
-	
-	
-	
-	
-	<div th:replace="fragments/FooterApp :: footer"></div>
-
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
