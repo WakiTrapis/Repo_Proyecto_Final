@@ -32,7 +32,7 @@ public class ClienteController {
 	private final TatuajeService tatuajeService;
 	
 	@GetMapping("/Dashboard/Clientes")
-	public String PintarDashboardClientes(@RequestParam(name = "idEditar", required = false) Long idEditar, Model model) {
+	public String PintarDashboardClientes(@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verPerfilId", required = false) Long verPerfilId, Model model) {
 		List<Cliente> lista = clienteService.findAll();
 		
 		model.addAttribute("listaClientes", lista);
@@ -43,6 +43,12 @@ public class ClienteController {
 		} else {
 			model.addAttribute("formularioCliente", new Cliente());
 		}
+		if (verPerfilId != null && clienteService.findById(verPerfilId).isPresent()) {
+	        Cliente cliente = clienteService.findById(verPerfilId).get();
+	        model.addAttribute("perfilCliente", cliente);
+	    } else {
+	        model.addAttribute("perfilCliente", null);
+	    }
 		
 		return "DashboardClientes";
 	}

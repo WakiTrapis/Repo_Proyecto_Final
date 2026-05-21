@@ -20,6 +20,7 @@
 			</button>
 			<div th:replace="~{fragments/FormularioClientes :: modalNuevoCliente}"></div>
 			<div th:replace="~{fragments/ConfirmacionEliminarCliente :: modalEliminarCliente}"></div>
+			<div th:replace="~{fragments/PerfilCliente :: modalPerfilCliente}"></div>
 		</div>
 	</div>
 	
@@ -37,7 +38,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="border-bottom border-dark" th:each="cliente : ${listaClientes}">
+						<tr class="border-bottom border-dark clickable-row" th:each="cliente : ${listaClientes}" th:data-href="@{/Dashboard/Clientes(verPerfilId=${cliente.id})}" style="cursor: pointer;">
 							<td class="fw-semibold" th:text="${cliente.id}">1</td> 
                             <td class="fw-semibold" th:text="${cliente.nombreCliente}">Nombre Cliente</td>
 							<td th:text="${cliente.telefonoCliente}">Teléfono</td>
@@ -67,8 +68,21 @@
         </div>
 	</div>
 	
-	
-	<script th:if="${formularioCliente.id != null && formularioCliente.id != 0}">
+	<script>
+		    document.addEventListener("DOMContentLoaded", function () {
+		        const rows = document.querySelectorAll(".clickable-row");    
+		        rows.forEach(row => {
+		            row.addEventListener("click", function (e) {
+		                if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
+		                    return; 
+		                }
+		                window.location.href = this.dataset.href;
+		            });
+		        });
+		    });
+    </script>
+			
+	<script th:if="${formularioCliente != null && formularioCliente.id != null && formularioCliente.id != 0}">
 		window.onload = function() {
 			const modalElement = document.getElementById('ModalFormClientes');
 			const myModal = new bootstrap.Modal(modalElement);
@@ -78,6 +92,19 @@
 	        });
 		};
 	</script>
+	
+	<script th:if="${perfilCliente != null}">
+		        window.onload = function() {
+		            const modalElement = document.getElementById('ModalPerfilClientes'); 
+		            if (modalElement) {
+		                const myModal = new bootstrap.Modal(modalElement);
+		                myModal.show();
+		                modalElement.addEventListener('hidden.bs.modal', function () {
+		                    window.location.href = '/Dashboard/Clientes';
+		                });
+		            }
+		        };
+    </script>
 	
 	
 	
