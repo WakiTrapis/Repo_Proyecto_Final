@@ -36,7 +36,7 @@ public class CitaController {
 			@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,
 			@RequestParam(value = "filtro", required = false) String filtro,Model model) {
 		
-		List<Cita> citasFiltradas = null;
+		List<Cita> citasFiltradas;
 		AgendaCitas agenda = citaService.getAgendaCitasDia(fechaStr);
 		
 		if ("sinArtista".equals(filtro)) {
