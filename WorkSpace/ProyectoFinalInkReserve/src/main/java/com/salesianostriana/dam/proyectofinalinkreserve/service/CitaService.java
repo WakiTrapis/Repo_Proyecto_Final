@@ -1,14 +1,16 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.service;
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.CitaRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseServiceImpl;
 
@@ -40,6 +42,18 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	            .diaAnteriorStr(diaAnterior)
 	            .diaSiguienteStr(diaSiguiente)
 	            .build();
+	}
+	
+	public List<Cita> obtenerCitasSinArtista() {
+	    return citaRepository.findByArtistaIsNull();
+	}
+	
+	public List<Cliente> obtenerTop3ClientesFrecuentes() {
+	    return citaRepository.findClientesFrecuentes(PageRequest.of(0, 3));
+	}
+	
+	public List<Artista> obtenerTop3ArtistasMasDemandados() {
+	    return citaRepository.findArtistasMasDemandados(PageRequest.of(0, 3));
 	}
 	
 }

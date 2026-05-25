@@ -31,15 +31,25 @@ public class CitaController {
     private final ArtistaService artistaService;
 	
 	@GetMapping("/Dashboard/Citas")
-	public String PintarDashboardCitas(@RequestParam(name = "fecha", required = false) String fechaStr,@RequestParam(name = "idEditar", required = false) Long idEditar,@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,Model model) {
+	public String PintarDashboardCitas(@RequestParam(name = "fecha", required = false) String fechaStr,
+			@RequestParam(name = "idEditar", required = false) Long idEditar,
+			@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,
+			@RequestParam(value = "filtro", required = false) String filtro,Model model) {
 		
+		List<Cita> citasFiltradas = null;
 		AgendaCitas agenda = citaService.getAgendaCitasDia(fechaStr);
-	    
-	    model.addAttribute("listaCitas", agenda.getListaCitas());
+		
+		if ("sinArtista".equals(filtro)) {
+	        citasFiltradas = citaService.obtenerCitasSinArtista();
+	        model.addAttribute("filtroActual", "sinArtista");
+	    } else {
+	    citasFiltradas = agenda.getListaCitas();
 	    model.addAttribute("fechaActual", agenda.getFechaActual());
 	    model.addAttribute("diaAnteriorStr", agenda.getDiaAnteriorStr());
 	    model.addAttribute("diaSiguienteStr", agenda.getDiaSiguienteStr());
-	    
+	    model.addAttribute("filtroActual", "fecha");
+	    }
+		model.addAttribute("listaCitas", citasFiltradas);
 		model.addAttribute("formularioCita", new Cita());
 		model.addAttribute("listaTatuajes", tatuajeService.findAll());
         model.addAttribute("listaClientes", clienteService.findAll());
@@ -48,7 +58,7 @@ public class CitaController {
         if (idEditar != null) {
 			model.addAttribute("formularioCita", citaService.findById(idEditar).get());
 		} else {
-			model.addAttribute("formulariocita", new Cita());
+			model.addAttribute("formularioCita", new Cita());
 		}
         if (verPerfilId != null && citaService.findById(verPerfilId).isPresent()) {
 	        Cita cita = citaService.findById(verPerfilId).get();
