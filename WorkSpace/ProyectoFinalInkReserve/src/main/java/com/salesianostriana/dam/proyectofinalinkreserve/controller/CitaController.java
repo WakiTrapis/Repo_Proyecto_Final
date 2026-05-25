@@ -65,7 +65,7 @@ public class CitaController {
 	}
 	
 	@PostMapping("/nuevaCitaCompleta")
-    public String submit(@ModelAttribute("formularioCita") Cita cita) {
+    public String guardarCitaConCalculo(@ModelAttribute("formularioCita") Cita cita) {
 		citaService.save(cita);
 		return "redirect:/Dashboard/Citas";
 	}

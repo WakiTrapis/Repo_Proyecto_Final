@@ -25,6 +25,8 @@
 							            th:value="${t.id}" 
 							            th:selected="${formularioCita.tatuaje != null && formularioCita.tatuaje.id == t.id}"
 							            th:text="${t.nombreTatuaje}"
+										th:data-precio="${t.precioTatuaje}"
+							            th:data-sesiones="${t.SesionesTatuaje}"
 							            th:attr="data-cliente=${t.cliente != null ? t.cliente.id : ''}, data-artista=${t.artista != null ? t.artista.id : ''}">
 							        Diseño
 							    </option>
@@ -49,7 +51,8 @@
 							    <option th:each="a : ${listaArtistas}" 
 							            th:value="${a.id}" 
 							            th:selected="${formularioCita.artista != null && formularioCita.artista.id == a.id}"
-							            th:text="${a.nombreArtista}">Artista</option>
+							            th:text="${a.nombreArtista}"
+										th:data-preciohora="${a.precioHora}">Artista</option>
 							</select>
                         </div>
 
@@ -65,12 +68,12 @@
 
                         <div class="col-md-4">
                             <label class="form-label text-secondary small fw-bold">Duración (Horas)</label>
-                            <input type="number" step="0.5" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" required>
+                            <input type="number" step="0.5" min="1" id="inputHoras" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" required>
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label text-secondary small fw-bold">Precio Sesión (€)</label>
-                            <input type="number" step="0.01" th:field="*{precioSesion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 150.00" required>
+                            <input type="number"  id="inputPrecio" th:field="*{precioSesion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 150.00" readonly>
                         </div>
 
                     </div>

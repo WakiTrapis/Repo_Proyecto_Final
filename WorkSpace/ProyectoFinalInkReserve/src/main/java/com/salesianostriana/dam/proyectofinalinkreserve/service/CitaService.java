@@ -56,4 +56,17 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	    return citaRepository.findArtistasMasDemandados(PageRequest.of(0, 3));
 	}
 	
+	public Cita guardarCitaConCalculo(Cita cita) {
+	    if (cita.getTatuaje() != null && cita.getArtista() != null) {
+	        double precioTatuaje = cita.getTatuaje().getPrecioTatuaje();
+	        int sesiones = cita.getTatuaje().getSesionesTatuaje();
+	        if (sesiones <= 0) sesiones = 1;   
+	        double precioHoraArtista = cita.getArtista().getPrecioHora();
+	        double horas = cita.getDuracion();
+	        double precioFinal = (precioTatuaje / sesiones) + (precioHoraArtista * horas);    
+	        cita.setPrecioSesion(precioFinal);
+	    }
+	    return citaRepository.save(cita);
+	}
+	
 }
