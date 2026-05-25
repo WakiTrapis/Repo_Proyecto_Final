@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="modalNuevoTatuaje" class="modal fade" id="ModalFormTatuajes" tabindex="-1" aria-labelledby="tatuajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg">
+                
+                <div class="modal-header border-bottom border-dark px-4 py-3">
+                    <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+                        <i class="bi bi-palette-fill text-success"></i> Diseño / Tatuaje
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form method="POST" th:action="${formularioTatuaje.id != null && formularioTatuaje.id != 0} ? @{/Dashboard/Tatuajes/Editar/submit} : @{/nuevoTatuajeCompleto}" th:object="${formularioTatuaje}" enctype="multipart/form-data">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            
+							<input type="hidden" th:field="*{id}">
+                            <div class="col-md-8">
+                                <label class="form-label text-secondary small fw-bold">Nombre del Tatuaje</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-type"></i></span>
+                                    <input type="text" th:field="*{nombreTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Dragon Neotradicional" required>
+                                </div>
+                            </div>
+							
+							<div class="col-md-6">
+								<label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
+								<select name="artista" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
+								    <option value="" hidden>Selecciona al artista...</option>						    
+								    <option th:each="a : ${listaArtistas}" 
+								            th:value="${a.id}" 
+								            th:selected="${formularioTatuaje.artista != null && formularioTatuaje.artista.id == a.id}"
+								            th:text="${a.nombreArtista}">
+								        	Artista
+								    </option>
+								</select>
+                            </div>
+							
+							<div class="col-md-6">
+								<label class="form-label text-secondary small fw-bold">Cliente</label>
+								<select name="cliente" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
+							    	<option value="" hidden>Selecciona al cliente...</option>
+								    <option th:each="c : ${listaClientes}" 
+						            	th:value="${c.id}" 
+						            	th:selected="${formularioTatuaje.cliente != null && formularioTatuaje.cliente.id == c.id}"
+					            		th:text="${c.nombreCliente}">
+							        	Cliente
+								    </option>
+								</select>
+							</div>
+
+                            <div class="col-md-4">
+                                <label class="form-label text-secondary small fw-bold">Precio Estimado (€)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-currency-euro"></i></span>
+                                    <input type="number" step="0.01" th:field="*{precioTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="0.00">
+                                </div>
+                            </div>
+							
+							<div class="col-md-6">
+                            	<label class="form-label text-secondary small fw-bold">Tipo de Tinta</label>
+                                <select th:field="*{tipoTintaTatuaje}" class="form-select bg-dark border-secondary text-white">
+                                	<option th:each="tipoTintaTatuaje : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.TipoTintaTatuaje).values()}" 
+                                    	th:value="${tipoTintaTatuaje}" 
+         	                        	th:text="${tipoTintaTatuaje}">
+                                	</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Estilo</label>
+                                <input type="text" th:field="*{estiloTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Realismo, Blackwork...">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Zona del Cuerpo</label>
+                                <input type="text" th:field="*{zonaCuerpoTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Antebrazo, Espalda...">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Estado del Trabajo</label>
+                                <select th:field="*{estado}" class="form-select bg-dark border-secondary text-white">
+                                    <option th:each="estado : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.EstadoTatuaje).values()}" 
+                                            th:value="${estado}" 
+                                            th:text="${estado}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Sesiones Estimadas</label>
+                                <input type="number" th:field="*{sesionesTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="1">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-secondary small fw-bold">Fotografía del Diseño / Tatuaje</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-image"></i></span>
+                                    <input type="file" name="archivoImagen" class="form-control bg-dark border-secondary text-white" accept="image/*">
+                                </div>
+                                <div class="form-text text-muted small">Formatos permitidos: JPG, PNG. Máx 5MB.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-secondary small fw-bold">Descripción Detallada</label>
+                                <textarea th:field="*{descripcionTatuaje}" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Detalles sobre tintas, técnica, etc."></textarea>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer border-top border-dark px-4">
+                        <button type="button" class="btn btn-outline-secondary fw-medium px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" style="background-color: #00a86b;">
+                            Guardar Tatuaje
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

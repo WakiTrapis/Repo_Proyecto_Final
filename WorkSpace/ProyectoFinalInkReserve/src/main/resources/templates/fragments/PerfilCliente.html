@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="modalPerfilCliente" class="modal fade" id="ModalPerfilClientes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white">
+                
+                <div class="modal-header d-flex align-items-center justify-content-between border-bottom border-dark pb-3 mb-4">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2 mb-0 text-white">
+                        <i class="bi bi-person-badge-fill text-success" style="color: #00a86b !important;"></i> Ficha Técnica del Cliente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" th:if="${perfilCliente != null}">
+                    <div class="row g-4 mb-4">
+                        
+                        <div class="col-md-4 text-center border-end border-dark pe-md-4">
+                            <h3 class="fw-bold text-white mb-1" th:text="${perfilCliente.nombreCliente}">Nombre</h3>
+                            <span class="badge px-3 py-2 small fw-bold text-success mb-2" style="background-color: rgba(0, 168, 107, 0.1); border: 1px solid #00a86b;" th:text="${perfilCliente.telefonoCliente}">Telefono</span>
+                            <p class="text-secondary small mt-2"><i class="bi bi-fingerprint me-1"></i> ID Cliente: <span th:text="${perfilCliente.id}">0</span></p>
+                        </div>
+
+                        <div class="col-md-8 ps-md-4">
+                            <div class="row g-3">
+                                
+								<div class="col-sm-6">
+							      <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                    <label class="form-label text-secondary small fw-bold d-block mb-1">Fecha de Nacimiento</label>
+                                    <span class="fs-5 fw-bold text-white" th:text="${perfilCliente.fechaNacimiento}">DD/MM/AAAA</span>
+                                  </div>
+                                </div>
+								
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Dirección</label>
+                                        <span class="fs-5 fw-bold text-white" th:text="${perfilCliente.direccion}">C/...</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Código Postal</label>
+                                        <span class="fs-5 fw-bold text-white" th:text="${perfilCliente.codigoPostal}">41927</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Población</label>
+                                        <span class="fs-6 text-white d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-telephone text-secondary"></i>
+                                            <span th:text="${perfilCliente.poblacion}">Sevilla</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">Documento Identidad (DNI)</label>
+                                        <span class="fs-6 text-white text-uppercase d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-card-text text-secondary"></i>
+                                            <span th:text="${perfilCliente.dniCliente}">12345678X</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="bg-dark p-3 rounded-3 border border-secondary h-100">
+                                        <label class="form-label text-secondary small fw-bold d-block mb-1">e-mail</label>
+                                        <span class="fs-6 text-white d-flex align-items-center gap-2 mt-1">
+                                            <i class="bi bi-shield-check text-success" style="color: #00a86b !important;"></i>
+                                            <span th:text="${perfilCliente.email}">e-mail</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button class="btn btn-dark border-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2 fw-medium" 
+                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseCitas">
+                                    <i class="bi bi-calendar-event text-success"></i> Mostrar Citas
+                                </button>
+                                <button class="btn btn-dark border-secondary flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2 fw-medium" 
+                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseTatuajes">
+                                    <i class="bi bi-brush text-success"></i> Ver Tatuajes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+					<div class="collapse mb-3" id="collapseCitas" data-bs-parent="#ModalPerfilClientes">
+					    <div class="bg-dark p-3 rounded-3 border border-secondary shadow-sm">
+					        <h6 class="fw-bold mb-3 border-bottom border-secondary pb-2 text-white">
+					            <i class="bi bi-clock-history me-2 text-success"></i>Historial y Próximas Citas
+					        </h6>
+					        <div class="table-responsive">
+					            <table class="table table-dark table-sm table-hover small mb-0">
+					                <thead>
+					                    <tr class="text-secondary border-bottom border-secondary">
+					                        <th>ID Cita</th>
+					                        <th>Artista</th>
+					                        <th>Fecha y Hora</th>
+					                    </tr>
+					                </thead>
+					                <tbody>
+					                    <tr th:each="cita : ${perfilCliente.citas}" class="align-middle" th:if="${cita != null}">
+					                        <td th:text="${cita.id}">ID</td>
+					                        
+					                        <td th:text="${cita.artista != null} ? ${cita.artista.nombreArtista} : 'Artista no asignado'">Cliente</td>
+					                        
+					                        <td th:text="${cita.fechaInicio != null} ? ${#temporals.format(cita.fechaInicio, 'dd/MM/yyyy HH:mm')} : 'Fecha sin definir'">Fecha</td>
+					                    </tr>
+					                    <tr th:if="${#lists.isEmpty(perfilCliente.citas)}">
+					                        <td colspan="3" class="text-center text-muted py-3">No hay citas agendadas con este cliente</td>
+					                    </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					    </div>
+					</div>
+
+					<div class="collapse mb-3" id="collapseTatuajes" data-bs-parent="#ModalPerfilClientes">
+					    <div class="bg-dark p-3 rounded-3 border border-secondary shadow-sm">
+					        <h6 class="fw-bold mb-3 border-bottom border-secondary pb-2 text-white">
+					            <i class="bi bi-images me-2 text-success"></i>Galería de Diseños y Trabajos
+					        </h6>
+					        <div class="row g-3">
+					            <div class="col-4 col-sm-3 text-center" th:each="tatuaje : ${perfilCliente.tatuajes}" th:if="${tatuaje != null}">
+					                <div class="position-relative border border-secondary rounded p-1 bg-black">
+					                    <img th:src="${tatuaje.ImagenTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.ImagenTatuaje})} : @{/img/no-image.png}" 
+					                         class="img-fluid rounded" 
+					                         style="height: 90px; width: 100%; object-fit: cover;"
+					                         th:title="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Diseño'">
+					                    
+					                    <small class="d-block text-truncate text-secondary small mt-1" 
+					                           th:text="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Sin título'">Diseño</small>
+					                </div>
+					            </div>
+					            <div class="col-12 text-center text-muted py-3" th:if="${#lists.isEmpty(perfilCliente.tatuajes)}">
+					                Este cliente aún no tiene tatuajes asociados en su catálogo
+					            </div>
+					        </div>
+					    </div>
+					</div>
+
+                </div>
+
+                <div class="modal-footer border-top border-dark pt-3">
+                    <button type="button" class="btn btn-outline-secondary px-4 fw-medium rounded-3" data-bs-dismiss="modal">
+                        Cerrar Ventana
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

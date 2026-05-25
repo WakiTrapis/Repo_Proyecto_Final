@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="modalNuevoCliente" class="modal fade" id="ModalFormClientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-centered">
+	    <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg">
+			
+			<div class="modal-header border-bottom border-dark px-4 py-3">
+				<h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+					<i class="bi bi-person-plus-fill text-success"></i> Cliente
+				</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<form method="POST" th:action="${formularioCliente.id != null && formularioCliente.id != 0} ? @{/Dashboard/Clientes/Editar/submit} : @{/nuevoClienteCompleto}" th:object="${formularioCliente}">
+				<div class="modal-body p-4">
+					<div class="row g-3">
+						<input type="hidden" th:field="*{id}">
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
+							<div class="input-group">
+								<span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
+								<input type="text" th:field="*{nombreCliente}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez" />
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Correo Electrónico</label>
+						    <input type="text" th:field="*{email}" class="form-control bg-dark border-secondary text-white" placeholder="Example@example.com">
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Teléfono</label>
+							<input type="tel" th:field="*{telefonoCliente}" class="form-control bg-dark border-secondary text-white" placeholder="000 000 000">
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Fecha de Nacimiento</label>
+							<input type="date" th:field="*{fechaNacimiento}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
+                        </div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">DNI</label>
+							<input type="text" th:field="*{dniCliente}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Dirección</label>
+							<input type="text" th:field="*{direccion}" class="form-control bg-dark border-secondary text-white" placeholder="C/Ejemplo, 123">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Codigo Postal</label>
+							<input type="text" id="codigoPostal" th:field="*{codigoPostal}" class="form-control bg-dark border-secondary text-white" placeholder="12345">
+						</div>
+                        <div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Población</label>
+							<input type="text" id="poblacion" th:field="*{poblacion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Madrid">
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal-footer border-top border-dark px-4">
+					<button type="button" class="btn btn-outline-secondary fw-medium px-4" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" style="background-color: #00a86b;">
+						Guardar Cliente
+					</button>
+				</div>
+			</form>
+        </div>
+      </div>
+	</div>
+    <script>
+        document.getElementById('codigoPostal').addEventListener('input', function(e) {
+            const cp = e.target.value;
+            if (cp.length === 5) {
+                fetch(`https://api.zippopotam.us/es/${cp}`)
+                    .then(response => {
+                        if (response.ok) return response.json();
+                        throw new Error('CP no encontrado');
+                    })
+                    .then(data => {
+                        // Zippopotam devuelve una lista de lugares
+                        const poblacion = data.places[0]['place name'];
+                        // Rellenamos el input de población automáticamente
+                        document.getElementById('poblacion').value = poblacion;
+                    })
+                    .catch(error => console.log('Error al buscar CP:', error));
+            }
+    });
+    </script>
+</body>
+</html>

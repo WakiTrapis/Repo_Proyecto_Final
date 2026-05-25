@@ -1,0 +1,224 @@
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InkReserve - Galería de Tatuajes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div th:replace="~{fragments/Nav :: nav}"></div>
+    
+    <div class="container-fluid px-4 py-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="fs-3 fw-bold mb-0">Galería</h1>
+            </div>
+            
+            <button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormTatuajes">
+                <i class="bi bi-plus-lg me-2"></i> Agregar Tatuaje
+            </button>
+			<div th:replace="~{fragments/FormularioTatuajes :: modalNuevoTatuaje}"></div>
+			<div th:replace="~{fragments/ConfirmacionEliminarTatuaje :: modalEliminarTatuaje}"></div>
+			<div th:replace="~{fragments/FichaTatuaje :: modalFichaTatuajes}"></div>
+        </div>
+
+        <div class="row g-4">
+			<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+				<div class="col-md-6 col-lg-4">
+					<form th:action="@{/Dashboard/Tatuajes}" method="get" class="input-group">
+			            <input type="text" 
+		              	name="search" 
+		               	th:value="${search}" 
+		                class="form-control bg-dark text-white border-secondary border-opacity-50" 
+		                placeholder="Buscar por nombre...">
+		        
+				        <button class="btn btn-success px-4 fw-bold" type="submit" style="background-color: #00a86b; border: none;">
+				            <i class="bi bi-search me-1"></i> Buscar
+				        </button>
+				        
+				        <a th:if="${search != null && !search.isEmpty()}" 
+				           th:href="@{/Dashboard/Tatuajes}" 
+				           class="btn btn-outline-secondary d-flex align-items-center justify-content-center border-opacity-50 text-secondary">
+				            <i class="bi bi-x-lg"></i>
+				        </a>
+	    			</form>
+		        </div>	
+			    <form th:action="@{/Dashboard/Tatuajes}" method="get" class="form-check form-switch m-0">
+			        <input class="form-check-input bg-dark border-secondary" 
+			               type="checkbox" 
+			               name="filtro" 
+			               value="sinArtista" 
+			               id="checkTatuajesNull"
+			               onchange="this.form.submit()"
+			               th:checked="${filtroActual == 'sinArtista'}"
+			               style="cursor: pointer; width: 2.5em; height: 1.25em;">
+			        <label class="form-check-label text-white fw-medium ms-2" for="checkTatuajesNull" style="cursor: pointer;">
+			             Mostrar tatuajes sin artista
+			        </label>
+			    </form>
+			</div>
+            
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" th:each="tatuaje : ${listaTatuajes}">
+                
+                <div class="card bg-dark border-secondary h-100 shadow-sm rounded-4 overflow-hidden position-relative clickable-card"
+				 th:data-href="@{/Dashboard/Tatuajes(verTatuId=${tatuaje.id})}" style="cursor: pointer;">
+    
+                    <div>
+						<img th:if="${tatuaje.imagenTatuaje != null}" 
+						     th:src="@{/uploads/{img}(img=${tatuaje.imagenTatuaje})}" 
+						     onerror="this.src='/img/no-image.png';"
+						     class="card-img-top" 
+						     style="height: 250px; object-fit: cover;" 
+						     alt="Diseño de tatuaje">
+
+						<img th:unless="${tatuaje.imagenTatuaje != null}" 
+						     th:src="@{/img/no-image.png}" 
+						     class="card-img-top" 
+						     style="height: 250px; object-fit: cover;" 
+						     alt="Sin diseño disponible">
+                    </div>
+
+					<div class="card-body p-3">
+					    <div class="d-flex justify-content-between align-items-start mb-2">
+					        <h5 class="card-title fs-6 fw-bold mb-0" th:text="${tatuaje.nombreTatuaje}">Nombre</h5>
+					        <i class="bi bi-drop-fill text-success"></i>
+					    </div>
+					    
+					    <p class="card-text text-secondary small mb-1">
+					        <i class="bi bi-palette me-1"></i> <span th:text="${tatuaje.estiloTatuaje}">Estilo</span>
+					    </p>
+
+					    <div class="mb-3">
+					        <div class="small text-light opacity-75">
+					            <i class="bi bi-person-badge me-1"></i> 
+					            <strong>Artista:</strong> <span th:text="${tatuaje.artista != null ? tatuaje.artista.nombreArtista : 'Sin artista'}">Nombre Artista</span>
+					        </div>
+					        <div class="small text-light opacity-75">
+					            <i class="bi bi-person-heart me-1"></i> 
+					            <strong>Cliente:</strong> <span th:text="${tatuaje.cliente != null ? tatuaje.cliente.nombreCliente : 'Sin cliente'}">Nombre Cliente</span>
+					        </div>
+					    </div>
+					    
+						<div class="d-flex justify-content-between align-items-center mb-3">
+						    <span th:if="${tatuaje.estado.name() == 'DISENO'}" class="badge rounded-pill px-3 py-2 bg-info text-dark">
+						        DISEÑO
+						    </span>
+						    
+						    <span th:if="${tatuaje.estado.name() == 'EN_PROCESO'}" class="badge rounded-pill px-3 py-2 bg-warning text-dark">
+						        EN PROCESO
+						    </span>
+						    
+						    <span th:if="${tatuaje.estado != null and tatuaje.estado.name() != 'DISENO' and tatuaje.estado.name() != 'EN_PROCESO'}" 
+						          class="badge rounded-pill px-3 py-2 bg-success" 
+						          th:text="${tatuaje.estado}">
+						        ESTADO
+						    </span>
+						    
+						    <span th:if="${tatuaje.estado == null}" class="badge rounded-pill px-3 py-2 bg-secondary">
+						        SIN ESTADO
+						    </span>
+
+						    <span class="fw-bold text-white" 
+						          th:text="${tatuaje.precioTatuaje != null ? #numbers.formatDecimal(tatuaje.precioTatuaje, 0, 'POINT', 0, 'COMMA') + '€' : '0€'}">
+						        0€
+						    </span>
+						</div>
+
+					    <div class="border-top border-secondary pt-3 d-flex gap-2 action-buttons">
+					        <a th:href="@{/Dashboard/Tatuajes(idEditar=${tatuaje.id})}"
+					           class="btn btn-outline-success btn-sm w-100">
+					           <i class="bi bi-pencil-square me-1"></i> Editar
+					        </a>
+					        <a data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarTatuaje" th:data-bs-id="${tatuaje.id}" class="btn btn-outline-danger btn-sm w-100">
+					           <i class="bi bi-trash me-1"></i> Borrar
+					        </a>
+					    </div>
+					</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(listaTatuajes)}">
+            <i class="bi bi-images text-secondary opacity-25" style="font-size: 5rem;"></i>
+            <p class="text-secondary mt-3">La galería está vacía actualmente.</p>
+        </div>
+		<nav aria-label="Navegación de tatuajes" th:if="${totalPages > 1}" class="mt-4">
+						    <ul class="pagination justify-content-center gap-1">
+						        
+						        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+						            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+						               th:href="@{/Dashboard/Tatuajes(page=${currentPage - 1}, search=${search})}">
+						                &laquo; Anterior
+						            </a>
+						        </li>
+
+						        <li class="page-item" 
+						            th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+						            th:classappend="${currentPage == i} ? 'active'">
+						            
+						            <a class="page-link border-secondary border-opacity-25 rounded-3 px-3 py-2 fw-medium"
+						               th:classappend="${currentPage == i} ? 'bg-success text-white border-success' : 'bg-dark text-white'"
+						               th:href="@{/Dashboard/Tatuajes(page=${i}, search=${search})}" 
+						               th:text="${i + 1}"
+						               th:style="${currentPage == i} ? 'background-color: #00a86b !important; border-color: #00a86b !important;' : ''">
+						               1
+						            </a>
+						        </li>
+
+						        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+						            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+						               th:href="@{/Dashboard/Tatuajes(page=${currentPage + 1}, search=${search})}">
+						                Siguiente &raquo;
+						            </a>
+						        </li>
+						        
+						    </ul>
+						</nav>
+    </div>
+
+
+	<script th:if="${formularioTatuaje != null and formularioTatuaje.id != 0}">
+			window.onload = function() {
+				const modalElement = document.getElementById('ModalFormTatuajes');
+				const myModal = new bootstrap.Modal(modalElement);
+				myModal.show();
+				modalElement.addEventListener('hidden.bs.modal', function () {
+		            window.location.href = '/Dashboard/Tatuajes';
+		        });
+			};
+	</script>
+	
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	    const cards = document.querySelectorAll(".clickable-card");    
+	    cards.forEach(card => {
+	        card.addEventListener("click", function (e) {
+	            if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
+	                return; 
+	            }
+	            window.location.href = this.dataset.href;
+	        });
+	    });
+	});
+	</script>
+	
+	<script th:if="${fichaTatuaje != null}">
+	    window.onload = function() {
+	        const modalElement = document.getElementById('ModalFichaTatuajes');
+	        if (modalElement) {
+	            const myModal = new bootstrap.Modal(modalElement);
+	            myModal.show();
+	            modalElement.addEventListener('hidden.bs.modal', function () {
+	                window.location.href = '/Dashboard/Tatuajes';
+	            });
+	        }
+	    };
+	</script>
+		
+    <div th:replace="~{fragments/FooterApp :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

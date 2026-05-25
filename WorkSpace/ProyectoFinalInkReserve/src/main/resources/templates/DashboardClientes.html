@@ -1,0 +1,177 @@
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InkReserve - Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    
+	<div th:replace="~{fragments/Nav :: nav}"></div>
+	
+	<div class="container-fluid px-4 py-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="fs-3 fw-bold">Clientes</h1>
+			<button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormClientes">
+                <i class="bi bi-plus-lg me-2"></i> Agregar Cliente
+			</button>
+			<div th:replace="~{fragments/FormularioClientes :: modalNuevoCliente}"></div>
+			<div th:replace="~{fragments/ConfirmacionEliminarCliente :: modalEliminarCliente}"></div>
+			<div th:replace="~{fragments/PerfilCliente :: modalPerfilCliente}"></div>
+		</div>
+	</div>
+	
+	<div class="row g-4">
+		<div class="col-lg-8">
+			<div class="table-responsive table-dark-custom shadow p-3">
+				<div class="row mb-4">
+				    <div class="col-md-6 col-lg-4">
+				        <form th:action="@{/Dashboard/Clientes}" method="get" class="input-group">
+				            <input type="text" 
+				                   name="search" 
+				                   th:value="${search}" 
+				                   class="form-control bg-dark text-white border-secondary border-opacity-50" 
+				                   placeholder="Buscar por nombre o apellidos...">
+				            
+				            <button class="btn btn-success px-4 fw-bold" type="submit" style="background-color: #00a86b; border: none;">
+				                <i class="bi bi-search me-1"></i> Buscar
+				            </button>
+				            
+				            <a th:if="${search != null && !search.isEmpty()}" 
+				               th:href="@{/Dashboard/Clientes}" 
+				               class="btn btn-outline-secondary d-flex align-items-center justify-content-center border-opacity-50 text-secondary">
+				                <i class="bi bi-x-lg"></i>
+				            </a>
+				        </form>
+				    </div>
+				</div>
+				<table class="table table-dark table-hover align-middle mb-0">
+					<thead class="text-secondary small border-bottom border-dark">
+						<tr>
+							<th>Id</th>
+							<th>Nombre</th>
+							<th>Teléfono</th>
+							<th>Email</th>
+							<th class="text-center">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-bottom border-dark clickable-row" th:each="cliente : ${listaClientes}" th:data-href="@{/Dashboard/Clientes(verPerfilId=${cliente.id})}" style="cursor: pointer;">
+							<td class="fw-semibold" th:text="${cliente.id}">1</td> 
+                            <td class="fw-semibold" th:text="${cliente.nombreCliente}">Nombre Cliente</td>
+							<td th:text="${cliente.telefonoCliente}">Teléfono</td>
+							<td th:text="${cliente.email}">Email</td>
+							<td class="text-center">
+								<a th:href="@{/Dashboard/Clientes(idEditar=${cliente.id})}" class="btn btn-outline-info" data-bs-target="#ModalFormClientes"><i class="bi bi-pencil"></i></a>
+								<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarCliente"  th:data-bs-id="${cliente.id}"><i class="bi bi-trash"></i></button>
+							</td>
+						</tr>    
+					</tbody>
+				</table>
+				<nav aria-label="Navegación de clientes" th:if="${totalPages > 1}" class="mt-4">
+				    <ul class="pagination justify-content-center gap-1">
+				        
+				        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+				            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+				               th:href="@{/Dashboard/Clientes(page=${currentPage - 1}, search=${search})}">
+				                &laquo; Anterior
+				            </a>
+				        </li>
+
+				        <li class="page-item" 
+				            th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+				            th:classappend="${currentPage == i} ? 'active'">
+				            
+				            <a class="page-link border-secondary border-opacity-25 rounded-3 px-3 py-2 fw-medium"
+				               th:classappend="${currentPage == i} ? 'bg-success text-white border-success' : 'bg-dark text-white'"
+				               th:href="@{/Dashboard/Clientes(page=${i}, search=${search})}" 
+				               th:text="${i + 1}"
+				               th:style="${currentPage == i} ? 'background-color: #00a86b !important; border-color: #00a86b !important;' : ''">
+				               1
+				            </a>
+				        </li>
+
+				        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+				            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+				               th:href="@{/Dashboard/Clientes(page=${currentPage + 1}, search=${search})}">
+				                Siguiente &raquo;
+				            </a>
+				        </li>
+				        
+				    </ul>
+				</nav>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="col-12 col-md-6">
+		        <div class="card bg-dark text-white border-secondary h-100">
+		            <div class="card-header border-secondary bg-opacity-25 bg-secondary d-flex align-items-center gap-2">
+		                <i class="bi bi-heart-fill text-danger fs-5"></i>
+		                <h5 class="card-title m-0 fw-bold">Clientes Frecuentes</h5>
+		            </div>
+		            <div class="card-body">
+		                <ul class="list-group list-group-flush bg-transparent">
+		                    <li th:each="cliente, status : ${topClientes}" class="list-group-item bg-transparent text-white border-secondary border-opacity-25 d-flex justify-content-between align-items-center px-0">
+		                        <div class="d-flex align-items-center gap-3">
+		                            <span th:if="${status.index == 0}" class="badge bg-warning text-dark rounded-circle px-2.5 py-2">1º</span>
+		                            <span th:if="${status.index == 1}" class="badge bg-secondary text-white rounded-circle px-2.5 py-2">2º</span>
+		                            <span th:if="${status.index == 2}" class="badge bg-light text-dark rounded-circle px-2.5 py-2">3º</span>
+		                            <span th:text="${cliente.nombreCliente}" class="fw-medium">Nombre Cliente</span>
+		                        </div>
+		                        <span class="text-muted small" th:text="${cliente.telefonoCliente}">Teléfono</span>
+		                    </li>
+		                    <li th:if="${#lists.isEmpty(topClientes)}" class="list-group-item bg-transparent text-muted text-center border-0 py-4">
+		                        No hay clientes con citas todavía.
+		                    </li>
+		                </ul>
+		            </div>
+		        </div>
+		    </div>
+        </div>
+	</div>
+	
+	<div th:replace="~{fragments/FooterApp :: footer}"></div>
+	
+	<script>
+		    document.addEventListener("DOMContentLoaded", function () {
+		        const rows = document.querySelectorAll(".clickable-row");    
+		        rows.forEach(row => {
+		            row.addEventListener("click", function (e) {
+		                if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
+		                    return; 
+		                }
+		                window.location.href = this.dataset.href;
+		            });
+		        });
+		    });
+    </script>
+			
+	<script th:if="${formularioCliente != null && formularioCliente.id != null && formularioCliente.id != 0}">
+		window.onload = function() {
+			const modalElement = document.getElementById('ModalFormClientes');
+			const myModal = new bootstrap.Modal(modalElement);
+			myModal.show();
+			modalElement.addEventListener('hidden.bs.modal', function () {
+	            window.location.href = '/Dashboard/Clientes';
+	        });
+		};
+	</script>
+	
+	<script th:if="${perfilCliente != null}">
+		        window.onload = function() {
+		            const modalElement = document.getElementById('ModalPerfilClientes'); 
+		            if (modalElement) {
+		                const myModal = new bootstrap.Modal(modalElement);
+		                myModal.show();
+		                modalElement.addEventListener('hidden.bs.modal', function () {
+		                    window.location.href = '/Dashboard/Clientes';
+		                });
+		            }
+		        };
+    </script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

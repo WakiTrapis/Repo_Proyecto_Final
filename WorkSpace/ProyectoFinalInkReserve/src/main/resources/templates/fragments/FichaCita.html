@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="modalFichaCitas" class="modal fade" id="ModalFichaCitas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-black border border-secondary border-opacity-25 rounded-4 shadow-lg p-2 text-white">
+                
+                <div class="modal-header border-bottom border-secondary border-opacity-10 px-4 py-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i class="bi bi-calendar-event-fill" style="color: #00a86b;"></i> 
+                            Ficha Técnica de Cita
+                        </h5>
+                        <small class="text-secondary opacity-75">ID de Seguimiento: #[[${fichaCita != null ? fichaCita.id : '---'}]]</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4" th:if="${fichaCita != null}">
+                    <div class="row g-4">           
+
+                        <div class="col-md-5 border-end border-secondary border-opacity-10">
+                            <h6 class="text-uppercase small fw-bold text-secondary mb-3 tracking-wider">Logística y Coste</h6>
+                            
+                            <div class="bg-dark rounded-4 p-3 mb-3 border border-secondary border-opacity-10 text-center">
+                                <label class="d-block text-secondary small mb-1">Precio de la Sesión</label>
+                                <span class="fs-2 fw-bold" style="color: #00a86b;">
+                                    [[${fichaCita.precioSesion != null ? fichaCita.precioSesion : '0.00'}]]€
+                                </span>
+                            </div>
+
+                            <div class="bg-dark rounded-3 p-3 border border-secondary border-opacity-10 d-flex align-items-center gap-3">
+                                <div class="bg-black rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                    <i class="bi bi-hourglass-split text-info"></i>
+                                </div>
+                                <div>
+                                    <label class="d-block text-secondary small">Duración Estimada</label>
+                                    <span class="fw-bold">[[${fichaCita.duracion}]] Horas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <h6 class="text-uppercase small fw-bold text-secondary mb-3 tracking-wider">Cronograma de Sesión</h6>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <div class="p-3 bg-dark bg-opacity-50 rounded-3 border-start border-success border-4">
+                                        <label class="text-secondary small d-block">Inicio</label>
+                                        <span class="fw-bold fs-5 text-white">
+                                            [[${#temporals.format(fichaCita.fechaInicio, 'HH:mm') ?: '00:00'}]]
+                                        </span>
+                                        <div class="small text-secondary">[[${#temporals.format(fichaCita.fechaInicio, 'dd/MM/yy') ?: '--/--/--'}]]</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-dark bg-opacity-50 rounded-3 border-start border-danger border-4">
+                                        <label class="text-secondary small d-block">Finalización</label>
+                                        <span class="fw-bold fs-5 text-white">
+                                            [[${#temporals.format(fichaCita.fechaFinal, 'HH:mm') ?: '00:00'}]]
+                                        </span>
+                                        <div class="small text-secondary">[[${#temporals.format(fichaCita.fechaFinal, 'dd/MM/yy') ?: '--/--/--'}]]</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="text-uppercase small fw-bold text-secondary mb-3 tracking-wider">Participantes</h6>
+                            
+                            <div class="d-flex align-items-center gap-3 p-2 mb-2 bg-dark rounded-3 border border-secondary border-opacity-10">
+                                <div class="bg-success bg-opacity-10 rounded p-2 text-success">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <small class="d-block text-secondary" style="font-size: 10px;">ARTISTA</small>
+                                    <span class="fw-medium">[[${fichaCita.artista != null ? fichaCita.artista.nombreArtista : 'No asignado'}]]</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 p-2 bg-dark rounded-3 border border-secondary border-opacity-10">
+                                <div class="bg-info bg-opacity-10 rounded p-2 text-info">
+                                    <i class="bi bi-person-heart"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <small class="d-block text-secondary" style="font-size: 10px;">CLIENTE</small>
+                                    <span class="fw-medium">[[${fichaCita.cliente != null ? fichaCita.cliente.nombreCliente : 'No asignado'}]]</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top border-secondary border-opacity-10 pt-3 px-4">
+                    <button type="button" class="btn btn-outline-secondary border-0 text-secondary hover-white px-4" data-bs-dismiss="modal">
+                        Cerrar Registro
+                    </button>
+                    
+               	</div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

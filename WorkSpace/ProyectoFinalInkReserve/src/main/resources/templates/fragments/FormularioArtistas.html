@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="modalNuevoArtista" class="modal fade" id="ModalFormArtistas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-centered">
+	    <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg">
+			
+			<div class="modal-header border-bottom border-dark px-4 py-3">
+				<h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+					<i class="bi bi-person-plus-fill text-success"></i> Artista
+				</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<form method="POST" th:action="${formularioArtista != null && formularioArtista.id != null && formularioArtista.id != 0} ? @{/Dashboard/Artistas/Editar/submit} : @{/nuevoArtistaCompleto}" th:object="${formularioArtista}" enctype="multipart/form-data">
+				<div class="modal-body p-4">
+					<div class="row g-3">
+						<input type="hidden" th:field="*{id}">
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
+							<div class="input-group">
+								<span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
+								<input type="text" th:field="*{nombreArtista}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez" />
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Especialidad</label>
+						    <input type="text" th:field="*{especialidad}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Realismo, Tradicional">
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Precio/Hora (€)</label>
+							<input type="number" step="0.01" th:field="*{precioHora}" class="form-control bg-dark border-secondary text-white" placeholder="0.00">
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">Años Experiencia</label>
+							<input type="number" th:field="*{experiencia}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 5">
+                        </div>
+
+						<div class="col-md-4">
+							<label class="form-label text-secondary small fw-bold">DNI</label>
+							<input type="text" th:field="*{dniArtista}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Teléfono</label>
+							<input type="tel" th:field="*{telefonoArtista}" class="form-control bg-dark border-secondary text-white" placeholder="000 000 000">
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-label text-secondary small fw-bold">Nº Registro Higiénico</label>
+							<input type="text" th:field="*{numeroHigienico}" class="form-control bg-dark border-secondary text-white" placeholder="Nº Higiénico Sanitario">
+						</div>
+						<div class="col-12">
+						   <label class="form-label text-secondary small fw-bold">Fotografía del Artista</label>
+						   <div class="input-group">
+						      <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-image"></i></span>
+						      <input type="file" name="archivoFoto" class="form-control bg-dark border-secondary text-white" accept="image/*">
+						   </div>
+						   <div class="form-text text-muted small">Formatos permitidos: JPG, PNG. Máx 5MB.</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal-footer border-top border-dark px-4">
+					<button type="button" class="btn btn-outline-secondary fw-medium px-4" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" style="background-color: #00a86b;">
+						Guardar Artista
+					</button>
+				</div>
+			</form>
+        </div>
+      </div>
+	</div> 
+</body>
+</html>
