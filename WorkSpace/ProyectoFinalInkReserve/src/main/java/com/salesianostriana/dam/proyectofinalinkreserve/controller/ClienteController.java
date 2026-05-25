@@ -43,6 +43,8 @@ public class ClienteController {
             Model model) {
 		Pageable pageable = PageRequest.of(page, size);
         Page<Cliente> clientePage;
+        List<Cliente> topClientes = citaService.obtenerTop3ClientesFrecuentes();
+        model.addAttribute("topClientes", topClientes);
 		
         if (search != null && !search.trim().isEmpty()) {
             clientePage = clienteService.buscarPorNombreClientePaginado(search.trim(), pageable);

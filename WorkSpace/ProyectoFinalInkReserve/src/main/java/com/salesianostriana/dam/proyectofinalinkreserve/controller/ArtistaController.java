@@ -46,8 +46,10 @@ public class ArtistaController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             Model model) {
+		List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
 		Pageable pageable = PageRequest.of(page, size);
         Page<Artista> artistaPage;
+        model.addAttribute("topArtistas", topArtistas);
 		
         if (search != null && !search.trim().isEmpty()) {
             artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);

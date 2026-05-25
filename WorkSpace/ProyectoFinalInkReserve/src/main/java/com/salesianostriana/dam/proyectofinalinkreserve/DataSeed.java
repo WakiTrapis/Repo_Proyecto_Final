@@ -303,7 +303,7 @@ public class DataSeed {
 		
 		Cita ci1 = Cita.builder()
 				.tatuaje(t1)
-				.artista(a3)
+				.artista(a4)
 				.cliente(c3)
 				.fechaInicio(LocalDate.of(2026, 5, 25).atTime(16, 0))
 				.fechaFinal(LocalDate.of(2026, 5, 25).atTime(18, 0))
@@ -339,7 +339,7 @@ public class DataSeed {
 		
 		Cita ci4 = Cita.builder()
 				.tatuaje(t1)
-				.artista(a1)
+				.artista(a2)
 				.cliente(c4)
 				.fechaInicio(LocalDate.of(2026, 5, 26).atTime(18, 0))
 				.fechaFinal(LocalDate.of(2026, 5, 26).atTime(20, 0))
@@ -348,6 +348,18 @@ public class DataSeed {
 				.build();
 		
 		citaRepository.save(ci4);
+		
+		Cita ci5 = Cita.builder()
+				.tatuaje(t7)
+				.artista(a1)
+				.cliente(c4)
+				.fechaInicio(LocalDate.of(2026, 5, 28).atTime(18, 0))
+				.fechaFinal(LocalDate.of(2026, 5, 28).atTime(20, 0))
+				.duracion(2.0)
+				.precioSesion(200.0)
+				.build();
+		
+		citaRepository.save(ci5);
 				
 	}
 	

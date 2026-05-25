@@ -106,18 +106,30 @@
 			</div>
 		</div>
 		<div class="col-lg-4">
-            <div class="card bg-black border-0 shadow rounded-4 p-4 h-100">
-                <h2 class="fs-5 fw-semibold mb-4">Clientes Nuevos</h2>
-                <div class="d-flex align-items-end justify-content-between h-75 px-2">
-                    <div class="bg-success rounded-top" style="width: 40px; height: 90%;"></div>
-                    <div class="bg-success rounded-top opacity-75" style="width: 40px; height: 60%;"></div>
-                    <div class="bg-success rounded-top opacity-50" style="width: 40px; height: 40%;"></div>
-                    <div class="bg-success rounded-top opacity-25" style="width: 40px; height: 20%;"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2 text-secondary small px-1">
-                    <span>Top</span><span>Art</span><span>Mar</span><span>Mes</span>
-                </div>
-            </div>
+			<div class="col-12 col-md-6">
+		        <div class="card bg-dark text-white border-secondary h-100">
+		            <div class="card-header border-secondary bg-opacity-25 bg-secondary d-flex align-items-center gap-2">
+		                <i class="bi bi-heart-fill text-danger fs-5"></i>
+		                <h5 class="card-title m-0 fw-bold">Clientes Frecuentes</h5>
+		            </div>
+		            <div class="card-body">
+		                <ul class="list-group list-group-flush bg-transparent">
+		                    <li th:each="cliente, status : ${topClientes}" class="list-group-item bg-transparent text-white border-secondary border-opacity-25 d-flex justify-content-between align-items-center px-0">
+		                        <div class="d-flex align-items-center gap-3">
+		                            <span th:if="${status.index == 0}" class="badge bg-warning text-dark rounded-circle px-2.5 py-2">1º</span>
+		                            <span th:if="${status.index == 1}" class="badge bg-secondary text-white rounded-circle px-2.5 py-2">2º</span>
+		                            <span th:if="${status.index == 2}" class="badge bg-light text-dark rounded-circle px-2.5 py-2">3º</span>
+		                            <span th:text="${cliente.nombreCliente}" class="fw-medium">Nombre Cliente</span>
+		                        </div>
+		                        <span class="text-muted small" th:text="${cliente.telefonoCliente}">Teléfono</span>
+		                    </li>
+		                    <li th:if="${#lists.isEmpty(topClientes)}" class="list-group-item bg-transparent text-muted text-center border-0 py-4">
+		                        No hay clientes con citas todavía.
+		                    </li>
+		                </ul>
+		            </div>
+		        </div>
+		    </div>
         </div>
 	</div>
 	

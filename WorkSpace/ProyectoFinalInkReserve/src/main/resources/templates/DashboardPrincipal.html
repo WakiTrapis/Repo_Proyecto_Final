@@ -44,20 +44,57 @@
                 <div class="card bg-black border-0 shadow rounded-4 p-4 h-100">
                     <h2 class="fs-5 fw-semibold mb-4">Estadísticas Rápidas</h2>
 
-                    <div class="border-bottom border-dark pb-3 mb-3">
-                        <div class="text-secondary fs-6 mb-1">Tatuajes en Proceso</div>
-                        <div class="fs-1 fw-bold" >8</div>
-                    </div>
+					<div class="row g-4 mt-2">
+					    <div class="col-12 col-md-6">
+					        <div class="card bg-dark text-white border-secondary h-100">
+					            <div class="card-header border-secondary bg-opacity-25 bg-secondary d-flex align-items-center gap-2">
+					                <i class="bi bi-star-fill text-warning fs-5"></i>
+					                <h5 class="card-title m-0 fw-bold">Artistas Solicitados</h5>
+					            </div>
+					            <div class="card-body">
+					                <ul class="list-group list-group-flush bg-transparent">
+					                    <li th:each="artista, status : ${topArtistas}" class="list-group-item bg-transparent text-white border-secondary border-opacity-25 d-flex justify-content-between align-items-center px-0">
+					                        <div class="d-flex align-items-center gap-3">
+					                            <span th:if="${status.index == 0}" class="badge bg-warning text-dark rounded-circle px-2.5 py-2">1º</span>
+					                            <span th:if="${status.index == 1}" class="badge bg-secondary text-white rounded-circle px-2.5 py-2">2º</span>
+					                            <span th:if="${status.index == 2}" class="badge bg-light text-dark rounded-circle px-2.5 py-2">3º</span>
+					                            <span th:text="${artista.nombreArtista}" class="fw-medium">Nombre Artista</span>
+					                        </div>
+					                        <span class="text-muted small" th:text="${artista.especialidad}">Especialidad</span>
+					                    </li>
+					                    <li th:if="${#lists.isEmpty(topArtistas)}" class="list-group-item bg-transparent text-muted text-center border-0 py-4">
+					                        No hay citas registradas todavía.
+					                    </li>
+					                </ul>
+					            </div>
+					        </div>
+					    </div>
 
-                    <div class="border-bottom border-dark pb-3 mb-3">
-                        <div class="text-secondary fs-6 mb-1">Nuevos Clientes (Mes)</div>
-                        <div class="fs-1 fw-bold">15</div>
-                    </div>
-
-                    <div class="">
-                        <div class="text-secondary fs-6 mb-1">Tatuajes en Clientes (Mes)</div>
-                        <div class="fs-1 fw-bold">12</div>
-                    </div>
+					    <div class="col-12 col-md-6">
+					        <div class="card bg-dark text-white border-secondary h-100">
+					            <div class="card-header border-secondary bg-opacity-25 bg-secondary d-flex align-items-center gap-2">
+					                <i class="bi bi-heart-fill text-danger fs-5"></i>
+					                <h5 class="card-title m-0 fw-bold">Clientes Frecuentes</h5>
+					            </div>
+					            <div class="card-body">
+					                <ul class="list-group list-group-flush bg-transparent">
+					                    <li th:each="cliente, status : ${topClientes}" class="list-group-item bg-transparent text-white border-secondary border-opacity-25 d-flex justify-content-between align-items-center px-0">
+					                        <div class="d-flex align-items-center gap-3">
+					                            <span th:if="${status.index == 0}" class="badge bg-warning text-dark rounded-circle px-2.5 py-2">1º</span>
+					                            <span th:if="${status.index == 1}" class="badge bg-secondary text-white rounded-circle px-2.5 py-2">2º</span>
+					                            <span th:if="${status.index == 2}" class="badge bg-light text-dark rounded-circle px-2.5 py-2">3º</span>
+					                            <span th:text="${cliente.nombreCliente}" class="fw-medium">Nombre Cliente</span>
+					                        </div>
+					                        <span class="text-muted small" th:text="${cliente.telefonoCliente}">Teléfono</span>
+					                    </li>
+					                    <li th:if="${#lists.isEmpty(topClientes)}" class="list-group-item bg-transparent text-muted text-center border-0 py-4">
+					                        No hay clientes con citas todavía.
+					                    </li>
+					                </ul>
+					            </div>
+					        </div>
+					    </div>
+					</div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 d-flex flex-column gap-4">
