@@ -1,11 +1,11 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.service;
 
-import java.util.Optional;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.TatuajeRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseServiceImpl;
@@ -34,4 +34,15 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 	    this.edit(tatuajeEditado);
 	}
 
+	public Page<Tatuaje> findAllPaginado(Pageable pageable) {
+	    return tatuajeRepository.findAll(pageable);
+	}
+
+	public Page<Tatuaje> buscarPorNombreTatuajePaginado(String nombre, Pageable pageable) {
+	    return tatuajeRepository.findByNombreTatuajeContainingIgnoreCase(nombre, pageable);
+	}
+
+	public Page<Tatuaje> obtenerTatuajesSinArtistaPaginado(Pageable pageable) {
+	    return tatuajeRepository.findByArtistaIsNull(pageable);
+	}
 }

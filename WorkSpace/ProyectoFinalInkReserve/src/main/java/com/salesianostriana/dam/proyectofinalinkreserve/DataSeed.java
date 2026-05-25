@@ -253,12 +253,60 @@ public class DataSeed {
 		
 		tatuajeRepository.save(t4);
 		
+		Tatuaje t5 = Tatuaje.builder()
+				.cliente(c4)
+				.artista(a1)
+				.imagenTatuaje("tatuaje5.jpg")
+				.nombreTatuaje("Flor")
+				.descripcionTatuaje("Huele flamaaa")
+				.estiloTatuaje("Retro")
+				.estado(EstadoTatuaje.DISENO)
+				.zonaCuerpoTatuaje("brazo")
+				.sesionesTatuaje(1)
+				.tipoTintaTatuaje(TipoTintaTatuaje.BLACK)
+				.precioTatuaje(138.0)
+				.build();
+		
+		tatuajeRepository.save(t5);
+		
+		Tatuaje t6 = Tatuaje.builder()
+				.cliente(c6)
+				.artista(a2)
+				.imagenTatuaje("tatuaje6.jpg")
+				.nombreTatuaje("Cuello vuelto")
+				.descripcionTatuaje("Para los frioleros")
+				.estiloTatuaje("retro")
+				.estado(EstadoTatuaje.DISENO)
+				.zonaCuerpoTatuaje("cuello")
+				.sesionesTatuaje(2)
+				.tipoTintaTatuaje(TipoTintaTatuaje.BLACK)
+				.precioTatuaje(500.0)
+				.build();
+		
+		tatuajeRepository.save(t6);
+		
+		Tatuaje t7 = Tatuaje.builder()
+				.cliente(c4)
+				.artista(a1)
+				.imagenTatuaje("tatuaje7.jpg")
+				.nombreTatuaje("Mandala Lobo")
+				.descripcionTatuaje("Para los amantes de los lobos")
+				.estiloTatuaje("Hiperrealismo")
+				.estado(EstadoTatuaje.DISENO)
+				.zonaCuerpoTatuaje("brazo")
+				.sesionesTatuaje(2)
+				.tipoTintaTatuaje(TipoTintaTatuaje.BLACK)
+				.precioTatuaje(240.0)
+				.build();
+		
+		tatuajeRepository.save(t7);
+		
 		Cita ci1 = Cita.builder()
 				.tatuaje(t1)
 				.artista(a3)
 				.cliente(c3)
-				.fechaInicio(LocalDate.of(2026, 5, 19).atTime(16, 0))
-				.fechaFinal(LocalDate.of(2026, 5, 19).atTime(18, 0))
+				.fechaInicio(LocalDate.of(2026, 5, 25).atTime(16, 0))
+				.fechaFinal(LocalDate.of(2026, 5, 25).atTime(18, 0))
 				.duracion(2.0)
 				.precioSesion(100.0)
 				.build();
@@ -269,8 +317,8 @@ public class DataSeed {
 				.tatuaje(t3)
 				.artista(a3)
 				.cliente(c5)
-				.fechaInicio(LocalDate.of(2026, 5, 19).atTime(18, 0))
-				.fechaFinal(LocalDate.of(2026, 5, 19).atTime(20, 0))
+				.fechaInicio(LocalDate.of(2026, 5, 25).atTime(18, 0))
+				.fechaFinal(LocalDate.of(2026, 5, 25).atTime(20, 0))
 				.duracion(2.0)
 				.precioSesion(100.0)
 				.build();
@@ -281,8 +329,8 @@ public class DataSeed {
 				.tatuaje(t4)
 				.artista(a1)
 				.cliente(c4)
-				.fechaInicio(LocalDate.of(2026, 5, 20).atTime(18, 0))
-				.fechaFinal(LocalDate.of(2026, 5, 20).atTime(20, 0))
+				.fechaInicio(LocalDate.of(2026, 5, 26).atTime(18, 0))
+				.fechaFinal(LocalDate.of(2026, 5, 26).atTime(20, 0))
 				.duracion(2.0)
 				.precioSesion(100.0)
 				.build();
@@ -293,8 +341,8 @@ public class DataSeed {
 				.tatuaje(t1)
 				.artista(a1)
 				.cliente(c4)
-				.fechaInicio(LocalDate.of(2026, 5, 21).atTime(18, 0))
-				.fechaFinal(LocalDate.of(2026, 5, 21).atTime(20, 0))
+				.fechaInicio(LocalDate.of(2026, 5, 26).atTime(18, 0))
+				.fechaFinal(LocalDate.of(2026, 5, 26).atTime(20, 0))
 				.duracion(2.0)
 				.precioSesion(100.0)
 				.build();
