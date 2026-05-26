@@ -2,6 +2,7 @@ package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Controller;
 
 
@@ -12,9 +13,7 @@ import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DashboardController {
 	
-	private final ArtistaService artistaService;
-	private final ClienteService clienteService;
+
 	private final CitaService citaService;
 
 	@GetMapping("/Dashboard")
