@@ -77,12 +77,14 @@
 							</td>
 							<td class="fw-semibold" th:text="${artista.id}">1</td> 
                             <td class="fw-semibold" th:text="${artista.nombreArtista}">Nombre Artista</td>
-							<td><span class="badge badge-specialty px-3 text-success" style="background-color: rgba(0, 168, 107, 0.1); border: 1px solid #00a86b;" th:text="${artista.especialidad}">Especialidad</span></td>
+							<td><span class="badge badge-specialty px-3 text-success" style="background-color: rgba(0, 168, 107, 0.1); border: 1px solid #00a86b;" 
+									th:text="${artista.especialidad}">Especialidad</span></td>
 							<td th:text="${artista.experiencia} + ' años'">Años de experiencia</td>
 							<td th:text="${artista.precioHora} + '€'">€/h</td>
 							<td class="text-center action-buttons">
 								<a th:href="@{/Dashboard/Artistas(idEditar=${artista.id})}" class="btn btn-outline-info"  data-bs-target="#ModalFormArtistas"><i class="bi bi-pencil"></i></a>
-								<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarArtista"  th:data-bs-id="${artista.id}"><i class="bi bi-trash"></i></button>
+								<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarArtista"  th:data-bs-id="${artista.id}">
+									<i class="bi bi-trash"></i></button>
 							</td>
 						</tr>    
 					</tbody>

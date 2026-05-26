@@ -1,10 +1,10 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -51,6 +48,7 @@ public class ArtistaController {
         Page<Artista> artistaPage;
         model.addAttribute("topArtistas", topArtistas);
 		
+        //Filtro por nombre de Artista
         if (search != null && !search.trim().isEmpty()) {
             artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
             model.addAttribute("search", search);
@@ -62,12 +60,14 @@ public class ArtistaController {
         model.addAttribute("totalPages", artistaPage.getTotalPages());
 		model.addAttribute("formularioArtista", new Artista());
 		
+		//Para editar.
 		if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
 	        model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
 	    } else {
 	        model.addAttribute("formularioArtista", new Artista());
 	    }
 		
+		//Para Mostrar
 		if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
 	        Artista artista = artistaService.findById(verPerfilId).get();
 	        model.addAttribute("perfilArtista", artista);

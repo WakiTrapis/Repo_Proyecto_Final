@@ -72,24 +72,5 @@
         </div>
       </div>
 	</div>
-    <script>
-        document.getElementById('codigoPostal').addEventListener('input', function(e) {
-            const cp = e.target.value;
-            if (cp.length === 5) {
-                fetch(`https://api.zippopotam.us/es/${cp}`)
-                    .then(response => {
-                        if (response.ok) return response.json();
-                        throw new Error('CP no encontrado');
-                    })
-                    .then(data => {
-                        // Zippopotam devuelve una lista de lugares
-                        const poblacion = data.places[0]['place name'];
-                        // Rellenamos el input de población automáticamente
-                        document.getElementById('poblacion').value = poblacion;
-                    })
-                    .catch(error => console.log('Error al buscar CP:', error));
-            }
-    });
-    </script>
 </body>
 </html>
