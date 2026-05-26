@@ -10,6 +10,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.CitaSolapadaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -99,5 +101,33 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
                 cita.setPrecioSesion(precioCalculado);
             }
         }
+	}
+	
+	@Override
+	public Cita save(Cita cita) {
+		validarDisponibilidadArtista(cita);
+		calcularYAsignarPrecioCita(cita);
+		return super.save(cita);
+	}
+	
+	public Cita edit(Cita cita) {
+		validarDisponibilidadArtista(cita);
+		calcularYAsignarPrecioCita(cita);
+		return super.save(cita);
+	}
+	
+	private void validarDisponibilidadArtista(Cita cita) {
+		if (cita.getArtista() != null && cita.getFechaInicio() != null && cita.getFechaFinal() != null) {
+			boolean estaOcupado = citaRepository.existeSolapamientoArtista(
+				cita.getArtista().getId(),
+				cita.getFechaInicio(),
+				cita.getFechaFinal(),
+				cita.getId()
+			);
+
+			if (estaOcupado) {
+				throw new CitaSolapadaException("El artista seleccionado ya tiene una cita programada en ese rango horario.");
+			}
+		}
 	}
 }
