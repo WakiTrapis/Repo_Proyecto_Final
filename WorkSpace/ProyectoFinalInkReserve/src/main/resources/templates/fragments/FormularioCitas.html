@@ -26,7 +26,7 @@
 							            th:selected="${formularioCita.tatuaje != null && formularioCita.tatuaje.id == t.id}"
 							            th:text="${t.nombreTatuaje}"
 										th:data-precio="${t.precioTatuaje}"
-							            th:data-sesiones="${t.SesionesTatuaje}"
+							            th:data-sesiones="${t.sesionesTatuaje}"
 							            th:attr="data-cliente=${t.cliente != null ? t.cliente.id : ''}, data-artista=${t.artista != null ? t.artista.id : ''}">
 							        Diseño
 							    </option>
