@@ -38,7 +38,7 @@ public class ClienteController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Cliente> clientePage;
         
-        model.addAttribute("topArtistas", topClientes);
+        model.addAttribute("topClientes", topClientes);
 
         if (search != null && !search.trim().isEmpty()) {
             clientePage = clienteService.buscarPorNombreClientePaginado(search.trim(), pageable);
@@ -59,10 +59,6 @@ public class ClienteController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             Model model) {
-		Pageable pageable = PageRequest.of(page, size);
-        Page<Cliente> clientePage;
-        List<Cliente> topClientes = citaService.obtenerTop3ClientesFrecuentes();
-        model.addAttribute("topClientes", topClientes);
 		
         if (!model.containsAttribute("formularioCliente")) {
             if (idEditar != null && clienteService.findById(idEditar).isPresent()) {
@@ -91,7 +87,6 @@ public class ClienteController {
 	        return "DashboardClientes"; 
 	    }
 		try {
-			
 	        clienteService.save(cliente);
 	        return "redirect:/Dashboard/Clientes";	
 		} catch (DniInvalidoException ex) {
@@ -105,7 +100,7 @@ public class ClienteController {
 	
 	@PostMapping("/Dashboard/Clientes/Editar/submit")
 	public String submitEditar(@Valid @ModelAttribute("formularioCliente") Cliente cliente,
-			BindingResult bindingResult, Model model ) {
+			 Model model ) {
 		try {
 			clienteService.editarCliente(cliente);
 			return "redirect:/Dashboard/Clientes";

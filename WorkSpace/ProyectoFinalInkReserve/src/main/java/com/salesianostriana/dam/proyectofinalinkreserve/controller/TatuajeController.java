@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
@@ -39,7 +42,8 @@ public class TatuajeController {
 	private final CitaService citaService;
 	
 	
-	private void cargarDatosDashboardTatuajes(Model model, String filtro, String search, Pageable pageable) {
+	private void cargarDatosDashboard(Model model, String filtro, String search, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
 		Page<Tatuaje> tatuajePage;
         if ("sinArtista".equals(filtro)) {
             tatuajePage = tatuajeService.obtenerTatuajesSinArtistaPaginado(pageable);
@@ -67,8 +71,6 @@ public class TatuajeController {
             @RequestParam(value = "size", defaultValue = "4") int size,
 			@RequestParam(value = "filtro", required = false) String filtro,
 			Model model) {
-		
-		Pageable pageable = PageRequest.of(page, size);
 	    
 		if (!model.containsAttribute("formularioTatuaje")) {
 			if (idEditar != null && tatuajeService.findById(idEditar).isPresent()) {
@@ -78,47 +80,64 @@ public class TatuajeController {
 		    }
 		}
 		
+		cargarDatosDashboard(model,filtro, search,page, size);
+		
 		if (verTatuId != null && tatuajeService.findById(verTatuId).isPresent()) {
-	        Tatuaje tatuaje = tatuajeService.findById(verTatuId).get();
-	        model.addAttribute("fichaTatuaje", tatuaje);
+	       
+	        model.addAttribute("fichaTatuaje", tatuajeService.findById(verTatuId).get());
 	    } else {
 	        model.addAttribute("fichaTatuaje", null);
 	    }
 		
-		cargarDatosDashboardTatuajes(model, filtro, search, pageable);
 		return "DashboardTatuajes";
 	}
 	
 	@PostMapping("/nuevoTatuajeCompleto")
 	public String submit(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje,
-			BindingResult bindingResult,@RequestParam("archivoImagen") MultipartFile archivo, Model model){
+			BindingResult bindingResult,
+			@RequestParam("archivoImagen") MultipartFile archivo,
+			Model model){
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("abrirModalTatuaje", true);
 			model.addAttribute("listaArtistas", artistaService.findAll());
 	        model.addAttribute("listaClientes", clienteService.findAll());
-	        cargarDatosDashboardTatuajes(model, null, null, PageRequest.of(0, 4)); 
+	        cargarDatosDashboard(model, null, null, 0, 4); 
 	        return "DashboardTatuajes";
 		}
+		try {
 			if (!archivo.isEmpty()) {
 		        String nombreFoto = fotosService.store(archivo);
 		        tatuaje.setImagenTatuaje(nombreFoto);
 		    }
 			tatuajeService.save(tatuaje);
 			return "redirect:/Dashboard/Tatuajes";
+	} catch (TarifaInvalidaException ex) {
+		model.addAttribute("errorTarifa", ex.getMessage());
+        model.addAttribute("formularioTatuaje", tatuaje);
+        model.addAttribute("abrirModal", true);
+        model.addAttribute("listaArtistas", artistaService.findAll());
+        model.addAttribute("listaClientes", clienteService.findAll());
+        cargarDatosDashboard(model, null,null, 0, 4);
+        return "DashboardTatuajes";
+        }
 	}
 	
 	@PostMapping("/Dashboard/Tatuajes/Editar/submit")
-	public String submitEditar(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje, BindingResult bindingResult, @RequestParam("archivoImagen") MultipartFile archivo, Model model) {
-	    if (bindingResult.hasErrors()) {
-	        model.addAttribute("abrirModalTatuaje", true);
-	        model.addAttribute("listaArtistas", artistaService.findAll());
-	        model.addAttribute("listaClientes", clienteService.findAll());
-	        cargarDatosDashboardTatuajes(model, null, null, PageRequest.of(0, 4));
-	        
-	        return "DashboardTatuajes";
-	    }
-	    tatuajeService.editarTatuaje(tatuaje, archivo);
-	    return "redirect:/Dashboard/Tatuajes";
+	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, 
+			 @RequestParam("archivoImagen") MultipartFile archivo,
+			Model model) {
+		try {
+			tatuajeService.editarTatuaje(tatuaje, archivo);
+			return "redirect:/Dashboard/Tatuajes";
+			} catch (TarifaInvalidaException ex) {
+				model.addAttribute("errorTarifa", ex.getMessage());
+		        model.addAttribute("formularioTatuaje", tatuaje);
+		        model.addAttribute("abrirModalTatuaje", true);
+		        model.addAttribute("listaArtistas", artistaService.findAll());
+		        model.addAttribute("listaClientes", clienteService.findAll());
+		        cargarDatosDashboard(model, null, null, 0, 5);
+	            return "DashboardTatuajes";
+			}
 	}
 	
 

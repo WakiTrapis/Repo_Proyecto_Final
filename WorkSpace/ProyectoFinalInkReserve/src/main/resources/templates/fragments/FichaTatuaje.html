@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
+
     <div th:fragment="modalFichaTatuajes" class="modal fade" id="ModalFichaTatuajes" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white"> 
                 <div class="modal-header d-flex align-items-center justify-content-between border-bottom border-dark pb-3 mb-4">
                     <h5 class="modal-title fw-bold d-flex align-items-center gap-2 mb-0 text-white">
-                        <i class="bi bi-palette-fill" style="color: #00a86b !important;"></i> 
+                        <i class="bi bi-palette-fill" style="color: #00a86b;"></i> 
                         Ficha Técnica del Diseño: <span class="text-secondary fw-normal" th:text="${fichaTatuaje != null} ? ${fichaTatuaje.nombreTatuaje} : 'Detalles'">Nombre</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -111,5 +109,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>

@@ -32,14 +32,12 @@ public class Tatuaje {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Include       
     @EqualsAndHashCode.Include
-	private long id;
+	private Long id;
 	
-	@NotNull(message = "Seleccione un Cliente.")
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@NotNull(message = "Seleccione un Artista.")
 	@ManyToOne
 	@JoinColumn(name = "artista_id")
 	private Artista artista;
@@ -60,7 +58,7 @@ public class Tatuaje {
 	
 	
     @Min(value = 1, message = "Como mínimo debe requerir 1 sesión.")
-	private int sesionesTatuaje;
+	private Integer sesionesTatuaje;
 	
     @NotNull(message = "El precio es obligatorio.")
 	private Double precioTatuaje;

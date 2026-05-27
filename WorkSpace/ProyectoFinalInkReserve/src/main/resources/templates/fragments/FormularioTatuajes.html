@@ -30,28 +30,25 @@
                             
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
-                                <select th:field="*{artista}" id="selectArtista" class="form-select bg-dark border-secondary text-white">
-                                    <option value="">Selecciona al artista...</option>                            
-                                    <option th:each="a : ${listaArtistas}" 
-                                            th:value="${a.id}" 
-                                            th:text="${a.nombreArtista}">
-                                            Artista
-                                    </option>
-                                </select>
-                                <div th:if="${#fields.hasErrors('artista')}" th:errors="*{artista}" class="text-danger small d-block mt-1"></div>
+								<select th:field="*{artista.id}" class="form-select bg-dark border-secondary text-white">
+								    <option value="">Selecciona un artista</option>
+								    <option th:each="art : ${listaArtistas}" 
+								            th:value="${art.id}" 
+								            th:text="${art.nombreArtista}">							            
+								    </option>
+								</select>
                             </div>
                             
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Cliente</label>
-                                <select th:field="*{cliente}" id="selectCliente" class="form-select bg-dark border-secondary text-white">
-                                    <option value="">Selecciona al cliente...</option>
-                                    <option th:each="c : ${listaClientes}" 
-                                            th:value="${c.id}" 
-                                            th:text="${c.nombreCliente}">
-                                            Cliente
-                                    </option>
-                                </select>
-                                <div th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}" class="text-danger small d-block mt-1"></div>
+								<select th:field="*{cliente.id}" class="form-select bg-dark border-secondary text-white">
+								    <option value="">Selecciona un cliente</option>
+								    <option th:each="cli : ${listaClientes}" 
+								            th:value="${cli.id}" 
+								            th:text="${cli.nombreCliente}" 
+								            th:selected="${formularioTatuaje.cliente != null && formularioTatuaje.cliente.id == cli.id}">
+								    </option>
+								</select>
                             </div>
 
                             <div class="col-md-4">
@@ -71,13 +68,12 @@
                                             th:text="${tipoTinta}">
                                     </option>
                                 </select>
-                                <div th:if="${#fields.hasErrors('tipoTintaTatuaje')}" th:errors="*{tipoTintaTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Estilo</label>
                                 <input type="text" th:field="*{estiloTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Realismo, Blackwork...">
-                                <div th:if="${#fields.hasErrors('estiloTatuaje')}" th:errors="*{estiloTatuaje}" class="text-danger small d-block mt-1"></div>
+                                
                             </div>
 
                             <div class="col-md-6">
@@ -93,8 +89,7 @@
                                             th:value="${est}" 
                                             th:text="${est}">
                                     </option>
-                                </select>
-                                <div th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="text-danger small d-block mt-1"></div>
+                                </select>   
                             </div>
 
                             <div class="col-md-6">
@@ -114,10 +109,8 @@
 
                             <div class="col-12">
                                 <label class="form-label text-secondary small fw-bold">Descripción Detallada</label>
-                                <textarea th:field="*{descripcionTatuaje}" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Detalles sobre tintas, técnica, etc."></textarea>
-                                <div th:if="${#fields.hasErrors('descripcionTatuaje')}" th:errors="*{descripcionTatuaje}" class="text-danger small d-block mt-1"></div>
+                                <textarea th:field="*{descripcionTatuaje}" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Detalles sobre tintas, técnica, etc."></textarea> 
                             </div>
-                            
                         </div>
                     </div>
                     

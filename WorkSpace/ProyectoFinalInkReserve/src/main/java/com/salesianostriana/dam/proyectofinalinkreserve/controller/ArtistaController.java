@@ -86,7 +86,8 @@ public class ArtistaController {
     }
 	
 	@PostMapping("/nuevoArtistaCompleto")
-	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,BindingResult bindingResult,
+	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,
+			BindingResult bindingResult,
 			@RequestParam("archivoFoto") MultipartFile archivo,
 			Model model){
 		if (bindingResult.hasErrors()) {
@@ -113,8 +114,8 @@ public class ArtistaController {
 
 	
 	@PostMapping("/Dashboard/Artistas/Editar/submit")
-	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista, 
-			@RequestParam("archivoFoto") MultipartFile archivo, Model model ) {
+	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista,
+		 @RequestParam("archivoFoto") MultipartFile archivo,Model model ) {
 		try {
 		artistaService.editarArtista(artista, archivo);
 		return "redirect:/Dashboard/Artistas";

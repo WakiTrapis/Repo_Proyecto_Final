@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.TatuajeRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseServiceImpl;
@@ -30,7 +31,10 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 	    } else {
 	        tatuajeEditado.setImagenTatuaje(tatuajeOriginal.getImagenTatuaje());
 	    }
-
+	    
+	    if (tatuajeEditado.getPrecioTatuaje() == null) {
+            throw new TarifaInvalidaException("El precio tiene que ser superior a 0.");
+        }
 	    this.edit(tatuajeEditado);
 	}
 
@@ -45,4 +49,12 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 	public Page<Tatuaje> obtenerTatuajesSinArtistaPaginado(Pageable pageable) {
 	    return tatuajeRepository.findByArtistaIsNull(pageable);
 	}
+	
+	public Tatuaje save(Tatuaje tatuaje) {
+        if (tatuaje.getPrecioTatuaje() == null) {
+            throw new TarifaInvalidaException("El precio tiene que ser superior a 0.");
+        }
+        
+        return super.save(tatuaje);
+    }
 }

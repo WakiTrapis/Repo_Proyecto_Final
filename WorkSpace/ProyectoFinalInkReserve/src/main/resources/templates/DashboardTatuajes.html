@@ -20,9 +20,6 @@
             <button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormTatuajes">
                 <i class="bi bi-plus-lg me-2"></i> Agregar Tatuaje
             </button>
-			<div th:replace="~{fragments/FormularioTatuajes :: modalNuevoTatuaje}"></div>
-			<div th:replace="~{fragments/ConfirmacionEliminarTatuaje :: modalEliminarTatuaje}"></div>
-			<div th:replace="~{fragments/FichaTatuaje :: modalFichaTatuajes}"></div>
         </div>
 
         <div class="row g-4">
@@ -129,7 +126,7 @@
 
 					    <div class="border-top border-secondary pt-3 d-flex gap-2 action-buttons">
 					        <a th:href="@{/Dashboard/Tatuajes(idEditar=${tatuaje.id})}"
-					           class="btn btn-outline-success btn-sm w-100">
+					           class="btn btn-outline-success btn-sm w-100" data-bs-target="#ModalFormTatuajes">
 					           <i class="bi bi-pencil-square me-1"></i> Editar
 					        </a>
 					        <a data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarTatuaje" th:data-bs-id="${tatuaje.id}" class="btn btn-outline-danger btn-sm w-100">
@@ -145,71 +142,81 @@
             <p class="text-secondary mt-3">La galería está vacía actualmente.</p>
         </div>
 		<nav aria-label="Navegación de tatuajes" th:if="${totalPages > 1}" class="mt-4">
-						    <ul class="pagination justify-content-center gap-1">
-						        
-						        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-						            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
-						               th:href="@{/Dashboard/Tatuajes(page=${currentPage - 1}, search=${search})}">
-						                &laquo; Anterior
-						            </a>
-						        </li>
+			<ul class="pagination justify-content-center gap-1">
+				
+				<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+					<a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+						th:href="@{/Dashboard/Tatuajes(page=${currentPage - 1}, search=${search})}">
+						&laquo; Anterior
+					</a>
+				</li>
 
-						        <li class="page-item" 
-						            th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
-						            th:classappend="${currentPage == i} ? 'active'">
-						            
-						            <a class="page-link border-secondary border-opacity-25 rounded-3 px-3 py-2 fw-medium"
-						               th:classappend="${currentPage == i} ? 'bg-success text-white border-success' : 'bg-dark text-white'"
-						               th:href="@{/Dashboard/Tatuajes(page=${i}, search=${search})}" 
-						               th:text="${i + 1}"
-						               th:style="${currentPage == i} ? 'background-color: #00a86b !important; border-color: #00a86b !important;' : ''">
-						               1
-						            </a>
-						        </li>
+				<li class="page-item" 
+					th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+					th:classappend="${currentPage == i} ? 'active'">
+					
+					<a class="page-link border-secondary border-opacity-25 rounded-3 px-3 py-2 fw-medium"
+						th:classappend="${currentPage == i} ? 'bg-success text-white border-success' : 'bg-dark text-white'"
+						th:href="@{/Dashboard/Tatuajes(page=${i}, search=${search})}" 
+						th:text="${i + 1}"
+						th:style="${currentPage == i} ? 'background-color: #00a86b !important; border-color: #00a86b !important;' : ''">
+						1
+					</a>
+				</li>
 
-						        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-						            <a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
-						               th:href="@{/Dashboard/Tatuajes(page=${currentPage + 1}, search=${search})}">
-						                Siguiente &raquo;
-						            </a>
-						        </li>
-						        
-						    </ul>
-						</nav>
+				<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+					<a class="page-link bg-dark text-white border-secondary border-opacity-25 rounded-3 px-3 py-2" 
+						th:href="@{/Dashboard/Tatuajes(page=${currentPage + 1}, search=${search})}">
+						Siguiente &raquo;
+					</a>
+				</li>
+			</ul>
+		</nav>
     </div>
 
 
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-		    const cards = document.querySelectorAll(".clickable-card");    
-		    cards.forEach(card => {
-		        card.addEventListener("click", function (e) {
-		            if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
-		                return; 
-		            }
-		            window.location.href = this.dataset.href;
+	    document.addEventListener("DOMContentLoaded", function () {
+	        const cards = document.querySelectorAll(".clickable-card");    
+	        cards.forEach(card => {
+	            card.addEventListener("click", function (e) {
+	                if (e.target.closest('.action-buttons') || 
+	                    e.target.closest('a') || 
+	                    e.target.closest('button') || 
+	                    e.target.closest('i')) {
+	                    return; 
+	                }
+	                if (document.querySelector('.modal.show')) {
+	                    return;
+	                }
+	                window.location.href = this.dataset.href;
+	            });
+	        });
+	    });
+	</script>
+
+		<script th:if="${formularioTatuaje != null && formularioTatuaje.id != null && formularioTatuaje.id != 0}">
+			document.addEventListener("DOMContentLoaded", function() {
+				const modalElement = document.getElementById('ModalFormTatuajes');
+				const myModal = new bootstrap.Modal(modalElement);
+				myModal.show();
+				modalElement.addEventListener('hidden.bs.modal', function () {
+		            window.location.href = '/Dashboard/Tatuajes';
 		        });
-		    });
-		});
+			});
 		</script>
-			
-	    <div th:replace="~{fragments/FooterApp :: footer}"></div>
-
-	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-	    <script th:if="${formularioTatuaje != null and formularioTatuaje.id != 0}">
-	        document.addEventListener("DOMContentLoaded", function() {
-	            var modalElemento = document.getElementById('ModalFormTatuajes');
-	            if (modalElemento) {
-	                var myModal = new bootstrap.Modal(modalElemento);
+		<script th:if="${fichaTatuaje != null}">
+			document.addEventListener("DOMContentLoaded", function() {
+	            const modalElement = document.getElementById('ModalFichaTatuajes'); 
+	            if (modalElement) {
+	                const myModal = new bootstrap.Modal(modalElement);
 	                myModal.show();
-	                
-	                modalElemento.addEventListener('hidden.bs.modal', function () {
+	                modalElement.addEventListener('hidden.bs.modal', function () {
 	                    window.location.href = '/Dashboard/Tatuajes';
 	                });
 	            }
 	        });
-		</script>
+	    </script>
 
 	    <script th:if="${abrirModalTatuaje}">
 	        document.addEventListener("DOMContentLoaded", function() {
@@ -220,7 +227,11 @@
 	            }
 	        });
 		</script>
-	</body>
-	</html>
+		<div th:replace="~{fragments/FooterApp :: footer}"></div>
+		<div th:replace="~{fragments/FormularioTatuajes :: modalNuevoTatuaje}"></div>
+		<div th:replace="~{fragments/ConfirmacionEliminarTatuaje :: modalEliminarTatuaje}"></div>
+		<div th:replace="~{fragments/FichaTatuaje :: modalFichaTatuajes}"></div>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

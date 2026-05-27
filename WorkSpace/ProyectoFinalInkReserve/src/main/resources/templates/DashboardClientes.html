@@ -136,36 +136,58 @@
 	
 	<div th:replace="~{fragments/FooterApp :: footer}"></div>
 	
-	<script>
-		    document.addEventListener("DOMContentLoaded", function () {
-		        const rows = document.querySelectorAll(".clickable-row");    
-		        rows.forEach(row => {
-		            row.addEventListener("click", function (e) {
-		                if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
-		                    return; 
-		                }
-		                window.location.href = this.dataset.href;
-		            });
-		        });
-		    });
-    </script>
-			
-	<script th:if="${formularioCliente != null && formularioCliente.id != null && formularioCliente.id != 0}">
-		window.onload = function() {
-			const modalElement = document.getElementById('ModalFormClientes');
-			const myModal = new bootstrap.Modal(modalElement);
-			myModal.show();
-			modalElement.addEventListener('hidden.bs.modal', function () {
-	            window.location.href = '/Dashboard/Clientes';
-	        });
-		};
+	<script th:if="${formularioCliente.id != null && formularioCliente.id != 0}">
+				window.onload = function() {
+					const modalElement = document.getElementById('ModalFormClientes');
+					const myModal = new bootstrap.Modal(modalElement);
+					myModal.show();
+					modalElement.addEventListener('hidden.bs.modal', function () {
+			            window.location.href = '/Dashboard/Clientes';
+			        });
+				};
 	</script>
-	
+	<script>
+	    document.addEventListener("DOMContentLoaded", function () {
+	        const rows = document.querySelectorAll(".clickable-row");    
+	        rows.forEach(row => {
+	            row.addEventListener("click", function (e) {
+	                if (e.target.closest('.action-buttons') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'I') {
+	                    return; 
+	                }
+	                window.location.href = this.dataset.href;
+	            });
+	        });
+	    });
+    </script>
+	<script th:if="${formularioCliente != null && formularioCliente.id != null && formularioCliente.id != 0}">
+        window.onload = function() {
+            const modalElement = document.getElementById('ModalFormClientes');
+            const myModal = new bootstrap.Modal(modalElement);
+            myModal.show();
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                window.location.href = '/Dashboard/CLientes';
+            });
+        };
+	</script>
+
+	<script th:if="${perfilCliente != null}">
+		window.onload = function() {
+		        const modalElement = document.getElementById('ModalPerfilClientes'); 
+		        if (modalElement) {
+		            const myModal = new bootstrap.Modal(modalElement);
+		            myModal.show();
+		            modalElement.addEventListener('hidden.bs.modal', function () {
+		                window.location.href = '/Dashboard/Clientes';
+		            });
+		        }
+	    };
+	</script>
+
 	<script th:if="${abrirModalCliente}">
 	    document.addEventListener("DOMContentLoaded", function() {
-	        var modalElemento = document.getElementById('ModalFormClientes');
+	        const modalElemento = document.getElementById('ModalFormClientes');
 	        if (modalElemento) {
-	            var myModal = new bootstrap.Modal(modalElemento);
+	            const myModal = new bootstrap.Modal(modalElemento);
 	            myModal.show();
 	        }
 	    });

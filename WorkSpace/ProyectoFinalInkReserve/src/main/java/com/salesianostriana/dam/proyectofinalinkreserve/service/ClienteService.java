@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
+import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.ClienteRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseServiceImpl;
@@ -27,10 +28,15 @@ public class ClienteService extends BaseServiceImpl <Cliente, Long, ClienteRepos
         return clienteRepository.findByNombreClienteContainingIgnoreCase(criterio, pageable);
     }
 	
+	public Cliente save(Cliente cliente) {
+        if (cliente.getDniCliente() == null || !cliente.getDniCliente().matches("^[0-9]{8}[A-Za-z]$")) {
+            throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
+        }
+        
+        return super.save(cliente);
+    }
+	
 	public void editarCliente(Cliente clienteEditado) {
-	    Cliente clienteOriginal = findById(clienteEditado.getId()).get();
-	    
-
 	    if (clienteEditado.getDniCliente() == null || !clienteEditado.getDniCliente().matches("^[0-9]{8}[A-Za-z]$")) {
             throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
         }

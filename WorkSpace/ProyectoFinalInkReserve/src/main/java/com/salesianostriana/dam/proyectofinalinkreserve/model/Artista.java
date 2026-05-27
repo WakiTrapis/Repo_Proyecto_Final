@@ -27,7 +27,7 @@ public class Artista {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Include
     @EqualsAndHashCode.Include
-	private long id;
+	private Long id;
 	
 	@NotBlank(message = "El nombre del artista no puede estar vacío")
 	private String nombreArtista;

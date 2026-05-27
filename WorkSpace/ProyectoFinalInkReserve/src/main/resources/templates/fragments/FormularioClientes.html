@@ -22,8 +22,9 @@
 							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
 							<div class="input-group">
 								<span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
-								<input type="text" th:field="*{nombreCliente}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez" />
-							</div><div th:if="${#fields.hasErrors('nombreCliente')}" th:errors="*{nombreCliente}" class="text-danger small d-block mt-1"></div>						
+								<input type="text" th:field="*{nombreCliente}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez">
+							</div>
+								<div th:if="${#fields.hasErrors('nombreCliente')}" th:errors="*{nombreCliente}" class="text-danger small d-block mt-1"></div>						
 						</div>
 						
 						<div class="col-md-6">
@@ -31,18 +32,18 @@
 						    <input type="text" th:field="*{email}" class="form-control bg-dark border-secondary text-white" placeholder="Example@example.com">
 						</div>
 						
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Teléfono</label>
 							<input type="tel" th:field="*{telefonoCliente}" class="form-control bg-dark border-secondary text-white" placeholder="000 000 000">
-						</div><div th:if="${#fields.hasErrors('telefonoCliente')}" th:errors="*{telefonoCliente}" class="text-danger small d-block mt-1"></div>
+							<div th:if="${#fields.hasErrors('telefonoCliente')}" th:errors="*{telefonoCliente}" class="text-danger small d-block mt-1"></div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Fecha de Nacimiento</label>
 							<input type="date" th:field="*{fechaNacimiento}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
                         </div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">DNI</label>
 							<input type="text" th:field="*{dniCliente}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
 							<div th:if="${#fields.hasErrors('dniCliente')}" th:errors="*{dniCliente}" class="text-danger small d-block mt-1"></div>
