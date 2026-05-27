@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -36,6 +38,27 @@ public class TatuajeController {
 	private final ClienteService clienteService;
 	private final CitaService citaService;
 	
+	
+	private void cargarDatosDashboardTatuajes(Model model, String filtro, String search, Pageable pageable) {
+		Page<Tatuaje> tatuajePage;
+        if ("sinArtista".equals(filtro)) {
+            tatuajePage = tatuajeService.obtenerTatuajesSinArtistaPaginado(pageable);
+            model.addAttribute("filtroActual", "sinArtista");
+        } else if (search != null && !search.trim().isEmpty()) {
+            tatuajePage = tatuajeService.buscarPorNombreTatuajePaginado(search.trim(), pageable);
+            model.addAttribute("search", search.trim());
+            model.addAttribute("filtroActual", "search");
+        } else {
+            tatuajePage = tatuajeService.findAllPaginado(pageable);
+            model.addAttribute("filtroActual", "normal");
+        }
+        model.addAttribute("listaTatuajes", tatuajePage.getContent());
+        model.addAttribute("currentPage", tatuajePage.getNumber());
+        model.addAttribute("totalPages", tatuajePage.getTotalPages());
+        model.addAttribute("listaArtistas", artistaService.findAll());
+        model.addAttribute("listaClientes", clienteService.findAll());
+	}
+	
 	@GetMapping("/Dashboard/Tatuajes")
 	public String PintarDashboardTatuajes(@RequestParam(name = "idEditar", required = false) Long idEditar,
 			@RequestParam(name = "verTatuId", required = false) Long verTatuId,
@@ -46,55 +69,56 @@ public class TatuajeController {
 			Model model) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-	    Page<Tatuaje> tatuajePage;
 	    
-	    if ("sinArtista".equals(filtro)) {
-	        tatuajePage = tatuajeService.obtenerTatuajesSinArtistaPaginado(pageable);
-	        model.addAttribute("filtroActual", "sinArtista");
-	    } else if (search != null && !search.trim().isEmpty()) {
-	    	tatuajePage = tatuajeService.buscarPorNombreTatuajePaginado(search.trim(), pageable);
-	    	model.addAttribute("search", search.trim());
-	        model.addAttribute("filtroActual", "search");
-        } else {
-        	tatuajePage = tatuajeService.findAllPaginado(pageable);
-        	model.addAttribute("filtroActual", "normal");
-        }
-		model.addAttribute("listaTatuajes", tatuajePage.getContent());
-        model.addAttribute("currentPage", tatuajePage.getNumber());
-        model.addAttribute("totalPages", tatuajePage.getTotalPages());
-		model.addAttribute("formularioTatuaje", new Tatuaje());
+		if (!model.containsAttribute("formularioTatuaje")) {
+			if (idEditar != null && tatuajeService.findById(idEditar).isPresent()) {
+				model.addAttribute("formularioTatuaje", tatuajeService.findById(idEditar).get());
+			} else {
+				model.addAttribute("formularioTatuaje", new Tatuaje());
+		    }
+		}
 		
-		model.addAttribute("listaArtistas", artistaService.findAll());
-		model.addAttribute("listaClientes", clienteService.findAll());
-		
-		if (idEditar != null) {
-			model.addAttribute("formularioTatuaje", tatuajeService.findById(idEditar).get());
-		} else {
-			model.addAttribute("formularioTatuaje", new Tatuaje());
-	    }
 		if (verTatuId != null && tatuajeService.findById(verTatuId).isPresent()) {
 	        Tatuaje tatuaje = tatuajeService.findById(verTatuId).get();
 	        model.addAttribute("fichaTatuaje", tatuaje);
 	    } else {
 	        model.addAttribute("fichaTatuaje", null);
 	    }
+		
+		cargarDatosDashboardTatuajes(model, filtro, search, pageable);
 		return "DashboardTatuajes";
 	}
 	
 	@PostMapping("/nuevoTatuajeCompleto")
-	public String submit(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje,@RequestParam("archivoImagen") MultipartFile archivo){
-		if (!archivo.isEmpty()) {
-	        String nombreFoto = fotosService.store(archivo);
-	        tatuaje.setImagenTatuaje(nombreFoto);
-	    }
-		tatuajeService.save(tatuaje);
-		return "redirect:/Dashboard/Tatuajes";
+	public String submit(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje,
+			BindingResult bindingResult,@RequestParam("archivoImagen") MultipartFile archivo, Model model){
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("abrirModalTatuaje", true);
+			model.addAttribute("listaArtistas", artistaService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        cargarDatosDashboardTatuajes(model, null, null, PageRequest.of(0, 4)); 
+	        return "DashboardTatuajes";
+		}
+			if (!archivo.isEmpty()) {
+		        String nombreFoto = fotosService.store(archivo);
+		        tatuaje.setImagenTatuaje(nombreFoto);
+		    }
+			tatuajeService.save(tatuaje);
+			return "redirect:/Dashboard/Tatuajes";
 	}
 	
 	@PostMapping("/Dashboard/Tatuajes/Editar/submit")
-	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, @RequestParam("archivoImagen") MultipartFile archivo) {
-		tatuajeService.editarTatuaje(tatuaje, archivo);
-		return "redirect:/Dashboard/Tatuajes";
+	public String submitEditar(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje, BindingResult bindingResult, @RequestParam("archivoImagen") MultipartFile archivo, Model model) {
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("abrirModalTatuaje", true);
+	        model.addAttribute("listaArtistas", artistaService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        cargarDatosDashboardTatuajes(model, null, null, PageRequest.of(0, 4));
+	        
+	        return "DashboardTatuajes";
+	    }
+	    tatuajeService.editarTatuaje(tatuaje, archivo);
+	    return "redirect:/Dashboard/Tatuajes";
 	}
 	
 
@@ -111,14 +135,12 @@ public class TatuajeController {
 	                    cita.setTatuaje(null);
 	                    citaService.save(cita);
 	                } else {
-
 	                    citaService.delete(cita);
 	                }
 	            }
 	        }
 	        tatuajeService.delete(tatuaje);
-	    }
-	    
+	    }    
 	    return "redirect:/Dashboard/Tatuajes";
 	}
 	

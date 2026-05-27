@@ -2,6 +2,7 @@ package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import java.time.LocalDateTime;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,14 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -26,6 +26,7 @@ import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -38,6 +39,24 @@ public class ArtistaController {
 	private final CitaService citaService;
 	private final FotosService fotosService; 
 	
+	private void cargarDatosDashboard(Model model, String search, int page, int size) {
+        List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Artista> artistaPage;
+        
+        model.addAttribute("topArtistas", topArtistas);
+
+        if (search != null && !search.trim().isEmpty()) {
+            artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
+            model.addAttribute("search", search);
+        } else {
+            artistaPage = artistaService.findAllPaginado(pageable);
+        }
+        
+        model.addAttribute("listaArtistas", artistaPage.getContent());
+        model.addAttribute("currentPage", artistaPage.getNumber());
+        model.addAttribute("totalPages", artistaPage.getTotalPages());
+    }
 	
 	@GetMapping("/Dashboard/Artistas")
 	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar,
@@ -48,48 +67,33 @@ public class ArtistaController {
             Model model) {
 		
 		if (!model.containsAttribute("formularioArtista")) {
-            model.addAttribute("formularioArtista", new Artista());
+            if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
+                model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
+            } else {
+                model.addAttribute("formularioArtista", new Artista());
+            }
         }
-		
-		List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
-		Pageable pageable = PageRequest.of(page, size);
-        Page<Artista> artistaPage;
-        model.addAttribute("topArtistas", topArtistas);
-		
-
         
-        if (search != null && !search.trim().isEmpty()) {
-            artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
-            model.addAttribute("search", search);
+        cargarDatosDashboard(model, search, page, size);
+
+        if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
+            model.addAttribute("perfilArtista", artistaService.findById(verPerfilId).get());
         } else {
-            artistaPage = artistaService.findAllPaginado(pageable);
+            model.addAttribute("perfilArtista", null);
         }
-        model.addAttribute("listaArtistas", artistaPage.getContent());
-        model.addAttribute("currentPage", artistaPage.getNumber());
-        model.addAttribute("totalPages", artistaPage.getTotalPages());
-		model.addAttribute("formularioArtista", new Artista());
-
-		if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
-	        model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
-	    } else {
-	        model.addAttribute("formularioArtista", new Artista());
-	    }
-		
-
-		if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
-	        Artista artista = artistaService.findById(verPerfilId).get();
-	        model.addAttribute("perfilArtista", artista);
-	    } else {
-	        model.addAttribute("perfilArtista", null);
-	    }
-		return "DashboardArtistas";
-		
-	}
+        
+        return "DashboardArtistas";
+    }
 	
 	@PostMapping("/nuevoArtistaCompleto")
-	public String submit(@ModelAttribute("formularioArtista") Artista artista,
+	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,BindingResult bindingResult,
 			@RequestParam("archivoFoto") MultipartFile archivo,
 			Model model){
+		if (bindingResult.hasErrors()) {
+	        model.addAttribute("abrirModal", true);
+	        cargarDatosDashboard(model, null, 0, 5); 
+	        return "DashboardArtistas"; 
+	    }
 		try {
 			if (!archivo.isEmpty()) {
 	        String nombreFoto = fotosService.store(archivo);
@@ -101,8 +105,8 @@ public class ArtistaController {
 			model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioArtista", artista);
 	        model.addAttribute("abrirModal", true);
-	        
-	            return "DashboardArtistas";
+	        cargarDatosDashboard(model, null, 0, 5);
+	        return "DashboardArtistas";
 	        }
 	}
 	
@@ -118,7 +122,7 @@ public class ArtistaController {
 			model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioArtista", artista);
 	        model.addAttribute("abrirModal", true);
-        
+	        cargarDatosDashboard(model, null, 0, 5);
             return "DashboardArtistas";
 		}
     }

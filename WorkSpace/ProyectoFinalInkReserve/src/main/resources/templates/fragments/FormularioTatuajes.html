@@ -14,43 +14,45 @@
                 
                 <form method="POST" th:action="${formularioTatuaje.id != null && formularioTatuaje.id != 0} ? @{/Dashboard/Tatuajes/Editar/submit} : 
 					@{/nuevoTatuajeCompleto}" th:object="${formularioTatuaje}" enctype="multipart/form-data">
-                    <div class="modal-body p-4">
+					<div class="modal-body p-4">
                         <div class="row g-3">
                             
-							<input type="hidden" th:field="*{id}">
+                            <input type="hidden" th:field="*{id}">
+
                             <div class="col-md-8">
                                 <label class="form-label text-secondary small fw-bold">Nombre del Tatuaje</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-type"></i></span>
-                                    <input type="text" th:field="*{nombreTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Dragon Neotradicional" required>
+                                    <input type="text" th:field="*{nombreTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Dragon Neotradicional">
                                 </div>
+                                <div th:if="${#fields.hasErrors('nombreTatuaje')}" th:errors="*{nombreTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
-							
-							<div class="col-md-6">
-								<label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
-								<select name="artista" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
-								    <option value="" hidden>Selecciona al artista...</option>						    
-								    <option th:each="a : ${listaArtistas}" 
-								            th:value="${a.id}" 
-								            th:selected="${formularioTatuaje.artista != null && formularioTatuaje.artista.id == a.id}"
-								            th:text="${a.nombreArtista}">
-								        	Artista
-								    </option>
-								</select>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
+                                <select th:field="*{artista}" id="selectArtista" class="form-select bg-dark border-secondary text-white">
+                                    <option value="">Selecciona al artista...</option>                            
+                                    <option th:each="a : ${listaArtistas}" 
+                                            th:value="${a.id}" 
+                                            th:text="${a.nombreArtista}">
+                                            Artista
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('artista')}" th:errors="*{artista}" class="text-danger small d-block mt-1"></div>
                             </div>
-							
-							<div class="col-md-6">
-								<label class="form-label text-secondary small fw-bold">Cliente</label>
-								<select name="cliente" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
-							    	<option value="" hidden>Selecciona al cliente...</option>
-								    <option th:each="c : ${listaClientes}" 
-						            	th:value="${c.id}" 
-						            	th:selected="${formularioTatuaje.cliente != null && formularioTatuaje.cliente.id == c.id}"
-					            		th:text="${c.nombreCliente}">
-							        	Cliente
-								    </option>
-								</select>
-							</div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Cliente</label>
+                                <select th:field="*{cliente}" id="selectCliente" class="form-select bg-dark border-secondary text-white">
+                                    <option value="">Selecciona al cliente...</option>
+                                    <option th:each="c : ${listaClientes}" 
+                                            th:value="${c.id}" 
+                                            th:text="${c.nombreCliente}">
+                                            Cliente
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}" class="text-danger small d-block mt-1"></div>
+                            </div>
 
                             <div class="col-md-4">
                                 <label class="form-label text-secondary small fw-bold">Precio Estimado (€)</label>
@@ -58,41 +60,47 @@
                                     <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-currency-euro"></i></span>
                                     <input type="number" step="0.01" th:field="*{precioTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="0.00">
                                 </div>
+                                <div th:if="${#fields.hasErrors('precioTatuaje')}" th:errors="*{precioTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
-							
-							<div class="col-md-6">
-                            	<label class="form-label text-secondary small fw-bold">Tipo de Tinta</label>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label text-secondary small fw-bold">Tipo de Tinta</label>
                                 <select th:field="*{tipoTintaTatuaje}" class="form-select bg-dark border-secondary text-white">
-                                	<option th:each="tipoTintaTatuaje : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.TipoTintaTatuaje).values()}" 
-                                    	th:value="${tipoTintaTatuaje}" 
-         	                        	th:text="${tipoTintaTatuaje}">
-                                	</option>
+                                    <option th:each="tipoTinta : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.TipoTintaTatuaje).values()}" 
+                                            th:value="${tipoTinta}" 
+                                            th:text="${tipoTinta}">
+                                    </option>
                                 </select>
+                                <div th:if="${#fields.hasErrors('tipoTintaTatuaje')}" th:errors="*{tipoTintaTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Estilo</label>
                                 <input type="text" th:field="*{estiloTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Realismo, Blackwork...">
+                                <div th:if="${#fields.hasErrors('estiloTatuaje')}" th:errors="*{estiloTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Zona del Cuerpo</label>
                                 <input type="text" th:field="*{zonaCuerpoTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Antebrazo, Espalda...">
+                                <div th:if="${#fields.hasErrors('zonaCuerpoTatuaje')}" th:errors="*{zonaCuerpoTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Estado del Trabajo</label>
                                 <select th:field="*{estado}" class="form-select bg-dark border-secondary text-white">
-                                    <option th:each="estado : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.EstadoTatuaje).values()}" 
-                                            th:value="${estado}" 
-                                            th:text="${estado}">
+                                    <option th:each="est : ${T(com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje.EstadoTatuaje).values()}" 
+                                            th:value="${est}" 
+                                            th:text="${est}">
                                     </option>
                                 </select>
+                                <div th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Sesiones Estimadas</label>
-                                <input type="number" th:field="*{sesionesTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="1">
+                                <input type=" number"min="1" value="1" th:field="*{sesionesTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="1">
+                                <div th:if="${#fields.hasErrors('sesionesTatuaje')}" th:errors="*{sesionesTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 
                             <div class="col-12">
@@ -107,6 +115,7 @@
                             <div class="col-12">
                                 <label class="form-label text-secondary small fw-bold">Descripción Detallada</label>
                                 <textarea th:field="*{descripcionTatuaje}" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Detalles sobre tintas, técnica, etc."></textarea>
+                                <div th:if="${#fields.hasErrors('descripcionTatuaje')}" th:errors="*{descripcionTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
                             
                         </div>

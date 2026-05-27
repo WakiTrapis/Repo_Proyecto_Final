@@ -61,7 +61,7 @@ public class DataSeed {
 		Artista a3 = Artista.builder()
 				.nombreArtista("Paco Porras")
 				.especialidad("Sombras")
-				.precioHora(5.0)
+				.precioHora(10.0)
 				.dniArtista("48692558F")
 				.telefonoArtista("298678326")
 				.numeroHigienico("346845433323")
