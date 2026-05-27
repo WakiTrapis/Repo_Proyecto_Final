@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.CitaSolapadaException;
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
@@ -34,6 +35,10 @@ public class CitaController {
 			@RequestParam(name = "verPerfilId", required = false) Long verPerfilId,
 			@RequestParam(value = "filtro", required = false) String filtro,
 			@RequestParam(name = "error", required = false) String error,Model model) {
+		
+		if (!model.containsAttribute("formularioCita")) {
+	        model.addAttribute("formularioCita", new Cita());
+	    }
 		
 		List<Cita> citasFiltradas;
 		AgendaCitas agenda = citaService.getAgendaCitasDia(fechaStr);
@@ -78,29 +83,51 @@ public class CitaController {
 	}
 	
 	@PostMapping("/nuevaCitaCompleta")
-    public String guardarCitaConCalculo(@ModelAttribute("formularioCita") Cita cita, RedirectAttributes redirectAttributes, Model model) {
+    public String guardarCitaConCalculo(@ModelAttribute("formularioCita") Cita cita, Model model) {
 		try {
 			citaService.save(cita);
 			return "redirect:/Dashboard/Citas";
 		} catch (CitaSolapadaException ex) {
-			redirectAttributes.addFlashAttribute("errorSolapamiento", ex.getMessage());
-			redirectAttributes.addFlashAttribute("formularioCita", cita);
-			redirectAttributes.addFlashAttribute("abrirModal", true);
-			return "redirect:/Dashboard/Citas";
+			model.addAttribute("errorSolapamiento", ex.getMessage());
+	        model.addAttribute("formularioCita", cita);
+	        model.addAttribute("abrirModal", true);
+	        model.addAttribute("listaTatuajes", tatuajeService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        model.addAttribute("listaArtistas", artistaService.findAll());
+			return "DashboardCitas";
+		} catch (TarifaInvalidaException ex) {
+			model.addAttribute("errorTarifa", ex.getMessage());
+	        model.addAttribute("formularioCita", cita); 
+	        model.addAttribute("abrirModal", true);
+	        model.addAttribute("listaTatuajes", tatuajeService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        model.addAttribute("listaArtistas", artistaService.findAll());
+			return "DashboardCitas";
 		}
 	}
 	
 	
 	@PostMapping("/Dashboard/Citas/Editar/submit")
-	public String submitEditarCita(@ModelAttribute("formularioCita") Cita cita, RedirectAttributes redirectAttributes, Model model) {
+	public String submitEditarCita(@ModelAttribute("formularioCita") Cita cita, Model model) {
 		try {
 			citaService.edit(cita);
 			return "redirect:/Dashboard/Citas";
 		} catch (CitaSolapadaException ex) {
-			redirectAttributes.addFlashAttribute("errorSolapamiento", ex.getMessage());
-			redirectAttributes.addFlashAttribute("formularioCita", cita); 
-			redirectAttributes.addFlashAttribute("abrirModal", true);
+			model.addAttribute("errorSolapamiento", ex.getMessage());
+			model.addAttribute("formularioCita", cita); 
+			model.addAttribute("abrirModal", true);
+			model.addAttribute("listaTatuajes", tatuajeService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        model.addAttribute("listaArtistas", artistaService.findAll());
 			return "redirect:/Dashboard/Citas";
+		} catch (TarifaInvalidaException ex) {
+			model.addAttribute("errorTarifa", ex.getMessage());
+			model.addAttribute("formularioCita", cita); 
+			model.addAttribute("abrirModal", true);
+			model.addAttribute("listaTatuajes", tatuajeService.findAll());
+	        model.addAttribute("listaClientes", clienteService.findAll());
+	        model.addAttribute("listaArtistas", artistaService.findAll());
+			return "DashboardCitas";
 		}	
 	}
 	

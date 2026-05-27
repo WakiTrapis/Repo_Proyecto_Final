@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.CitaSolapadaException;
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.AgendaCitas;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -89,6 +90,12 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
                 Tatuaje tatuaje = tatuajeOpt.get();
                 Artista artista = artistaOpt.get();
 
+                if (artista.getPrecioHora() == null || artista.getPrecioHora() <= 0) {
+                    throw new TarifaInvalidaException("El artista seleccionado no dispone de una tarifa por hora válida (mayor que 0€).");
+                }
+                if (cita.getDuracion() == null || cita.getDuracion() <= 0) {
+                    throw new TarifaInvalidaException("La duración de la sesión debe ser superior a 0 horas.");
+                }
                 double precioTatuaje = (tatuaje.getPrecioTatuaje() != null) ? tatuaje.getPrecioTatuaje() : 0.0;
                 int sesionesTotales = (tatuaje.getSesionesTatuaje() > 0) ? tatuaje.getSesionesTatuaje() : 1;
 
@@ -98,6 +105,9 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 
                 double precioCalculado = (precioTatuaje / sesionesTotales) + (precioHoraArtista * duracionSesion);
 
+                if (precioCalculado <= 0) {
+                    throw new TarifaInvalidaException("Error en el cálculo: El precio de la sesión no puede ser igual o inferior a 0€.");
+                }
                 cita.setPrecioSesion(precioCalculado);
             }
         }

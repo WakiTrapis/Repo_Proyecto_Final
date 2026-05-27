@@ -15,6 +15,11 @@
 			
 			<form method="POST" th:action="${formularioArtista != null && formularioArtista.id != null && formularioArtista.id != 0} ? @{/Dashboard/Artistas/Editar/submit} : 
 				@{/nuevoArtistaCompleto}" th:object="${formularioArtista}" enctype="multipart/form-data">
+				<div th:if="${errorDni}" class="alert alert-danger alert-dismissible fade show mx-4 mt-3" role="alert">
+			        <i class="bi bi-card-id me-2"></i>
+			        <strong th:text="${errorDni}">Mensaje de error de DNI</strong>
+			        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			    </div>
 				<div class="modal-body p-4">
 					<div class="row g-3">
 						<input type="hidden" th:field="*{id}">
@@ -76,6 +81,15 @@
 			</form>
         </div>
       </div>
+	  <script th:inline="javascript" th:if="${abrirModal}">
+	        document.addEventListener("DOMContentLoaded", function() {
+	            var miModalArtista = document.getElementById('ModalFormArtistas'); 
+	            if (miModalArtista) {
+	                var myModal = new bootstrap.Modal(miModalArtista);
+	                myModal.show();
+	            }
+	        });
+	    </script>
 	</div> 
 </body>
 </html>

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.ArtistaRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseServiceImpl;
@@ -30,6 +32,9 @@ public class ArtistaService extends BaseServiceImpl <Artista, Long, ArtistaRepos
 	        artistaEditado.setFotoArtista(artistaOriginal.getFotoArtista());
 	    }
 
+	    if (artistaEditado.getDniArtista() == null || !artistaEditado.getDniArtista().matches("^[0-9]{8}[A-Za-z]$")) {
+            throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
+        }
 	    this.edit(artistaEditado);
 	}
 	
@@ -41,6 +46,13 @@ public class ArtistaService extends BaseServiceImpl <Artista, Long, ArtistaRepos
         return artistaRepository.findByNombreArtistaContainingIgnoreCase(criterio, pageable);
     }
 	
-	
+	@Override
+    public Artista save(Artista artista) {
+        if (artista.getDniArtista() == null || !artista.getDniArtista().matches("^[0-9]{8}[A-Za-z]$")) {
+            throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
+        }
+        
+        return super.save(artista);
+    }
 
 }
