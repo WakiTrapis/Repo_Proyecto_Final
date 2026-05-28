@@ -42,4 +42,5 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 		            @Param("id") Long id
 		    );
 	
+	List<Cita> findByArtistaId(Long Id);
 }

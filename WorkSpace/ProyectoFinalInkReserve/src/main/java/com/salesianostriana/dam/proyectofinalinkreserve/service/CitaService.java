@@ -5,7 +5,9 @@ import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
@@ -139,5 +141,22 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 				throw new CitaSolapadaException("El artista seleccionado ya tiene una cita programada en ese rango horario.");
 			}
 		}
+	}
+	
+	public List<Map<String, Object>> getCitasParaCalendario(Long Id) {
+	    List<Cita> citas = citaRepository.findByArtistaId(Id);
+	    
+	    
+	    return citas.stream().map(cita -> {
+	        Map<String, Object> evento = new HashMap<>();
+	        evento.put("id", cita.getId());
+	        evento.put("title", cita.getTatuaje() != null ? 
+	                   cita.getTatuaje().getNombreTatuaje() : "Cita");
+	        evento.put("cliente", cita.getCliente() != null ? 
+	                   cita.getCliente().getNombreCliente() : "Sin cliente");
+	        evento.put("inicio", cita.getFechaInicio().toString());
+	        evento.put("fin", cita.getFechaFinal().toString());
+	        return evento;
+	    }).toList();
 	}
 }

@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
@@ -57,6 +60,13 @@ public class ArtistaController {
         model.addAttribute("currentPage", artistaPage.getNumber());
         model.addAttribute("totalPages", artistaPage.getTotalPages());
     }
+	
+	@GetMapping("/api/artistas/citas/{id}")
+	@ResponseBody
+	public List<Map<String, Object>> getCitasArtista(@PathVariable Long id) {
+	    return citaService.getCitasParaCalendario(id);
+	}
+	
 	
 	@GetMapping("/Dashboard/Artistas")
 	public String PintarDashboardArtistas(@RequestParam(name = "idEditar", required = false) Long idEditar,
@@ -157,6 +167,9 @@ public class ArtistaController {
 	        artistaService.delete(artista);
 	    }    
 	    return "redirect:/Dashboard/Artistas";
-	}	
+	}
+	
+	
 }
+
 
