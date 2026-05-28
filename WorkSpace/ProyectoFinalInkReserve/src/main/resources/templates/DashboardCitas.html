@@ -97,7 +97,7 @@
 			                    <td class="fw-bold text-success" th:text="${cita.precioSesion} + '€'">120€</td>
 			                    
 			                    <td class="text-center">
-									<a th:href="@{/Dashboard/Citas(idEditar=${cita.id})}" class="btn btn-outline-info"  data-bs-target="#ModalFormCitas"><i class="bi bi-pencil"></i></a>
+									<a th:href="@{/Dashboard/Citas(idEditar=${cita.id})}" class="btn btn-outline-info" ><i class="bi bi-pencil"></i></a>
 									<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarCita"  th:data-bs-id="${cita.id}">
 											<i class="bi bi-trash"></i></button>															
 			                    </td>
@@ -140,14 +140,17 @@
 	 	});
 	 </script>
 
- 	 <script th:if="${formularioCita.id != null && formularioCita.id != 0}">
+ 	 <script th:if="${formularioCita !=null && formularioCita.id != null && formularioCita.id != 0}">
 		 	document.addEventListener("DOMContentLoaded", function() {
 		 	    const modalElement = document.getElementById('ModalFormCitas');
 		 	    if (modalElement) {
 		 	        const myModal = new bootstrap.Modal(modalElement);
 		 	        myModal.show();	        
 		 	        modalElement.addEventListener('hidden.bs.modal', function () {
-		 	            window.location.href = '/Dashboard/Citas';
+						const url = new URL(window.location.href);
+		                if (url.searchParams.has('idEditar')) {
+		                    window.location.href = '/Dashboard/Citas';
+		                }
 		 	        });
 		 	    }
 		 	});
@@ -193,6 +196,15 @@
 	 	    }
 	 	});
  	</script>
+	<script th:inline="javascript" th:if="${abrirModal}">
+  	    document.addEventListener("DOMContentLoaded", function() {
+  	        var miModalElemento = document.getElementById('ModalFormCitas');
+  	        if (miModalElemento) {
+  	            var myModal = new bootstrap.Modal(miModalElemento);
+  	            myModal.show();
+  	        }
+  	    });
+  	</script>
 	
 	<script th:src="@{/js/CalculoPrecioAuto.js}"></script>
 	<div th:replace="~{fragments/FooterApp :: footer}"></div>

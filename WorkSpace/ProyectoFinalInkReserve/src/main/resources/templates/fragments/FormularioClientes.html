@@ -40,7 +40,7 @@
 
 						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Fecha de Nacimiento</label>
-							<input type="date" th:field="*{fechaNacimiento}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
+							<input type="date" name="fechaNacimiento" th:value="${formularioCliente.fechaNacimiento != null ? #temporals.format(formularioCliente.fechaNacimiento, 'yyyy-MM-dd') : ''}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
                         </div>
 
 						<div class="col-md-6">

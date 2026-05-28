@@ -3,6 +3,9 @@ package com.salesianostriana.dam.proyectofinalinkreserve.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +36,9 @@ public class Cliente {
 	@NotBlank(message = "El teléfono es obligatorio.")
 	private String telefonoCliente;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDate fechaNacimiento;
+	
 	
 	
 	private String direccion;
