@@ -94,7 +94,7 @@
 
                             <div class="col-md-6">
                                 <label class="form-label text-secondary small fw-bold">Sesiones Estimadas</label>
-                                <input type=" number"min="1" value="1" th:field="*{sesionesTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="1">
+								<input type="number" id="sesionesTatuaje" name="sesionesTatuaje" min="1" th:field="*{sesionesTatuaje}" class="form-control bg-dark border-secondary text-white" placeholder="1">
                                 <div th:if="${#fields.hasErrors('sesionesTatuaje')}" th:errors="*{sesionesTatuaje}" class="text-danger small d-block mt-1"></div>
                             </div>
 

@@ -39,5 +39,9 @@ document.addEventListener("DOMContentLoaded", function() {
         inputHoras.addEventListener('change', calcularPrecioCita);
     }
 
-    calcularPrecioCita();
+    const idInput = document.getElementById('id') || document.querySelector('input[name="id"][type="hidden"]');
+    const esEdicion = idInput && idInput.value && idInput.value.trim() !== '';
+    if (!esEdicion) {
+        calcularPrecioCita();
+    }
 });
