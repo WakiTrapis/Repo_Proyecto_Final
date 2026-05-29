@@ -37,7 +37,25 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 		this.tatuajeService = tatuajeService;
 	}
 	
+	// Método para obtener los datos del dashboard según el filtro
+	public Map<String, Object> getDatosDashboard(String fechaStr, String filtro) {
+	    AgendaCitas agenda = getAgendaCitasDia(fechaStr);
+	    Map<String, Object> datos = new HashMap<>();
+
+	    if ("sinArtista".equals(filtro)) {
+	        datos.put("listaCitas", obtenerCitasSinArtista());
+	        datos.put("filtroActual", "sinArtista");
+	    } else {
+	        datos.put("listaCitas", agenda.getListaCitas());
+	        datos.put("fechaActual", agenda.getFechaActual());
+	        datos.put("diaAnteriorStr", agenda.getDiaAnteriorStr());
+	        datos.put("diaSiguienteStr", agenda.getDiaSiguienteStr());
+	        datos.put("filtroActual", "fecha");
+	    }
+	    return datos;
+	}
 	
+	// Método para obtener las citas de un día específico
 	public AgendaCitas getAgendaCitasDia(String fechaStr) {
 		
 		LocalDate fechaSeleccionada = (fechaStr != null && !fechaStr.isEmpty())
@@ -57,6 +75,7 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	            .build();
 	}
 	
+	//Consultas personalizadas
 	public List<Cita> obtenerCitasSinArtista() {
 	    return citaRepository.findByArtistaIsNull();
 	}
@@ -69,25 +88,19 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	    return citaRepository.findArtistasMasDemandados(PageRequest.of(0, 3));
 	}
 	
-	public Cita guardarCitaConCalculo(Cita cita) {
-	    if (cita.getTatuaje() != null && cita.getArtista() != null) {
-	        double precioTatuaje = cita.getTatuaje().getPrecioTatuaje();
-	        int sesiones = cita.getTatuaje().getSesionesTatuaje();
-	        if (sesiones <= 0) sesiones = 1;   
-	        double precioHoraArtista = cita.getArtista().getPrecioHora();
-	        double horas = cita.getDuracion();
-	        double precioFinal = (precioTatuaje / sesiones) + (precioHoraArtista * horas);    
-	        cita.setPrecioSesion(precioFinal);
-	    }
-	    return citaRepository.save(cita);
-	}
+	
 	
 	public void calcularYAsignarPrecioCita(Cita cita) {
         if (cita.getTatuaje() != null && cita.getArtista() != null) {
             
             Optional<Tatuaje> tatuajeOpt = tatuajeService.findById(cita.getTatuaje().getId());
             Optional<Artista> artistaOpt = artistaService.findById(cita.getArtista().getId());
-
+            double precioTatuaje;
+            int sesionesTotales;
+            double precioHoraArtista;
+            double duracionSesion;
+            double precioCalculado;
+            
             if (tatuajeOpt.isPresent() && artistaOpt.isPresent()) {
                 Tatuaje tatuaje = tatuajeOpt.get();
                 Artista artista = artistaOpt.get();
@@ -98,14 +111,13 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
                 if (cita.getDuracion() == null || cita.getDuracion() <= 0) {
                     throw new TarifaInvalidaException("La duración de la sesión debe ser superior a 0 horas.");
                 }
-                double precioTatuaje = (tatuaje.getPrecioTatuaje() != null) ? tatuaje.getPrecioTatuaje() : 0.0;
-                int sesionesTotales = (tatuaje.getSesionesTatuaje() > 0) ? tatuaje.getSesionesTatuaje() : 1;
+                
+                precioTatuaje = tatuaje.getPrecioTatuaje();
+                sesionesTotales = tatuaje.getSesionesTatuaje();
+                precioHoraArtista = artista.getPrecioHora();
+                duracionSesion = cita.getDuracion();
 
-                double precioHoraArtista = (artista.getPrecioHora() != null) ? artista.getPrecioHora() : 0.0;
-
-                double duracionSesion = (cita.getDuracion() != null) ? cita.getDuracion() : 0.0;
-
-                double precioCalculado = (precioTatuaje / sesionesTotales) + (precioHoraArtista * duracionSesion);
+                precioCalculado = (precioTatuaje / sesionesTotales) + (precioHoraArtista * duracionSesion);
 
                 if (precioCalculado <= 0) {
                     throw new TarifaInvalidaException("Error en el cálculo: El precio de la sesión no puede ser igual o inferior a 0€.");
@@ -122,6 +134,7 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 		return super.save(cita);
 	}
 	
+	@Override
 	public Cita edit(Cita cita) {
 		validarDisponibilidadArtista(cita);
 		calcularYAsignarPrecioCita(cita);
@@ -143,9 +156,9 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 		}
 	}
 	
+	// Método para obtener las citas de un artista para el calendario
 	public List<Map<String, Object>> getCitasParaCalendario(Long Id) {
 	    List<Cita> citas = citaRepository.findByArtistaId(Id);
-	    
 	    
 	    return citas.stream().map(cita -> {
 	        Map<String, Object> evento = new HashMap<>();

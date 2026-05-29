@@ -18,9 +18,7 @@
 			<button type="button" class="btn btn-success px-4 py-2 fw-bold" style="background-color: #00a86b; border: none;" data-bs-toggle="modal" data-bs-target="#ModalFormCitas">
                 <i class="bi bi-plus-lg me-2"></i> Agregar Cita
 			</button>
-			<div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
-			<div th:replace="~{fragments/ConfirmacionEliminarCita :: modalEliminarCita}"></div>
-			<div th:replace="~{fragments/FichaCita :: modalFichaCitas}"></div>
+			
 		</div>
 
 		<div class="row g-4">
@@ -86,7 +84,8 @@
 			                </tr>
 			            </thead>
 			            <tbody>
-			                <tr class="border-bottom border-dark clickable-row" th:each="cita : ${listaCitas}" th:data-href="@{/Dashboard/Citas(verPerfilId=${cita.id})}" style="cursor: pointer;">
+			                <tr class="border-bottom border-dark" th:each="cita : ${listaCitas}" th:data-clickable-href="@{/Dashboard/Citas(verPerfilId=${cita.id}, fecha=${fechaActual}, filtro=${filtroActual})}"
+							 style="cursor: pointer;">
 			                    <td class="fw-semibold" th:text="${cita.id}">1</td> 
 			                    
 			                    <td class="fw-bold text-info" th:text="${#temporals.format(cita.fechaInicio, 'HH:mm') + ' - ' + #temporals.format(cita.fechaFinal, 'HH:mm')}">16:00 - 19:00</td>
@@ -97,7 +96,7 @@
 			                    <td class="fw-bold text-success" th:text="${cita.precioSesion} + '€'">120€</td>
 			                    
 			                    <td class="text-center">
-									<a th:href="@{/Dashboard/Citas(idEditar=${cita.id})}" class="btn btn-outline-info" ><i class="bi bi-pencil"></i></a>
+									<a th:href="@{/Dashboard/Citas(idEditar=${cita.id}, fecha=${fechaActual}, filtro=${filtroActual})}" class="btn btn-outline-info" ><i class="bi bi-pencil"></i></a>
 									<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEliminarCita"  th:data-bs-id="${cita.id}">
 											<i class="bi bi-trash"></i></button>															
 			                    </td>
@@ -127,45 +126,15 @@
 	        </div> 
 		</div>
 	 </div> 
-	 <script th:if="${fichaCita != null}">
-	 	document.addEventListener("DOMContentLoaded", function() {
-	 	    const modalElement = document.getElementById('ModalFichaCitas'); 
-	 	    if (modalElement) {
-	 	        const myModal = new bootstrap.Modal(modalElement);
-	 	        myModal.show();
-	 	        modalElement.addEventListener('hidden.bs.modal', function () {
-	 	            window.location.href = '/Dashboard/Citas';
-	 	        });
-	 	    }
-	 	});
-	 </script>
-
- 	 <script th:if="${formularioCita !=null && formularioCita.id != null && formularioCita.id != 0}">
-		 	document.addEventListener("DOMContentLoaded", function() {
-		 	    const modalElement = document.getElementById('ModalFormCitas');
-		 	    if (modalElement) {
-		 	        const myModal = new bootstrap.Modal(modalElement);
-		 	        myModal.show();	        
-		 	        modalElement.addEventListener('hidden.bs.modal', function () {
-						const url = new URL(window.location.href);
-		                if (url.searchParams.has('idEditar')) {
-		                    window.location.href = '/Dashboard/Citas';
-		                }
-		 	        });
-		 	    }
-		 	});
- 	 </script>
-
+	 <div th:replace="~{fragments/FormularioCitas :: modalNuevaCita}"></div>
+	 <div th:replace="~{fragments/ConfirmacionEliminarCita :: modalEliminarCita}"></div>
+	 <div th:replace="~{fragments/FichaCita :: modalFichaCitas}"></div>
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	 <script th:src="@{/js/DashboardUtils.js}"></script>
+	 <script th:src="@{/js/CalculoPrecioAuto.js}"></script>
+	 
 	 <script>
-	 	document.addEventListener("DOMContentLoaded", function() {
-	 	    const filas = document.querySelectorAll(".clickable-row");
-	 	    filas.forEach(fila => {
-	 	        fila.addEventListener("click", function(e) {
-	 	            if (!e.target.closest('a') && !e.target.closest('button')) {
-	 	                window.location.href = this.dataset.href;
-	 	            }
-	 	        });
-	 	    });
+		document.addEventListener("DOMContentLoaded", function () {
 	 	    const modalCitas = document.getElementById('ModalFormCitas');
 	 	    if (modalCitas) {
 	 	        modalCitas.addEventListener('shown.bs.modal', function () {
@@ -196,18 +165,22 @@
 	 	    }
 	 	});
  	</script>
-	<script th:inline="javascript" th:if="${abrirModal}">
-  	    document.addEventListener("DOMContentLoaded", function() {
-  	        var miModalElemento = document.getElementById('ModalFormCitas');
-  	        if (miModalElemento) {
-  	            var myModal = new bootstrap.Modal(miModalElemento);
-  	            myModal.show();
-  	        }
-  	    });
-  	</script>
+	<!-- Abrir modal ficha cita -->
+	<div th:if="${fichaCita != null}"
+	     data-auto-open-modal="ModalFichaCitas">
+	</div>
+
+	<!-- Abrir modal edición -->
+	<div th:if="${formularioCita != null && formularioCita.id != null && formularioCita.id != 0}"
+	     data-auto-open-modal="ModalFormCitas">
+	</div>
+
+	<!-- Abrir modal si hay errores -->
+	<div th:if="${abrirModal}"
+	     data-auto-open-modal="ModalFormCitas">
+	</div>
 	
-	<script th:src="@{/js/CalculoPrecioAuto.js}"></script>
 	<div th:replace="~{fragments/FooterApp :: footer}"></div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	
 </body>
 </html>

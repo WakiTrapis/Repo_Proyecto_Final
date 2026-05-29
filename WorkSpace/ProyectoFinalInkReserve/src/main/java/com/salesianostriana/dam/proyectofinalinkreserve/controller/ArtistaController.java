@@ -1,13 +1,10 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
+
+
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,12 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -35,27 +29,16 @@ public class ArtistaController {
 
 	
 	private final ArtistaService artistaService;
-	private final TatuajeService tatuajeService;
 	private final CitaService citaService;
-	private final FotosService fotosService; 
+	private final FotosService fotosService;
 	
 	private void cargarDatosDashboard(Model model, String search, int page, int size) {
-        List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Artista> artistaPage;
-        
-        model.addAttribute("topArtistas", topArtistas);
-
-        if (search != null && !search.trim().isEmpty()) {
-            artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
-            model.addAttribute("search", search);
-        } else {
-            artistaPage = artistaService.findAllPaginado(pageable);
-        }
-        
-        model.addAttribute("listaArtistas", artistaPage.getContent());
-        model.addAttribute("currentPage", artistaPage.getNumber());
-        model.addAttribute("totalPages", artistaPage.getTotalPages());
+		model.addAttribute("topArtistas", citaService.obtenerTop3ArtistasMasDemandados());
+		Map<String, Object> datos= artistaService.getDatosDashboard(search, page, size);
+		model.addAllAttributes(datos);
+		if (search != null && !search.trim().isEmpty()) {
+	        model.addAttribute("search", search);
+	    }
     }
 	
 	@GetMapping("/api/artistas/citas/{id}")
@@ -138,34 +121,9 @@ public class ArtistaController {
 	
 	@GetMapping("/Dashboard/Artistas/Eliminar/{id}")
 	public String submitEliminar(@PathVariable("id") Long id, Model model) {
-	    Optional<Artista> artistaEncontrado = artistaService.findById(id);
-	    
-	    if (artistaEncontrado.isPresent()) {
-	        Artista artista = artistaEncontrado.get();
-	        LocalDateTime ahora = LocalDateTime.now();
-	        if (artista.getTatuajes() != null && !artista.getTatuajes().isEmpty()) {
-	            List<Tatuaje> listaTatuajesSegura = new ArrayList<>(artista.getTatuajes());
-	            for (Tatuaje tatuaje : listaTatuajesSegura) {
-	                tatuaje.setArtista(null);
-	                tatuajeService.save(tatuaje);
-	            }
-	        }     
-	        if (artista.getCitas() != null && !artista.getCitas().isEmpty()) {
-	            List<Cita> listaCitasSegura = new ArrayList<>(artista.getCitas());
-	            for (Cita cita : listaCitasSegura) {
-	                if (cita.getFechaInicio() != null && cita.getFechaInicio().isBefore(ahora)) {
-	                    cita.setArtista(null);
-	                    citaService.save(cita);
-	                } else {
-	                    citaService.delete(cita);
-	                }
-	            }
-	        }
-	        artistaService.delete(artista);
-	    }    
+		artistaService.eliminarArtista(id);    
 	    return "redirect:/Dashboard/Artistas";
 	}
-	
 	
 }
 
