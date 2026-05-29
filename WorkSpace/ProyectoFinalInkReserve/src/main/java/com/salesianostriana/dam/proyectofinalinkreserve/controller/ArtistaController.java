@@ -1,9 +1,9 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 
-
-
 import java.util.List;
+
+
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +28,6 @@ public class ArtistaController {
 	
 	private final ArtistaService artistaService;
 	private final CitaService citaService;
-	private final FotosService fotosService;
 	
 	private void cargarDatosDashboard(Model model, String search, int page, int size) {
 		model.addAttribute("topArtistas", citaService.obtenerTop3ArtistasMasDemandados());
@@ -78,7 +75,6 @@ public class ArtistaController {
 	@PostMapping("/nuevoArtistaCompleto")
 	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,
 			BindingResult bindingResult,
-			@RequestParam("archivoFoto") MultipartFile archivo,
 			Model model){
 		if (bindingResult.hasErrors()) {
 	        model.addAttribute("abrirModal", true);
@@ -86,12 +82,8 @@ public class ArtistaController {
 	        return "DashboardArtistas"; 
 	    }
 		try {
-			if (!archivo.isEmpty()) {
-	        String nombreFoto = fotosService.store(archivo);
-	        artista.setFotoArtista(nombreFoto);
-			}
 	        artistaService.save(artista);
-	        return "redirect:/Dashboard/Artistas";	
+	        return "DashboardArtistas";	
 		} catch (DniInvalidoException ex) {
 			model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioArtista", artista);
@@ -105,9 +97,9 @@ public class ArtistaController {
 	
 	@PostMapping("/Dashboard/Artistas/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista,
-		 @RequestParam("archivoFoto") MultipartFile archivo,Model model ) {
+		 Model model ) {
 		try {
-		artistaService.editarArtista(artista, archivo);
+		artistaService.editarArtista(artista);
 		return "redirect:/Dashboard/Artistas";
 		} catch (DniInvalidoException ex) {
 			model.addAttribute("errorDni", ex.getMessage());

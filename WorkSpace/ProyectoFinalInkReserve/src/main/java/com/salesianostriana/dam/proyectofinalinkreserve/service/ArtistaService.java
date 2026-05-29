@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -24,30 +23,20 @@ import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseService
 public class ArtistaService extends BaseServiceImpl <Artista, Long, ArtistaRepository> {
 
 	private final ArtistaRepository artistaRepository;
-	private final FotosService fotosService;
 	private final TatuajeService tatuajeService;
 	private final CitaRepository citaRepository;
 
 	
 	
-	public ArtistaService(ArtistaRepository repository, ArtistaRepository artistaRepository, FotosService fotosService,
+	public ArtistaService(ArtistaRepository repository, ArtistaRepository artistaRepository,
 			TatuajeService tatuajeService, CitaRepository citaRepository) {
 		super(repository);
 		this.artistaRepository = artistaRepository;
-		this.fotosService = fotosService;
 		this.tatuajeService = tatuajeService;
 		this.citaRepository = citaRepository;
 	}
 
-	public void editarArtista(Artista artistaEditado, MultipartFile archivo) {
-	    Artista artistaOriginal = findById(artistaEditado.getId()).get();
-	    if (archivo != null && !archivo.isEmpty()) {
-	        String nombreFoto = fotosService.store(archivo);
-	        artistaEditado.setFotoArtista(nombreFoto);
-	    } else {
-	        artistaEditado.setFotoArtista(artistaOriginal.getFotoArtista());
-	    }
-
+	public void editarArtista(Artista artistaEditado) {
 	    if (artistaEditado.getDniArtista() == null || !artistaEditado.getDniArtista().matches("^[0-9]{8}[A-Za-z]$")) {
             throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
         }

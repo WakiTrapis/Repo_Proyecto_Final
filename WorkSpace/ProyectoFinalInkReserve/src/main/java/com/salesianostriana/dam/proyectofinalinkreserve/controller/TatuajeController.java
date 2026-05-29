@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
 import org.springframework.stereotype.Controller;
+
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,12 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class TatuajeController {
 	
 	private final TatuajeService tatuajeService;
-	private final FotosService fotosService;
 	private final ArtistaService artistaService;
 	private final ClienteService clienteService;
 	
@@ -68,7 +67,6 @@ public class TatuajeController {
 	@PostMapping("/nuevoTatuajeCompleto")
 	public String submit(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje,
 			BindingResult bindingResult,
-			@RequestParam("archivoImagen") MultipartFile archivo,
 			Model model){
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("abrirModalTatuaje", true);
@@ -78,10 +76,6 @@ public class TatuajeController {
 	        return "DashboardTatuajes";
 		}
 		try {
-			if (!archivo.isEmpty()) {
-		        String nombreFoto = fotosService.store(archivo);
-		        tatuaje.setImagenTatuaje(nombreFoto);
-		    }
 			tatuajeService.save(tatuaje);
 			return "redirect:/Dashboard/Tatuajes";
 	} catch (TarifaInvalidaException ex) {
@@ -98,11 +92,10 @@ public class TatuajeController {
 	
 	@PostMapping("/Dashboard/Tatuajes/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, 
-			 @RequestParam("archivoImagen") MultipartFile archivo,
 			Model model) {
 		try {
-			tatuajeService.editarTatuaje(tatuaje, archivo);
-			return "redirect:/Dashboard/Tatuajes";
+			tatuajeService.editarTatuaje(tatuaje);
+			return "DashboardTatuajes";
 			} catch (TarifaInvalidaException ex) {
 				model.addAttribute("errorTarifa", ex.getMessage());
 		        model.addAttribute("formularioTatuaje", tatuaje);

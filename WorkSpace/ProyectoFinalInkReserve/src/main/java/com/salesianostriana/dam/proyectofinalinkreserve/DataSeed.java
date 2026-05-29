@@ -40,7 +40,7 @@ public class DataSeed {
 				.telefonoArtista("345345678")
 				.numeroHigienico("123456789")
 				.experiencia(5)
-				.fotoArtista("fotoArtista1.png")
+				.fotoArtista("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScskPIMZJMMekOCpeHWnVtlhll8Fi73yCoYA&s")
 				.build();
 		
 		artistaRepository.save(a1);
@@ -53,7 +53,7 @@ public class DataSeed {
 				.telefonoArtista("494528367")
 				.numeroHigienico("2670953246")
 				.experiencia(10)
-				.fotoArtista("fotoArtista2.png")
+				.fotoArtista("https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/e40b6ea6361a1abe28f32e7910f63b66/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg")
 				.build();
 		
 		artistaRepository.save(a2);
@@ -66,7 +66,7 @@ public class DataSeed {
 				.telefonoArtista("298678326")
 				.numeroHigienico("346845433323")
 				.experiencia(2)
-				.fotoArtista("fotoArtista4.png")
+				.fotoArtista(" https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyZmlsfGVufDB8fDB8fHww")
 				.build();
 		
 		artistaRepository.save(a3);
@@ -79,7 +79,7 @@ public class DataSeed {
 				.telefonoArtista("495678234")
 				.numeroHigienico("346845433323")
 				.experiencia(8)
-				.fotoArtista("fotoArtista3.png")
+				.fotoArtista(" https://images.squarespace-cdn.com/content/v1/5d77a7f8ad30356d21445262/f25b9827-c1e5-43b5-9cdb-a718fb90f38b/fotos-de-perfil-luz-natural.jpg")
 				.build();
 		
 		artistaRepository.save(a4);
@@ -92,7 +92,7 @@ public class DataSeed {
 				.telefonoArtista("356834567")
 				.numeroHigienico("123953923940")
 				.experiencia(15)
-				.fotoArtista("fotoArtista5.png")
+				.fotoArtista("https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyZmlsJTIwcHJlZGV0ZXJtaW5hZG98ZW58MHx8MHx8fDA%3D")
 				.build();
 		
 		artistaRepository.save(a5);
@@ -105,7 +105,7 @@ public class DataSeed {
 				.telefonoArtista("345676767")
 				.numeroHigienico("123435788")
 				.experiencia(10)
-				.fotoArtista("fotoArtista6.png")
+				.fotoArtista("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_a9I-AkqF9EXOPbRQ5LLQT8jYvQClcycWQ&s")
 				.build();
 		
 		artistaRepository.save(a6);
@@ -192,7 +192,7 @@ public class DataSeed {
 		Tatuaje t1 = Tatuaje.builder()
 				.cliente(c3)
 				.artista(a3)
-				.imagenTatuaje("tatuaje1.jpg")
+				.imagenTatuaje("https://i.pinimg.com/736x/bc/e9/5b/bce95bf5636b6f1fe6a71cb57bbc22fb.jpg")
 				.nombreTatuaje("Dragon")
 				.descripcionTatuaje("Tatuaje bombona de butano")
 				.estiloTatuaje("Manga")
@@ -208,7 +208,7 @@ public class DataSeed {
 		Tatuaje t2 = Tatuaje.builder()
 				.cliente(c2)
 				.artista(a3)
-				.imagenTatuaje("tatuaje2.jpg")
+				.imagenTatuaje("https://www.avantgardetattoo.es/wp-content/uploads/2020/03/1-scaled.jpg")
 				.nombreTatuaje("Break Brain")
 				.descripcionTatuaje("Desata tu mente")
 				.estiloTatuaje("Simplista")
@@ -224,7 +224,7 @@ public class DataSeed {
 		Tatuaje t3 = Tatuaje.builder()
 				.cliente(c5)
 				.artista(a4)
-				.imagenTatuaje("tatuaje3.jpg")
+				.imagenTatuaje("https://circetattoo.com/wp-content/uploads/2023/06/IMG_20230422_205428_087-930x620.jpg")
 				.nombreTatuaje("Iluminati")
 				.descripcionTatuaje("Maliante de carton")
 				.estiloTatuaje("Hiperrealismo")
@@ -240,7 +240,7 @@ public class DataSeed {
 		Tatuaje t4 = Tatuaje.builder()
 				.cliente(c2)
 				.artista(a5)
-				.imagenTatuaje("tatuaje4.jpg")
+				.imagenTatuaje("https://static.tatship.com/idea-page-posts/300eb37f-1efd-4f28-97bf-01cdf6f03419.jpg")
 				.nombreTatuaje("Brujula")
 				.descripcionTatuaje("Para perder el norte")
 				.estiloTatuaje("Hiperrealismo")
@@ -256,7 +256,7 @@ public class DataSeed {
 		Tatuaje t5 = Tatuaje.builder()
 				.cliente(c4)
 				.artista(a1)
-				.imagenTatuaje("tatuaje5.jpg")
+				.imagenTatuaje("https://moamadridtattoo.com/images/9651-4-tatuaje-rosa-antebrazo.jpg")
 				.nombreTatuaje("Flor")
 				.descripcionTatuaje("Huele flamaaa")
 				.estiloTatuaje("Retro")
@@ -272,7 +272,7 @@ public class DataSeed {
 		Tatuaje t6 = Tatuaje.builder()
 				.cliente(c6)
 				.artista(a2)
-				.imagenTatuaje("tatuaje6.jpg")
+				.imagenTatuaje("https://lamanozurda.es/wp-content/uploads/2025/04/1-4.jpg")
 				.nombreTatuaje("Cuello vuelto")
 				.descripcionTatuaje("Para los frioleros")
 				.estiloTatuaje("retro")
@@ -288,7 +288,7 @@ public class DataSeed {
 		Tatuaje t7 = Tatuaje.builder()
 				.cliente(c4)
 				.artista(a1)
-				.imagenTatuaje("tatuaje7.jpg")
+				.imagenTatuaje("https://pacocachadas.com/wp-content/uploads/tatuaje-geometrico-murcia.jpg")
 				.nombreTatuaje("Mandala Lobo")
 				.descripcionTatuaje("Para los amantes de los lobos")
 				.estiloTatuaje("Hiperrealismo")

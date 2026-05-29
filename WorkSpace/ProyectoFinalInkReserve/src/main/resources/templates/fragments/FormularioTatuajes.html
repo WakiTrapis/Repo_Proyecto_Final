@@ -102,9 +102,8 @@
                                 <label class="form-label text-secondary small fw-bold">Fotografía del Diseño / Tatuaje</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-image"></i></span>
-                                    <input type="file" name="archivoImagen" class="form-control bg-dark border-secondary text-white" accept="image/*">
+                                    <input type="url" name="imagenTatuaje" class="form-control bg-dark border-secondary text-white" id="imagenTatuaje" placeholder="URL de la imagen" th:field="*{imagenTatuaje}">
                                 </div>
-                                <div class="form-text text-muted small">Formatos permitidos: JPG, PNG. Máx 5MB.</div>
                             </div>
 
                             <div class="col-12">

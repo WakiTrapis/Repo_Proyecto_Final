@@ -63,14 +63,13 @@
 						<tr class="border-bottom border-dark" th:each="artista : ${listaArtistas}" th:data-clickable-href="@{/Dashboard/Artistas(verPerfilId=${artista.id})}" style="cursor: pointer;">
 							<td class="py-3 text-center" style="width: 90px;">
 								<img th:if="${artista.fotoArtista != null}" 
-								     th:src="@{/uploads/{filename}(filename=${artista.fotoArtista})}" 
-								     onerror="this.src='/img/no-image.png';"
+									 th:src="${artista.fotoArtista}"
 								     class="rounded-circle" 
 								     style="width: 65px; height: 65px; object-fit: cover;" 
 								     alt="Avatar">
 
 								<img th:unless="${artista.fotoArtista != null}" 
-								     th:src="@{/img/no-image.png}" 
+								     th:src="${artista.fotoArtista}"
 								     class="rounded-circle" 
 								     style="width: 65px; height: 65px; object-fit: cover;" 
 								     alt="Predeterminado">

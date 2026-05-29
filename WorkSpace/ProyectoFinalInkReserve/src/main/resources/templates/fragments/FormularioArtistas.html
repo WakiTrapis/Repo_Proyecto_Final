@@ -73,9 +73,8 @@
 				        </div>
 
 				        <div class="col-md-12">
-				            <label class="form-label text-secondary small fw-bold">Fotografía del Artista</label>
-				            <input type="file" name="archivoFoto" class="form-control bg-dark border-secondary text-white">
-				            <div class="form-text text-muted small mt-1">Formatos permitidos: JPG, PNG. Máx 5MB.</div>
+				            <label for="imagen" class="form-label text-secondary small fw-bold">Fotografía del Artista</label>
+				            <input type="url" name="fotoArtista" class="form-control bg-dark border-secondary text-white" id="fotoArtista" placeholder="URL de la imagen" th:field="*{fotoArtista}">
 				        </div>
 
 				    </div>

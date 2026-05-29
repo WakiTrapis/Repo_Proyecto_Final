@@ -17,7 +17,7 @@
                         
                         <div class="col-md-4 text-center border-end border-dark pe-md-4">
                             <div class="position-relative d-inline-block mb-3">
-                                <img th:src="${perfilArtista.fotoArtista != null} ? @{/uploads/{img}(img=${perfilArtista.fotoArtista})} : @{/img/no-image.png}" 
+                                <img th:src="${perfilArtista.fotoArtista}" 
                                      class="img-fluid rounded-4 border border-secondary shadow-sm" 
                                      style="width: 160px; height: 160px; object-fit: cover;" 
                                      alt="Fotografía del artista">
@@ -121,7 +121,7 @@
 					        <div class="row g-3">
 					            <div class="col-4 col-sm-3 text-center" th:each="tatuaje : ${perfilArtista.tatuajes}" th:if="${tatuaje != null}">
 					                <div class="position-relative border border-secondary rounded p-1 bg-black">
-					                    <img th:src="${tatuaje.ImagenTatuaje != null} ? @{/uploads/{img}(img=${tatuaje.ImagenTatuaje})} : @{/img/no-image.png}" 
+					                    <img th:src="${tatuaje.imagenTatuaje}"
 					                         class="img-fluid rounded" 
 					                         style="height: 90px; width: 100%; object-fit: cover;"
 					                         th:title="${tatuaje.nombreTatuaje != null} ? ${tatuaje.nombreTatuaje} : 'Diseño'">
@@ -154,14 +154,17 @@
 		    function getLunes(fecha) {
 		        const d = new Date(fecha);
 		        const dia = d.getDay();
-		        const diff = (dia === 0) ? -6 : 1 - dia;
-		        d.setDate(d.getDate() + diff);
-		        d.setHours(0, 0, 0, 0);
+				const diff = (dia === 0) ? -6 : 1 - dia;
+				d.setDate(d.getDate() + diff);
+				d.setHours(0, 0, 0, 0);
 		        return d;
 		    }
 	
 		    function formatFecha(fecha) {
-		        return fecha.toISOString().split('T')[0];
+				const anio = fecha.getFullYear();
+				    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+				    const dia = String(fecha.getDate()).padStart(2, '0');
+				    return `${anio}-${mes}-${dia}`;
 		    }
 	
 		    function formatHora(isoStr) {

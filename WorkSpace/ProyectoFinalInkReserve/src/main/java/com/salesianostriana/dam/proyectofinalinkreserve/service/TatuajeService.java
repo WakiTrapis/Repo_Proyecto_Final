@@ -3,6 +3,7 @@ package com.salesianostriana.dam.proyectofinalinkreserve.service;
 
 
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
@@ -23,14 +23,12 @@ import com.salesianostriana.dam.proyectofinalinkreserve.service.base.BaseService
 public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepository> {
 
 	private final TatuajeRepository tatuajeRepository;
-	private final FotosService fotosService;
 	private final CitaRepository citaRepository;
 
-	public TatuajeService(TatuajeRepository repository, TatuajeRepository tatuajeRepository,FotosService fotosService, CitaRepository citaRepository) {
+	public TatuajeService(TatuajeRepository repository, TatuajeRepository tatuajeRepository, CitaRepository citaRepository) {
 		super(repository);
 		this.tatuajeRepository = tatuajeRepository;
 		this.citaRepository = citaRepository;
-		this.fotosService =  fotosService;
 	}
 	
 	public void eliminarTatuaje(Long id) {
@@ -51,15 +49,7 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
         });
     }
 	
-	public void editarTatuaje(Tatuaje tatuajeEditado, MultipartFile archivo) {
-	    Tatuaje tatuajeOriginal = findById(tatuajeEditado.getId()).get();
-	    if (archivo != null && !archivo.isEmpty()) {
-	        String nombreFoto = fotosService.store(archivo);
-	        tatuajeEditado.setImagenTatuaje(nombreFoto);
-	    } else {
-	        tatuajeEditado.setImagenTatuaje(tatuajeOriginal.getImagenTatuaje());
-	    }
-	    
+	public void editarTatuaje(Tatuaje tatuajeEditado) {
 	    if (tatuajeEditado.getPrecioTatuaje() == null) {
             throw new TarifaInvalidaException("El precio tiene que ser superior a 0.");
         }
