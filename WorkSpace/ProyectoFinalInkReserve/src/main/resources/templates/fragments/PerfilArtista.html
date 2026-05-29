@@ -169,7 +169,7 @@
 		    }
 	
 		    function cargarCitas(artistaId) {
-		        fetch(`/Dashboard/Artistas/citas/${artistaId}`)
+		        fetch(`/api/artistas/citas/${artistaId}`)
 		            .then(res => res.json())
 		            .then(data => {
 		                citasArtista = data;
