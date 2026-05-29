@@ -137,7 +137,9 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	@Override
 	public Cita edit(Cita cita) {
 		validarDisponibilidadArtista(cita);
-		calcularYAsignarPrecioCita(cita);
+		if (cita.getPrecioSesion() == null || cita.getPrecioSesion() <= 0) {
+			calcularYAsignarPrecioCita(cita);
+		}
 		return super.save(cita);
 	}
 	

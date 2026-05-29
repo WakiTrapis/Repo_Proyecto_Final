@@ -80,7 +80,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label text-secondary small fw-bold">Duración (Horas)</label>
-                            <input type="number" step="0.5" min="1" id="inputHoras" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" >
+                            <input type="number" step="0.5"  id="inputHoras" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" >
 							<div th:if="${#fields.hasErrors('duracion')}" th:errors="*{duracion}" class="text-danger small d-block mt-1"></div>
 							</div>
 
