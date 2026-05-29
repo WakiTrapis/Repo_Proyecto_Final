@@ -1,13 +1,5 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
-import java.time.LocalDateTime;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,17 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.TarifaInvalidaException;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -39,36 +26,21 @@ public class TatuajeController {
 	private final FotosService fotosService;
 	private final ArtistaService artistaService;
 	private final ClienteService clienteService;
-	private final CitaService citaService;
 	
 	
 	private void cargarDatosDashboard(Model model, String filtro, String search, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Tatuaje> tatuajePage;
-        if ("sinArtista".equals(filtro)) {
-            tatuajePage = tatuajeService.obtenerTatuajesSinArtistaPaginado(pageable);
-            model.addAttribute("filtroActual", "sinArtista");
-        } else if (search != null && !search.trim().isEmpty()) {
-            tatuajePage = tatuajeService.buscarPorNombreTatuajePaginado(search.trim(), pageable);
-            model.addAttribute("search", search.trim());
-            model.addAttribute("filtroActual", "search");
-        } else {
-            tatuajePage = tatuajeService.findAllPaginado(pageable);
-            model.addAttribute("filtroActual", "normal");
-        }
-        model.addAttribute("listaTatuajes", tatuajePage.getContent());
-        model.addAttribute("currentPage", tatuajePage.getNumber());
-        model.addAttribute("totalPages", tatuajePage.getTotalPages());
+        model.addAllAttributes(tatuajeService.getDatosDashboard(filtro, search, page, size));
         model.addAttribute("listaArtistas", artistaService.findAll());
         model.addAttribute("listaClientes", clienteService.findAll());
-	}
+    }
+	
 	
 	@GetMapping("/Dashboard/Tatuajes")
 	public String PintarDashboardTatuajes(@RequestParam(name = "idEditar", required = false) Long idEditar,
 			@RequestParam(name = "verTatuId", required = false) Long verTatuId,
 			@RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size,
+            @RequestParam(value = "size", defaultValue = "8") int size,
 			@RequestParam(value = "filtro", required = false) String filtro,
 			Model model) {
 	    
@@ -92,6 +64,7 @@ public class TatuajeController {
 		return "DashboardTatuajes";
 	}
 	
+	
 	@PostMapping("/nuevoTatuajeCompleto")
 	public String submit(@Valid @ModelAttribute("formularioTatuaje") Tatuaje tatuaje,
 			BindingResult bindingResult,
@@ -101,7 +74,7 @@ public class TatuajeController {
 			model.addAttribute("abrirModalTatuaje", true);
 			model.addAttribute("listaArtistas", artistaService.findAll());
 	        model.addAttribute("listaClientes", clienteService.findAll());
-	        cargarDatosDashboard(model, null, null, 0, 4); 
+	        cargarDatosDashboard(model, null, null, 0, 8); 
 	        return "DashboardTatuajes";
 		}
 		try {
@@ -117,10 +90,11 @@ public class TatuajeController {
         model.addAttribute("abrirModal", true);
         model.addAttribute("listaArtistas", artistaService.findAll());
         model.addAttribute("listaClientes", clienteService.findAll());
-        cargarDatosDashboard(model, null,null, 0, 4);
+        cargarDatosDashboard(model, null,null, 0, 8);
         return "DashboardTatuajes";
         }
 	}
+	
 	
 	@PostMapping("/Dashboard/Tatuajes/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioTatuaje") Tatuaje tatuaje, 
@@ -142,26 +116,10 @@ public class TatuajeController {
 	
 
 	@GetMapping("/Dashboard/Tatuajes/Eliminar/{id}")
-	public String eliminarTatuaje(@PathVariable("id") Long id) {
-	    Optional<Tatuaje> tatuajeOpt = tatuajeService.findById(id);
-	    if (tatuajeOpt.isPresent()) {
-	        Tatuaje tatuaje = tatuajeOpt.get();
-	        LocalDateTime ahora = LocalDateTime.now();
-	        if (tatuaje.getCitas() != null) {
-	            List<Cita> citas = new ArrayList<>(tatuaje.getCitas());
-	            for (Cita cita : citas) {
-	                if (cita.getFechaInicio() != null && cita.getFechaInicio().isBefore(ahora)) {
-	                    cita.setTatuaje(null);
-	                    citaService.save(cita);
-	                } else {
-	                    citaService.delete(cita);
-	                }
-	            }
-	        }
-	        tatuajeService.delete(tatuaje);
-	    }    
-	    return "redirect:/Dashboard/Tatuajes";
-	}
+    public String eliminarTatuaje(@PathVariable("id") Long id) {
+        tatuajeService.eliminarTatuaje(id);
+        return "redirect:/Dashboard/Tatuajes";
+    }
 	
 	
 	
