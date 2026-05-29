@@ -95,7 +95,7 @@ public class TatuajeController {
 			Model model) {
 		try {
 			tatuajeService.editarTatuaje(tatuaje);
-			return "DashboardTatuajes";
+			return "redirect:/Dashboard/Tatuajes";
 			} catch (TarifaInvalidaException ex) {
 				model.addAttribute("errorTarifa", ex.getMessage());
 		        model.addAttribute("formularioTatuaje", tatuaje);
