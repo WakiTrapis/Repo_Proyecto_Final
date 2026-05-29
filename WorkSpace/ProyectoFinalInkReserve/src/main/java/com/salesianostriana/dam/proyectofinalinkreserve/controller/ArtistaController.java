@@ -1,31 +1,24 @@
 package com.salesianostriana.dam.proyectofinalinkreserve.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
+
+import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
-import com.salesianostriana.dam.proyectofinalinkreserve.model.Tatuaje;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.FotosService;
-import com.salesianostriana.dam.proyectofinalinkreserve.service.TatuajeService;
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -34,9 +27,22 @@ public class ArtistaController {
 
 	
 	private final ArtistaService artistaService;
-	private final TatuajeService tatuajeService;
 	private final CitaService citaService;
-	private final FotosService fotosService; 
+	
+	private void cargarDatosDashboard(Model model, String search, int page, int size) {
+		model.addAttribute("topArtistas", citaService.obtenerTop3ArtistasMasDemandados());
+		Map<String, Object> datos= artistaService.getDatosDashboard(search, page, size);
+		model.addAllAttributes(datos);
+		if (search != null && !search.trim().isEmpty()) {
+	        model.addAttribute("search", search);
+	    }
+    }
+	
+	@GetMapping("/api/artistas/citas/{id}")
+	@ResponseBody
+	public List<Map<String, Object>> getCitasArtista(@PathVariable Long id) {
+	    return citaService.getCitasParaCalendario(id);
+	}
 	
 	
 	@GetMapping("/Dashboard/Artistas")
@@ -46,92 +52,71 @@ public class ArtistaController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             Model model) {
-		List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
-		Pageable pageable = PageRequest.of(page, size);
-        Page<Artista> artistaPage;
-        model.addAttribute("topArtistas", topArtistas);
 		
-        if (search != null && !search.trim().isEmpty()) {
-            artistaPage = artistaService.buscarPorNombreArtistaPaginado(search.trim(), pageable);
-            model.addAttribute("search", search);
-        } else {
-            artistaPage = artistaService.findAllPaginado(pageable);
+		if (!model.containsAttribute("formularioArtista")) {
+            if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
+                model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
+            } else {
+                model.addAttribute("formularioArtista", new Artista());
+            }
         }
-        model.addAttribute("listaArtistas", artistaPage.getContent());
-        model.addAttribute("currentPage", artistaPage.getNumber());
-        model.addAttribute("totalPages", artistaPage.getTotalPages());
-		model.addAttribute("formularioArtista", new Artista());
-		
-		if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
-	        model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
-	    } else {
-	        model.addAttribute("formularioArtista", new Artista());
-	    }
-		
-		if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
-	        Artista artista = artistaService.findById(verPerfilId).get();
-	        model.addAttribute("perfilArtista", artista);
-	    } else {
-	        model.addAttribute("perfilArtista", null);
-	    }
-		return "DashboardArtistas";
-		
-	}
+        
+        cargarDatosDashboard(model, search, page, size);
+
+        if (verPerfilId != null && artistaService.findById(verPerfilId).isPresent()) {
+            model.addAttribute("perfilArtista", artistaService.findById(verPerfilId).get());
+        } else {
+            model.addAttribute("perfilArtista", null);
+        }
+        
+        return "DashboardArtistas";
+    }
 	
 	@PostMapping("/nuevoArtistaCompleto")
-	public String submit(@ModelAttribute("formularioArtista") Artista artista,@RequestParam("archivoFoto") MultipartFile archivo){
-		if (!archivo.isEmpty()) {
-	        String nombreFoto = fotosService.store(archivo);
-	        artista.setFotoArtista(nombreFoto);
+	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,
+			BindingResult bindingResult,
+			Model model){
+		if (bindingResult.hasErrors()) {
+	        model.addAttribute("abrirModal", true);
+	        cargarDatosDashboard(model, null, 0, 5); 
+	        return "DashboardArtistas"; 
 	    }
-		artistaService.save(artista);
-		return "redirect:/Dashboard/Artistas";
+		try {
+	        artistaService.save(artista);
+	        return "DashboardArtistas";	
+		} catch (DniInvalidoException ex) {
+			model.addAttribute("errorDni", ex.getMessage());
+	        model.addAttribute("formularioArtista", artista);
+	        model.addAttribute("abrirModal", true);
+	        cargarDatosDashboard(model, null, 0, 5);
+	        return "DashboardArtistas";
+	        }
 	}
 	
 
 	
 	@PostMapping("/Dashboard/Artistas/Editar/submit")
-	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista, @RequestParam("archivoFoto") MultipartFile archivo ) {
-		artistaService.editarArtista(artista, archivo);
+	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista,
+		 Model model ) {
+		try {
+		artistaService.editarArtista(artista);
 		return "redirect:/Dashboard/Artistas";
-	}
+		} catch (DniInvalidoException ex) {
+			model.addAttribute("errorDni", ex.getMessage());
+	        model.addAttribute("formularioArtista", artista);
+	        model.addAttribute("abrirModal", true);
+	        cargarDatosDashboard(model, null, 0, 5);
+            return "DashboardArtistas";
+		}
+    }
 	
 	
 	@GetMapping("/Dashboard/Artistas/Eliminar/{id}")
 	public String submitEliminar(@PathVariable("id") Long id, Model model) {
-	    Optional<Artista> artistaEncontrado = artistaService.findById(id);
-	    
-	    if (artistaEncontrado.isPresent()) {
-	        Artista artista = artistaEncontrado.get();
-	        LocalDateTime ahora = LocalDateTime.now();
-	        
-	        
-	        if (artista.getTatuajes() != null && !artista.getTatuajes().isEmpty()) {
-	            List<Tatuaje> listaTatuajesSegura = new ArrayList<>(artista.getTatuajes());
-	            for (Tatuaje tatuaje : listaTatuajesSegura) {
-	                tatuaje.setArtista(null);
-	                tatuajeService.save(tatuaje);
-	            }
-	        }
-	        
-	        
-	        if (artista.getCitas() != null && !artista.getCitas().isEmpty()) {
-	            List<Cita> listaCitasSegura = new ArrayList<>(artista.getCitas());
-	            for (Cita cita : listaCitasSegura) {
-	                if (cita.getFechaInicio() != null && cita.getFechaInicio().isBefore(ahora)) {
-	                    cita.setArtista(null);
-	                    citaService.save(cita);
-	                } else {
-	                    citaService.delete(cita);
-	                }
-	            }
-	        }
-	        artistaService.delete(artista);
-	    }
-	    
+		artistaService.eliminarArtista(id);    
 	    return "redirect:/Dashboard/Artistas";
 	}
 	
-	
 }
+
 

@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Cita {
 	@JoinColumn(name = "tatuaje_id")
 	private Tatuaje tatuaje;
 	
+	
 	@ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -37,14 +39,17 @@ public class Cita {
     @JoinColumn(name = "artista_id")
     private Artista artista;
 	
+	@NotNull
 	@Column(name = "fecha_inicio")
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime fechaInicio;
 	
+	@NotNull
 	@Column(name = "fecha_final")
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime fechaFinal;
 	
+	@NotNull
 	private Double duracion;
 	
 	@Column(name = "precio_sesion")

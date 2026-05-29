@@ -13,7 +13,17 @@
 				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			
-			<form method="POST" th:action="${formularioCita.id != 0} ? @{/Dashboard/Citas/Editar/submit} : @{/nuevaCitaCompleta}" th:object="${formularioCita}" >
+			<form method="POST" th:action="${formularioCita.id != null} ? @{/Dashboard/Citas/Editar/submit} : @{/nuevaCitaCompleta}" th:object="${formularioCita}" >
+				<div th:if="${errorSolapamiento}" class="alert alert-danger alert-dismissible fade show mx-4 mt-3" role="alert">
+			        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+			        <strong th:text="${errorSolapamiento}">Mensaje de error</strong>
+			        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			    </div>
+				<div th:if="${errorTarifa}" class="alert alert-warning alert-dismissible fade show mx-4 mt-3" role="alert">
+			        <i class="bi bi-cash-coin me-2"></i>
+			        <strong th:text="${errorTarifa}">Mensaje de tarifa inválida</strong>
+			        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			    </div>
 				<div class="modal-body p-4">
 					<div class="row g-3">
 						<input type="hidden" th:field="*{id}">                         
@@ -25,6 +35,8 @@
 							            th:value="${t.id}" 
 							            th:selected="${formularioCita.tatuaje != null && formularioCita.tatuaje.id == t.id}"
 							            th:text="${t.nombreTatuaje}"
+										th:data-precio="${t.precioTatuaje}"
+							            th:data-sesiones="${t.sesionesTatuaje}"
 							            th:attr="data-cliente=${t.cliente != null ? t.cliente.id : ''}, data-artista=${t.artista != null ? t.artista.id : ''}">
 							        Diseño
 							    </option>
@@ -33,7 +45,7 @@
 
                         <div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Cliente</label>
-							<select name="cliente" id="selectCliente" class="form-select bg-dark border-secondary text-white" required>
+							<select name="cliente" id="selectCliente" class="form-select bg-dark border-secondary text-white" >
 							    <option value="" hidden>Selecciona el cliente...</option>
 							    <option th:each="c : ${listaClientes}" 
 							            th:value="${c.id}" 
@@ -44,33 +56,37 @@
 
                         <div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Artista / Tatuador</label>
-							<select name="artista" id="selectArtista" class="form-select bg-dark border-secondary text-white" required>
+							<select name="artista" id="selectArtista" class="form-select bg-dark border-secondary text-white">
 							    <option value="" hidden>Selecciona al artista...</option>
 							    <option th:each="a : ${listaArtistas}" 
 							            th:value="${a.id}" 
 							            th:selected="${formularioCita.artista != null && formularioCita.artista.id == a.id}"
-							            th:text="${a.nombreArtista}">Artista</option>
+							            th:text="${a.nombreArtista}"
+										th:data-preciohora="${a.precioHora}">Artista</option>
 							</select>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label text-secondary small fw-bold">Fecha y Hora de Inicio</label>
-                            <input type="datetime-local" th:field="*{fechaInicio}" class="form-control bg-dark border-secondary text-white" required>
-                        </div>
+                            <input type="datetime-local" name="fechaInicio" th:value="${formularioCita.fechaInicio != null ? #temporals.format(formularioCita.fechaInicio,'yyyy-MM-dd''T''HH:mm') : ''}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
+							<div th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}" class="text-danger small d-block mt-1"></div>
+							</div>
 
                         <div class="col-md-6">
                             <label class="form-label text-secondary small fw-bold">Fecha y Hora de Fin</label>
-                            <input type="datetime-local" th:field="*{fechaFinal}" class="form-control bg-dark border-secondary text-white" required>
-                        </div>
+                            <input type="datetime-local" name="fechaFinal" th:value="${formularioCita.fechaFinal != null ? #temporals.format(formularioCita.fechaFinal, 'yyyy-MM-dd''T''HH:mm') : ''}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
+							<div th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}" class="text-danger small d-block mt-1"></div>
+							</div>
 
                         <div class="col-md-4">
                             <label class="form-label text-secondary small fw-bold">Duración (Horas)</label>
-                            <input type="number" step="0.5" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" required>
-                        </div>
+                            <input type="number" step="0.5" min="1" id="inputHoras" th:field="*{duracion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 3.5" >
+							<div th:if="${#fields.hasErrors('duracion')}" th:errors="*{duracion}" class="text-danger small d-block mt-1"></div>
+							</div>
 
                         <div class="col-md-4">
                             <label class="form-label text-secondary small fw-bold">Precio Sesión (€)</label>
-                            <input type="number" step="0.01" th:field="*{precioSesion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 150.00" required>
+                            <input type="number"  id="inputPrecio" th:field="*{precioSesion}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: 150.00" readonly>
                         </div>
 
                     </div>

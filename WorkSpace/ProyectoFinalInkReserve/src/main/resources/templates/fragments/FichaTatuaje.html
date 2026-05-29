@@ -1,37 +1,24 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
+
     <div th:fragment="modalFichaTatuajes" class="modal fade" id="ModalFichaTatuajes" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white">
-                
+            <div class="modal-content bg-black border border-secondary rounded-4 shadow-lg p-4 text-white"> 
                 <div class="modal-header d-flex align-items-center justify-content-between border-bottom border-dark pb-3 mb-4">
                     <h5 class="modal-title fw-bold d-flex align-items-center gap-2 mb-0 text-white">
-                        <i class="bi bi-palette-fill" style="color: #00a86b !important;"></i> 
+                        <i class="bi bi-palette-fill" style="color: #00a86b;"></i> 
                         Ficha Técnica del Diseño: <span class="text-secondary fw-normal" th:text="${fichaTatuaje != null} ? ${fichaTatuaje.nombreTatuaje} : 'Detalles'">Nombre</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body" th:if="${fichaTatuaje != null}">
                     <div class="row g-4">
-                        
                         <div class="col-md-5 text-center border-end border-dark pe-md-4">
                             <div class="position-relative d-inline-block w-100 mb-3">
                                 <img th:if="${fichaTatuaje.imagenTatuaje != null}" 
-                                     th:src="@{/uploads/{img}(img=${fichaTatuaje.imagenTatuaje})}" 
-                                     onerror="this.src='/img/no-image.jpg';"
+                                     th:src="${fichaTatuaje.imagenTatuaje}"
                                      class="img-fluid rounded-3 border border-secondary shadow-sm" 
                                      style="width: 100%; height: 280px; object-fit: cover;" 
                                      alt="Diseño de tatuaje">
-
-                                <img th:unless="${fichaTatuaje.imagenTatuaje != null}" 
-                                     th:src="@{/img/no-image.jpg}" 
-                                     class="img-fluid rounded-3 border border-secondary shadow-sm" 
-                                     style="width: 100%; height: 280px; object-fit: cover;" 
-                                     alt="Sin diseño disponible">
                             </div>
-                            
                             <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
                                 <span class="badge bg-dark border border-secondary px-3 py-2 text-uppercase font-monospace tracking-wider small"
                                       th:text="${fichaTatuaje.estado != null} ? ${fichaTatuaje.estado} : 'PENDIENTE'">
@@ -43,26 +30,24 @@
                                 </span>
                             </div>
                         </div>
-
                         <div class="col-md-7 ps-md-4">
-                            <div class="row g-3">
-                                
+                            <div class="row g-3">                  
                                 <div class="col-sm-6">
                                     <label class="text-secondary small d-block mb-1">Estilo</label>
                                     <div class="p-2 bg-dark rounded border border-dark text-white fw-medium">
                                         <i class="bi bi-brush me-2 text-muted"></i>
-                                        <span th:text="${fichaTatuaje.estiloTatuaje != null && !fichaTatuaje.estiloTatuaje.isEmpty()} ? ${fichaTatuaje.estiloTatuaje} : 'No especificado'">Tradicional</span>
+                                        <span th:text="${fichaTatuaje.estiloTatuaje != null && !fichaTatuaje.estiloTatuaje.isEmpty()} ? ${fichaTatuaje.estiloTatuaje} : 
+										'No especificado'">Tradicional</span>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <label class="text-secondary small d-block mb-1">Zona del Cuerpo</label>
                                     <div class="p-2 bg-dark rounded border border-dark text-white fw-medium">
                                         <i class="bi bi-person-workspace me-2 text-muted"></i>
-                                        <span th:text="${fichaTatuaje.zonaCuerpoTatuaje != null && !fichaTatuaje.zonaCuerpoTatuaje.isEmpty()} ? ${fichaTatuaje.zonaCuerpoTatuaje} : 'No especificada'">Antebrazo</span>
+                                        <span th:text="${fichaTatuaje.zonaCuerpoTatuaje != null && !fichaTatuaje.zonaCuerpoTatuaje.isEmpty()} ? ${fichaTatuaje.zonaCuerpoTatuaje} : 
+										'No especificada'">Antebrazo</span>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <label class="text-secondary small d-block mb-1">Sesiones Estimadas</label>
                                     <div class="p-2 bg-dark rounded border border-dark text-white fw-medium">
@@ -70,7 +55,6 @@
                                         <span th:text="${fichaTatuaje.sesionesTatuaje} + ' sesiones'">1 sesión</span>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <label class="text-secondary small d-block mb-1">Precio Estimado</label>
                                     <div class="p-2 bg-dark rounded border border-dark fw-bold" style="color: #00a86b;">
@@ -78,7 +62,6 @@
                                         <span th:text="${fichaTatuaje.precioTatuaje != null} ? ${fichaTatuaje.precioTatuaje} : '0.0'">120.0</span>
                                     </div>
                                 </div>
-
                                 <div class="col-12">
                                     <label class="text-secondary small d-block mb-1">Artista Responsable</label>
                                     <div class="p-2 bg-dark rounded border border-dark text-white fw-medium d-flex align-items-center justify-content-between">
@@ -89,7 +72,6 @@
                                         <span th:if="${fichaTatuaje.artista != null}" class="badge bg-black text-secondary border border-secondary small">ID: [[${fichaTatuaje.artista.id}]]</span>
                                     </div>
                                 </div>
-
                                 <div class="col-12">
                                     <label class="text-secondary small d-block mb-1">Cliente Solicitante</label>
                                     <div class="p-2 bg-dark rounded border border-dark text-white fw-medium d-flex align-items-center justify-content-between">
@@ -100,21 +82,18 @@
                                         <span th:if="${fichaTatuaje.cliente != null}" class="badge bg-black text-secondary border border-secondary small">ID: [[${fichaTatuaje.cliente.id}]]</span>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
                         <div class="col-12 mt-3">
                             <label class="text-secondary small d-block mb-1">Descripción del Diseño / Notas del Trabajo</label>
                             <div class="p-3 bg-dark rounded border border-dark text-white-50" style="min-height: 80px; font-size: 0.95rem; line-height: 1.5;">
                                 <i class="bi bi-text-paragraph text-muted me-2"></i>
-                                <span th:text="${fichaTatuaje.descripcionTatuaje != null && !fichaTatuaje.descripcionTatuaje.isEmpty()} ? ${fichaTatuaje.descripcionTatuaje} : 'Este diseño no incluye anotaciones adicionales o especificaciones en su registro.'">Detalles extensos del tatuaje...</span>
+                                <span th:text="${fichaTatuaje.descripcionTatuaje != null && !fichaTatuaje.descripcionTatuaje.isEmpty()} ? ${fichaTatuaje.descripcionTatuaje} : 
+								'Este diseño no incluye anotaciones adicionales o especificaciones en su registro.'">Detalles extensos del tatuaje...</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
                 <div class="modal-footer border-top border-dark pt-3 mt-4">
                     <button type="button" class="btn btn-outline-secondary px-4 fw-medium rounded-3" data-bs-dismiss="modal">
                         Cerrar Vista
@@ -124,5 +103,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>

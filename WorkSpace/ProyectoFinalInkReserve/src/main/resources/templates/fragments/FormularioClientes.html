@@ -22,8 +22,9 @@
 							<label class="form-label text-secondary small fw-bold">Nombre Completo</label>
 							<div class="input-group">
 								<span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
-								<input type="text" th:field="*{nombreCliente}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez" />
+								<input type="text" th:field="*{nombreCliente}" class="form-control bg-dark border-secondary text-white" placeholder="Ej: Francisco Blazquez">
 							</div>
+								<div th:if="${#fields.hasErrors('nombreCliente')}" th:errors="*{nombreCliente}" class="text-danger small d-block mt-1"></div>						
 						</div>
 						
 						<div class="col-md-6">
@@ -31,19 +32,21 @@
 						    <input type="text" th:field="*{email}" class="form-control bg-dark border-secondary text-white" placeholder="Example@example.com">
 						</div>
 						
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Teléfono</label>
 							<input type="tel" th:field="*{telefonoCliente}" class="form-control bg-dark border-secondary text-white" placeholder="000 000 000">
+							<div th:if="${#fields.hasErrors('telefonoCliente')}" th:errors="*{telefonoCliente}" class="text-danger small d-block mt-1"></div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">Fecha de Nacimiento</label>
-							<input type="date" th:field="*{fechaNacimiento}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
+							<input type="date" name="fechaNacimiento" th:value="${formularioCliente.fechaNacimiento != null ? #temporals.format(formularioCliente.fechaNacimiento, 'yyyy-MM-dd') : ''}" class="form-control bg-dark border-secondary text-white" placeholder="dd/mm/yyyy">
                         </div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label text-secondary small fw-bold">DNI</label>
 							<input type="text" th:field="*{dniCliente}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
+							<div th:if="${#fields.hasErrors('dniCliente')}" th:errors="*{dniCliente}" class="text-danger small d-block mt-1"></div>
 						</div>
 
 						<div class="col-md-6">
@@ -72,24 +75,5 @@
         </div>
       </div>
 	</div>
-    <script>
-        document.getElementById('codigoPostal').addEventListener('input', function(e) {
-            const cp = e.target.value;
-            if (cp.length === 5) {
-                fetch(`https://api.zippopotam.us/es/${cp}`)
-                    .then(response => {
-                        if (response.ok) return response.json();
-                        throw new Error('CP no encontrado');
-                    })
-                    .then(data => {
-                        // Zippopotam devuelve una lista de lugares
-                        const poblacion = data.places[0]['place name'];
-                        // Rellenamos el input de población automáticamente
-                        document.getElementById('poblacion').value = poblacion;
-                    })
-                    .catch(error => console.log('Error al buscar CP:', error));
-            }
-    });
-    </script>
 </body>
 </html>
