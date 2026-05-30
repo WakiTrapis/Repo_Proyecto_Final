@@ -76,6 +76,10 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
         return super.save(tatuaje);
     }
 	
+	public long contarPorEstado(Tatuaje.EstadoTatuaje estado) {
+	    return tatuajeRepository.countByEstado(estado);
+	}
+
 	public Map<String, Object> getDatosDashboard(String filtro, String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Tatuaje> tatuajePage;

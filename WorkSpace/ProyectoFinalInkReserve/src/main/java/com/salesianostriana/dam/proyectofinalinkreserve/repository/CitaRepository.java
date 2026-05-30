@@ -43,4 +43,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 		    );
 	
 	List<Cita> findByArtistaId(Long Id);
+
+	List<Cita> findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime desde);
 }
