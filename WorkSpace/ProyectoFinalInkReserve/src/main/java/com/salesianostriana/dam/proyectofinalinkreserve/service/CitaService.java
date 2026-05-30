@@ -87,6 +87,10 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	public List<Artista> obtenerTop3ArtistasMasDemandados() {
 	    return citaRepository.findArtistasMasDemandados(PageRequest.of(0, 3));
 	}
+
+	public List<Cita> obtenerProximasCitas() {
+	    return citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now());
+	}
 	
 	
 	
