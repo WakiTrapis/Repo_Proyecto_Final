@@ -26,14 +26,13 @@ public class SecurityConfig {
         	    .requestMatchers(HttpMethod.POST, "/Dashboard/Artistas/Editar/submit").hasRole("ADMIN")
 
         	    // ADMIN y USER
-        	    .requestMatchers("/Dashboard/**").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/nuevoClienteCompleto").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/Dashboard/Clientes/Editar/submit").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/nuevaCitaCompleta").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/Dashboard/Citas/Editar/submit").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/nuevoTatuajeCompleto").hasAnyRole("ADMIN", "USER")
         	    .requestMatchers(HttpMethod.POST, "/Dashboard/Tatuajes/Editar/submit").hasAnyRole("ADMIN", "USER")
-
+        	    .requestMatchers("/Dashboard/**").hasAnyRole("ADMIN", "USER")
         	    .anyRequest().authenticated()
         	)
             
