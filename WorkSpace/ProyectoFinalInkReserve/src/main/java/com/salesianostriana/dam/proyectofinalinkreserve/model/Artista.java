@@ -5,12 +5,14 @@ import java.util.List;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import java.util.ArrayList;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,6 +57,9 @@ public class Artista {
 	
 	private String fotoArtista;
 	
+	@OneToOne(mappedBy = "artista", cascade = CascadeType.ALL, orphanRemoval = true)
+	private User user;
+
 	@OneToMany(mappedBy = "artista")
 	@Fetch(FetchMode.SUBSELECT)
     @Builder.Default

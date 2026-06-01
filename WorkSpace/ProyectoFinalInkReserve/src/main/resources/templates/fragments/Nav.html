@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 	<nav class="navbar navbar-expand-lg bg-black border-bottom border-secondary px-4 pt-3 pb-0" th:fragment="nav">
@@ -13,7 +14,7 @@
 	    <div class="collapse navbar-collapse" id="navbarNav">
 	        <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-3">
 	            <li class="nav-item">
-	                <a class="nav-link nav-link-custom  text-white py-3 px-3 d-flex align-items-center gap-2" th:href="@{/Dashboard}">
+	                <a class="nav-link nav-link-custom text-white py-3 px-3 d-flex align-items-center gap-2" th:href="@{/Dashboard}">
 	                    <i class="bi bi-grid-1x2"></i> Dashboard
 	                </a>
 	            </li>
@@ -32,22 +33,35 @@
 	                    <i class="bi bi-people"></i> Clientes
 	                </a>
 	            </li>
-				<li class="nav-item">
+	            <li class="nav-item">
 	                <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" th:href="@{/Dashboard/Citas}">
-                		<i class="bi bi-people"></i> Citas
+	                    <i class="bi bi-calendar-check"></i> Citas
 	                </a>
 	            </li>
-	            <li class="nav-item">
-	                <a class="nav-link nav-link-custom text-secondary py-3 px-3 d-flex align-items-center gap-2" href="#">
-	                    <i class="bi bi-gear"></i> Configuración
-	                </a>
-	            </li>               
 	        </ul>
-	        
-	        <div class="d-flex text-white align-items-center" style="cursor: pointer;">
-	            <i class="bi bi-person-circle fs-5 me-2 text-secondary"></i>
-	            <span class="fw-bold fs-6">Salesianos</span>
-	            <i class="bi bi-chevron-down ms-2 text-secondary" style="font-size: 0.7rem;"></i>
+
+	        <div class="dropdown">
+	            <a class="d-flex text-white align-items-center gap-2 text-decoration-none"
+	               role="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+	                <i class="bi bi-person-circle fs-5 text-secondary"></i>
+	                <span class="fw-bold fs-6" sec:authentication="name">Usuario</span>
+	                <i class="bi bi-chevron-down text-secondary" style="font-size: 0.7rem;"></i>
+	            </a>
+	            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary mt-2">
+	                <li>
+	                    <a class="dropdown-item text-white d-flex align-items-center gap-2" th:href="@{/cambiar-contrasena}">
+	                        <i class="bi bi-key text-secondary"></i> Cambiar contraseña
+	                    </a>
+	                </li>
+	                <li><hr class="dropdown-divider border-secondary"></li>
+	                <li>
+	                    <form th:action="@{/logout}" method="post">
+	                        <button class="dropdown-item text-danger d-flex align-items-center gap-2" type="submit">
+	                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+	                        </button>
+	                    </form>
+	                </li>
+	            </ul>
 	        </div>
 	    </div>
 	</nav>

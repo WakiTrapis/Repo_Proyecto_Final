@@ -44,7 +44,7 @@ public class DashboardController {
 	    List<Artista> topArtistas = citaService.obtenerTop3ArtistasMasDemandados();
 	    model.addAttribute("topClientes", topClientes);
 	    model.addAttribute("topArtistas", topArtistas);
-	    model.addAttribute("proximasCitas", citaService.obtenerProximasCitas());
+	    model.addAttribute("proximasCitas", citaService.obtenerTop5ProximasCitas());
 	    model.addAttribute("tatuajesDiseno", tatuajeService.contarPorEstado(EstadoTatuaje.DISENO));
 	    model.addAttribute("tatuajesEnProceso", tatuajeService.contarPorEstado(EstadoTatuaje.EN_PROCESO));
 	    model.addAttribute("tatuajesTatuados", tatuajeService.contarPorEstado(EstadoTatuaje.TATUADO));
