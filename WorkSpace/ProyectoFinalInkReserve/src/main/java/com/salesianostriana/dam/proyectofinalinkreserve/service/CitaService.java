@@ -113,6 +113,11 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	            .toList();
 	}
 	
+	/**
+	 * metodo para calcular el precio de la cita extrayendo el precio del tatuaje, el numero de sesiones estimadas,
+	 * precio por horas del artista y la duracion de la cita.
+	 * @param cita
+	 */
 	
 	
 	public void calcularYAsignarPrecioCita(Cita cita) {
