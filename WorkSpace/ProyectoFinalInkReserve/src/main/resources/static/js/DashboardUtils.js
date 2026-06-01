@@ -34,5 +34,4 @@ document.addEventListener("DOMContentLoaded", function () {
             if (selectArtista) selectArtista.value = opcion.getAttribute("data-artista") ?? "";
         });
     }
-
 });

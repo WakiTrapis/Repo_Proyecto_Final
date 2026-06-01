@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.proyectofinalinkreserve.model.User;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.UserRepository;
+import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class UsuarioController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ArtistaService artistaService;
 
     @GetMapping("/cambiar-contrasena")
     public String mostrarFormulario(Model model) {
@@ -47,5 +49,12 @@ public class UsuarioController {
         userRepository.save(user);
 
         return "redirect:/cambiar-contrasena?exito";
+    }
+    
+    @GetMapping("/perfil")
+    public String verPerfil(Authentication authentication, Model model) {
+        artistaService.findByNombreArtista(authentication.getName())
+                .ifPresent(a -> model.addAttribute("artista", a));
+        return "DashboardPerfil";
     }
 }

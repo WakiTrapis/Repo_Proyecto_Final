@@ -58,6 +58,9 @@ public class ArtistaService extends BaseServiceImpl<Artista, Long, ArtistaReposi
 	public Page<Artista> buscarPorNombreArtistaPaginado(String criterio, Pageable pageable) {
 		return artistaRepository.findByNombreArtistaContainingIgnoreCase(criterio, pageable);
 	}
+	public Optional<Artista> findByNombreArtista(String nombreArtista) {
+		return artistaRepository.findByNombreArtista(nombreArtista);
+	}
 
 	@Override
 	public Artista save(Artista artista) {
