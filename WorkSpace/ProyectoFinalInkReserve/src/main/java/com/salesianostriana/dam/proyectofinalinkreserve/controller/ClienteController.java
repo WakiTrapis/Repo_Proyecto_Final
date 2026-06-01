@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.CampoDuplicadoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.CitaService;
@@ -70,12 +72,12 @@ public class ClienteController {
 	        return "DashboardClientes"; 
 	    }
 		try {
-	        clienteService.save(cliente);
+			clienteService.saveArmor(cliente, cliente.getId() != null ? cliente.getId() : -1L);
 	        return "redirect:/Dashboard/Clientes";	
-		} catch (DniInvalidoException ex) {
+		} catch (DniInvalidoException | CampoDuplicadoException ex) {
 			model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioCliente", cliente);
-	        model.addAttribute("abrirModal", true);
+	        model.addAttribute("abrirModalCliente", true);
 	        cargarDatosDashboard(model, null, 0, 5);
 	        return "DashboardClientes";
 	        }
@@ -85,12 +87,12 @@ public class ClienteController {
 	public String submitEditar(@Valid @ModelAttribute("formularioCliente") Cliente cliente,
 			 Model model ) {
 		try {
-			clienteService.editarCliente(cliente);
+			clienteService.editarCliente(cliente, cliente.getId());
 			return "redirect:/Dashboard/Clientes";
-			} catch (DniInvalidoException ex) {
+			} catch (DniInvalidoException | CampoDuplicadoException ex) {
 				model.addAttribute("errorDni", ex.getMessage());
 		        model.addAttribute("formularioCliente", cliente);
-		        model.addAttribute("abrirModal", true);
+		        model.addAttribute("abrirModalCliente", true);
 		        cargarDatosDashboard(model, null, 0, 5);
 	            return "DashboardClientes";
 			}

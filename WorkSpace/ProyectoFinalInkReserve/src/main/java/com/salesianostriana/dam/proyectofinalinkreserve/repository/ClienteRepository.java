@@ -11,4 +11,10 @@ import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
 	Page<Cliente>findByNombreClienteContainingIgnoreCase(String nombreCliente,Pageable pageable);
+	
+	boolean existsByDniClienteAndIdNot(String dniCliente, Long id);
+	
+	boolean existsByTelefonoClienteAndIdNot(String telefonoCliente, Long id);
+	
+	boolean existsByEmailAndIdNot(String email, Long id);
 }
