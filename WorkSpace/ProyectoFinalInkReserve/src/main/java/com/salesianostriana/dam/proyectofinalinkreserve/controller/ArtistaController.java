@@ -32,6 +32,14 @@ public class ArtistaController {
 	private final ArtistaService artistaService;
 	private final CitaService citaService;
 	
+	/**
+	 * Método auxiliar para cargar los datos comunes del dashboard de artistas, como el top 3 de artistas más demandados y los datos paginados de artistas según la búsqueda.
+	 * @param model
+	 * @param search
+	 * @param page
+	 * @param size
+	 */
+	
 	private void cargarDatosDashboard(Model model, String search, int page, int size) {
 		model.addAttribute("topArtistas", citaService.obtenerTop3ArtistasMasDemandados());
 		Map<String, Object> datos= artistaService.getDatosDashboard(search, page, size);
@@ -40,12 +48,21 @@ public class ArtistaController {
 	        model.addAttribute("search", search);
 	    }
     }
+	/**
+	 * Método auxiliar para verificar si el usuario autenticado tiene el rol de ADMIN
+	 * 
+	 */
 	private boolean esAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 	
+	/**
+	 * Endpoint para obtener las citas de un artista específico para mostrarlas en un calendario.
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/artistas/citas/{id}")
 	@ResponseBody
 	public List<Map<String, Object>> getCitasArtista(@PathVariable Long id) {

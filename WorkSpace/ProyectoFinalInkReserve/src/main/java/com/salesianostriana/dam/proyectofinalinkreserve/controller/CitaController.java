@@ -29,11 +29,21 @@ public class CitaController {
     private final ClienteService clienteService;
     private final ArtistaService artistaService;
 	
-    
+    /**
+     * Método auxiliar para cargar los datos comunes del dashboard de citas.
+     * @param model
+     * @param fechaStr
+     * @param filtro
+     */
     private void cargarDatosDashboard(Model model, String fechaStr, String filtro) {
         model.addAllAttributes(citaService.getDatosDashboard(fechaStr, filtro));
     }
     
+    /**
+     * Método auxiliar para cargar los atributos necesarios para mostrar el formulario de creación/edición de citas, incluyendo las listas de tatuajes, clientes y artistas.
+     * @param model
+     * @param cita
+     */
     private void cargarAtributosFormulario(Model model, Cita cita) {
         model.addAttribute("formularioCita", cita);
         model.addAttribute("abrirModal", true);
