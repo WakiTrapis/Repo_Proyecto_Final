@@ -91,6 +91,20 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	public List<Cita> obtenerProximasCitas() {
 	    return citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now());
 	}
+
+	public List<Cita> obtenerTop5ProximasCitas() {
+	    return citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now())
+	            .stream().limit(5).toList();
+	}
+
+	public List<Cita> obtenerCitasDelDiaMasProximo() {
+	    List<Cita> proximas = citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now());
+	    if (proximas.isEmpty()) return proximas;
+	    LocalDate diaMasProximo = proximas.get(0).getFechaInicio().toLocalDate();
+	    return proximas.stream()
+	            .filter(c -> c.getFechaInicio().toLocalDate().equals(diaMasProximo))
+	            .toList();
+	}
 	
 	
 	
