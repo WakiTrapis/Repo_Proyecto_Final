@@ -169,6 +169,13 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	}
 	
 	private void validarDisponibilidadArtista(Cita cita) {
+		if (cita.getFechaInicio() != null && cita.getFechaFinal() != null
+	            && !cita.getFechaFinal().isAfter(cita.getFechaInicio())) {
+	        throw new CitaSolapadaException("La fecha de fin debe ser posterior a la fecha de inicio.");
+	    }
+		if (!cita.getFechaFinal().toLocalDate().equals(cita.getFechaInicio().toLocalDate())) {
+		    throw new CitaSolapadaException("La cita debe comenzar y terminar el mismo día.");
+		}
 		if (cita.getArtista() != null && cita.getFechaInicio() != null && cita.getFechaFinal() != null) {
 			boolean estaOcupado = citaRepository.existeSolapamientoArtista(
 				cita.getArtista().getId(),
