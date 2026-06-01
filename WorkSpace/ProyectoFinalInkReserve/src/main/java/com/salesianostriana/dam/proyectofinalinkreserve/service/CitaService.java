@@ -87,6 +87,24 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	public List<Artista> obtenerTop3ArtistasMasDemandados() {
 	    return citaRepository.findArtistasMasDemandados(PageRequest.of(0, 3));
 	}
+
+	public List<Cita> obtenerProximasCitas() {
+	    return citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now());
+	}
+
+	public List<Cita> obtenerTop5ProximasCitas() {
+	    return citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now())
+	            .stream().limit(5).toList();
+	}
+
+	public List<Cita> obtenerCitasDelDiaMasProximo() {
+	    List<Cita> proximas = citaRepository.findByFechaInicioAfterOrderByFechaInicioAsc(LocalDateTime.now());
+	    if (proximas.isEmpty()) return proximas;
+	    LocalDate diaMasProximo = proximas.get(0).getFechaInicio().toLocalDate();
+	    return proximas.stream()
+	            .filter(c -> c.getFechaInicio().toLocalDate().equals(diaMasProximo))
+	            .toList();
+	}
 	
 	
 	
@@ -137,7 +155,9 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	@Override
 	public Cita edit(Cita cita) {
 		validarDisponibilidadArtista(cita);
-		calcularYAsignarPrecioCita(cita);
+		if (cita.getPrecioSesion() == null || cita.getPrecioSesion() <= 0) {
+			calcularYAsignarPrecioCita(cita);
+		}
 		return super.save(cita);
 	}
 	

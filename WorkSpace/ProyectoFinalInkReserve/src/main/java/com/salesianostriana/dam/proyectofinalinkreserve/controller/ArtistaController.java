@@ -5,6 +5,9 @@ import java.util.List;
 
 
 import java.util.Map;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +40,11 @@ public class ArtistaController {
 	        model.addAttribute("search", search);
 	    }
     }
+	private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
 	
 	@GetMapping("/api/artistas/citas/{id}")
 	@ResponseBody
@@ -52,9 +60,12 @@ public class ArtistaController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             Model model) {
-		
+
+		if (idEditar != null && !esAdmin()) {
+			return "redirect:/acceso-denegado"; 
+		}
 		if (!model.containsAttribute("formularioArtista")) {
-            if (idEditar != null && artistaService.findById(idEditar).isPresent()) {
+            if (idEditar != null && artistaService.findById(idEditar).isPresent() ) {
                 model.addAttribute("formularioArtista", artistaService.findById(idEditar).get());
             } else {
                 model.addAttribute("formularioArtista", new Artista());
@@ -76,6 +87,11 @@ public class ArtistaController {
 	public String submit(@Valid @ModelAttribute("formularioArtista") Artista artista,
 			BindingResult bindingResult,
 			Model model){
+		
+		if (!esAdmin()) {
+			return "redirect:/acceso-denegado"; 
+		}
+		
 		if (bindingResult.hasErrors()) {
 	        model.addAttribute("abrirModal", true);
 	        cargarDatosDashboard(model, null, 0, 5); 
@@ -98,6 +114,10 @@ public class ArtistaController {
 	@PostMapping("/Dashboard/Artistas/Editar/submit")
 	public String submitEditar(@ModelAttribute("formularioArtista") Artista artista,
 		 Model model ) {
+		
+		if (!esAdmin()) {
+			return "redirect:/acceso-denegado"; 
+		}
 		try {
 		artistaService.editarArtista(artista);
 		return "redirect:/Dashboard/Artistas";
@@ -113,6 +133,10 @@ public class ArtistaController {
 	
 	@GetMapping("/Dashboard/Artistas/Eliminar/{id}")
 	public String submitEliminar(@PathVariable("id") Long id, Model model) {
+		
+		if (!esAdmin()) {
+			return "redirect:/acceso-denegado";        }
+		
 		artistaService.eliminarArtista(id);    
 	    return "redirect:/Dashboard/Artistas";
 	}

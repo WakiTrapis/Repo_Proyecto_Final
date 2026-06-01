@@ -34,5 +34,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (selectArtista) selectArtista.value = opcion.getAttribute("data-artista") ?? "";
         });
     }
-
+	["ModalFormArtistas", "ModalFormClientes", "ModalFormTatuajes", "ModalFormCitas"].forEach(modalId => {
+	    const modal = document.getElementById(modalId);
+	    if (!modal) return;
+	    modal.addEventListener("hidden.bs.modal", function () {
+	        this.querySelectorAll("input, select, textarea").forEach(field => {
+	            if (field.name === "id") {
+	                field.value = "0";
+	            } else if (field.type === "checkbox" || field.type === "radio") {
+	                field.checked = false;
+	            } else {
+	                field.value = "";
+	            }
+	        });
+	    });
+	});
 });
