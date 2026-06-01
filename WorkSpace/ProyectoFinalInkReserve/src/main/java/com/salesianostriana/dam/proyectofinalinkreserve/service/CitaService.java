@@ -37,7 +37,12 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 		this.tatuajeService = tatuajeService;
 	}
 	
-	// Método para obtener los datos del dashboard según el filtro
+	/**
+	 * Método para obtener los datos necesarios para el dashboard, dependiendo del filtro (fecha o sin artista).
+	 * @param fechaStr
+	 * @param filtro
+	 * @return Un mapa con los datos necesarios para mostrar en el dashboard, incluyendo la lista de citas filtrada y las fechas para navegación si se filtra por fecha.
+	 */
 	public Map<String, Object> getDatosDashboard(String fechaStr, String filtro) {
 	    AgendaCitas agenda = getAgendaCitasDia(fechaStr);
 	    Map<String, Object> datos = new HashMap<>();
@@ -55,7 +60,9 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	    return datos;
 	}
 	
-	// Método para obtener las citas de un día específico
+	/*
+	 * Método para obtener las citas de un día específico, junto con las fechas del día anterior y siguiente para facilitar la navegación en el dashboard.
+	 */
 	public AgendaCitas getAgendaCitasDia(String fechaStr) {
 		
 		LocalDate fechaSeleccionada = (fechaStr != null && !fechaStr.isEmpty())
@@ -162,6 +169,13 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 	}
 	
 	private void validarDisponibilidadArtista(Cita cita) {
+		if (cita.getFechaInicio() != null && cita.getFechaFinal() != null
+	            && !cita.getFechaFinal().isAfter(cita.getFechaInicio())) {
+	        throw new CitaSolapadaException("La fecha de fin debe ser posterior a la fecha de inicio.");
+	    }
+		if (!cita.getFechaFinal().toLocalDate().equals(cita.getFechaInicio().toLocalDate())) {
+		    throw new CitaSolapadaException("La cita debe comenzar y terminar el mismo día.");
+		}
 		if (cita.getArtista() != null && cita.getFechaInicio() != null && cita.getFechaFinal() != null) {
 			boolean estaOcupado = citaRepository.existeSolapamientoArtista(
 				cita.getArtista().getId(),
@@ -176,7 +190,11 @@ public class CitaService extends BaseServiceImpl <Cita, Long, CitaRepository> {
 		}
 	}
 	
-	// Método para obtener las citas de un artista para el calendario
+	/**
+	 * Método para obtener las citas de un artista para el calendario de la ficha.
+	 * @param Id
+	 * @return Listado de citas formateado para mostrar en el calendario, incluyendo título, cliente y fechas de inicio y fin.
+	 */
 	public List<Map<String, Object>> getCitasParaCalendario(Long Id) {
 	    List<Cita> citas = citaRepository.findByArtistaId(Id);
 	    

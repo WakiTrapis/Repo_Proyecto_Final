@@ -23,6 +23,13 @@ public class ClienteController {
 	private final ClienteService clienteService;
 	private final CitaService citaService;
 	
+	/**
+	 * Método auxiliar para cargar los datos comunes del dashboard de clientes, incluyendo el top 3 de clientes frecuentes y los datos paginados según la búsqueda.
+	 * @param model
+	 * @param search
+	 * @param page
+	 * @param size
+	 */
 	private void cargarDatosDashboard(Model model, String search, int page, int size) {
         model.addAttribute("topClientes", citaService.obtenerTop3ClientesFrecuentes());
         model.addAllAttributes(clienteService.getDatosDashboard(search, page, size));

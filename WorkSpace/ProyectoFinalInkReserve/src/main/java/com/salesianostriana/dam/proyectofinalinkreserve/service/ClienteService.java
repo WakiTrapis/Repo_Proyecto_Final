@@ -96,6 +96,14 @@ public class ClienteService extends BaseServiceImpl <Cliente, Long, ClienteRepos
 	        delete(cliente);
 	    });
 	}
+	
+	/**
+	 * Obtiene los datos necesarios para mostrar en el dashboard de clientes, incluyendo la lista de clientes paginada y el número total de páginas.
+	 * @param search
+	 * @param page
+	 * @param size
+	 * @return Un mapa con la lista de clientes, la página actual y el total de páginas, además del criterio de búsqueda si se ha proporcionado.
+	 */
 	public Map<String, Object> getDatosDashboard(String search, int page, int size) {
 	    Pageable pageable = PageRequest.of(page, size);
 	    Page<Cliente> clientePage;
