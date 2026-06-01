@@ -57,7 +57,6 @@
 				            <label class="form-label text-secondary small fw-bold">DNI</label>
 				            <input type="text" th:field="*{dniArtista}" class="form-control bg-dark border-secondary text-white" placeholder="12345678X">
 				            <div th:if="${#fields.hasErrors('dniArtista')}" th:errors="*{dniArtista}" class="text-danger small d-block mt-1"></div>
-				            <div th:if="${errorDni}" th:text="${errorDni}" class="text-danger small d-block mt-1"></div>
 				        </div>
 
 				        <div class="col-md-6">

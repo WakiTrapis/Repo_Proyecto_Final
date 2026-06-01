@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.CampoDuplicadoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
@@ -115,15 +117,15 @@ public class ArtistaController {
 	        return "DashboardArtistas"; 
 	    }
 		try {
-	        artistaService.save(artista);
-	        return "DashboardArtistas";	
-		} catch (DniInvalidoException ex) {
-			model.addAttribute("errorDni", ex.getMessage());
+	        artistaService.saveArmor(artista, artista.getId() != null ? artista.getId() : -1L);
+	        return "redirect:/Dashboard/Artistas";	
+		} catch (DniInvalidoException | CampoDuplicadoException ex) {
+	        model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioArtista", artista);
 	        model.addAttribute("abrirModal", true);
 	        cargarDatosDashboard(model, null, 0, 5);
 	        return "DashboardArtistas";
-	        }
+	    }
 	}
 	
 
@@ -136,15 +138,15 @@ public class ArtistaController {
 			return "redirect:/acceso-denegado"; 
 		}
 		try {
-		artistaService.editarArtista(artista);
+		artistaService.editarArtista(artista, artista.getId());
 		return "redirect:/Dashboard/Artistas";
-		} catch (DniInvalidoException ex) {
-			model.addAttribute("errorDni", ex.getMessage());
+		} catch (DniInvalidoException | CampoDuplicadoException ex) {
+	        model.addAttribute("errorDni", ex.getMessage());
 	        model.addAttribute("formularioArtista", artista);
 	        model.addAttribute("abrirModal", true);
 	        cargarDatosDashboard(model, null, 0, 5);
-            return "DashboardArtistas";
-		}
+	        return "DashboardArtistas";
+	    }
     }
 	
 	

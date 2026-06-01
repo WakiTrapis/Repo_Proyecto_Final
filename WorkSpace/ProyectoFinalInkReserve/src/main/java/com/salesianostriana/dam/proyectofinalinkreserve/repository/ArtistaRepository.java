@@ -16,5 +16,7 @@ public interface ArtistaRepository extends JpaRepository<Artista, Long> {
 
 	Optional<Artista> findByNombreArtista(String nombreArtista);
 	
+	boolean existsByDniArtistaAndIdNot(String dniArtista, Long id);
 	
+	boolean existsByTelefonoArtistaAndIdNot(String telefonoArtista, Long id);
 }

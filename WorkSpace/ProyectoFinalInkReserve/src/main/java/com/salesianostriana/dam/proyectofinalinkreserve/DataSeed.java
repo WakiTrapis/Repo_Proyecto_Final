@@ -14,6 +14,7 @@ import com.salesianostriana.dam.proyectofinalinkreserve.repository.CitaRepositor
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.ClienteRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.repository.TatuajeRepository;
 import com.salesianostriana.dam.proyectofinalinkreserve.service.ArtistaService;
+import com.salesianostriana.dam.proyectofinalinkreserve.service.ClienteService;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,12 @@ public class DataSeed {
 	private final ClienteRepository clienteRepository;
 	private final TatuajeRepository tatuajeRepository;
 	private final CitaRepository citaRepository;
+	private final ClienteService clienteService;
 
 	@PostConstruct
 	public void run() {
 
-		// ==================== ARTISTAS ====================
+		//ARTISTAS 
 
 		Artista a1 = Artista.builder()
 				.nombreArtista("Miguel Angel")
@@ -42,7 +44,7 @@ public class DataSeed {
 				.experiencia(5)
 				.fotoArtista("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScskPIMZJMMekOCpeHWnVtlhll8Fi73yCoYA&s")
 				.build();
-		artistaService.save(a1);
+		artistaService.saveArmor(a1, 1L);
 
 		Artista a2 = Artista.builder()
 				.nombreArtista("David Diaz")
@@ -54,7 +56,7 @@ public class DataSeed {
 				.experiencia(10)
 				.fotoArtista("https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/e40b6ea6361a1abe28f32e7910f63b66/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg")
 				.build();
-		artistaService.save(a2);
+		artistaService.saveArmor(a2, 2L);
 
 		Artista a3 = Artista.builder()
 				.nombreArtista("Paco Porras")
@@ -66,7 +68,7 @@ public class DataSeed {
 				.experiencia(2)
 				.fotoArtista("https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyZmlsfGVufDB8fDB8fHww")
 				.build();
-		artistaService.save(a3);
+		artistaService.saveArmor(a3, 3L);
 
 		Artista a4 = Artista.builder()
 				.nombreArtista("Marta Sanchez")
@@ -78,7 +80,7 @@ public class DataSeed {
 				.experiencia(8)
 				.fotoArtista("https://images.squarespace-cdn.com/content/v1/5d77a7f8ad30356d21445262/f25b9827-c1e5-43b5-9cdb-a718fb90f38b/fotos-de-perfil-luz-natural.jpg")
 				.build();
-		artistaService.save(a4);
+		artistaService.saveArmor(a4, 4L);
 
 		Artista a5 = Artista.builder()
 				.nombreArtista("Francisco Sanchez")
@@ -90,7 +92,7 @@ public class DataSeed {
 				.experiencia(15)
 				.fotoArtista("https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyZmlsJTIwcHJlZGV0ZXJtaW5hZG98ZW58MHx8MHx8fDA%3D")
 				.build();
-		artistaService.save(a5);
+		artistaService.saveArmor(a5, 5L);
 
 		Artista a6 = Artista.builder()
 				.nombreArtista("Pajaro Azul")
@@ -102,7 +104,7 @@ public class DataSeed {
 				.experiencia(10)
 				.fotoArtista("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_a9I-AkqF9EXOPbRQ5LLQT8jYvQClcycWQ&s")
 				.build();
-		artistaService.save(a6);
+		artistaService.saveArmor(a6, 6L);
 
 		Artista a7 = Artista.builder()
 				.nombreArtista("Laura Vega")
@@ -114,7 +116,7 @@ public class DataSeed {
 				.experiencia(6)
 				.fotoArtista("https://randomuser.me/api/portraits/women/44.jpg")
 				.build();
-		artistaService.save(a7);
+		artistaService.saveArmor(a7, 7L);
 
 		Artista a8 = Artista.builder()
 				.nombreArtista("Carlos Ruiz")
@@ -126,7 +128,7 @@ public class DataSeed {
 				.experiencia(4)
 				.fotoArtista("https://randomuser.me/api/portraits/men/32.jpg")
 				.build();
-		artistaService.save(a8);
+		artistaService.saveArmor(a8, 8L);
 
 		Artista a9 = Artista.builder()
 				.nombreArtista("Sofia Torres")
@@ -138,7 +140,7 @@ public class DataSeed {
 				.experiencia(7)
 				.fotoArtista("https://randomuser.me/api/portraits/women/68.jpg")
 				.build();
-		artistaService.save(a9);
+		artistaService.saveArmor(a9, 9L);
 
 		Artista a10 = Artista.builder()
 				.nombreArtista("Jorge Molina")
@@ -150,9 +152,9 @@ public class DataSeed {
 				.experiencia(9)
 				.fotoArtista("https://randomuser.me/api/portraits/men/76.jpg")
 				.build();
-		artistaService.save(a10);
+		artistaService.saveArmor(a10, 10L);
 
-		// ==================== CLIENTES ====================
+		//CLIENTES 
 
 		Cliente c1 = Cliente.builder()
 				.nombreCliente("Leonardo Martinez")
@@ -164,7 +166,7 @@ public class DataSeed {
 				.dniCliente("38592576D")
 				.email("LeoMar@gmail.com")
 				.build();
-		clienteRepository.save(c1);
+		clienteService.saveArmor(c1, 1L);
 
 		Cliente c2 = Cliente.builder()
 				.nombreCliente("Gonzalo Luna")
@@ -176,11 +178,11 @@ public class DataSeed {
 				.dniCliente("38796583G")
 				.email("gonza@gmail.com")
 				.build();
-		clienteRepository.save(c2);
+		clienteService.saveArmor(c2, 2L);
 
 		Cliente c3 = Cliente.builder()
 				.nombreCliente("Julian Vidal")
-				.telefonoCliente("569781245")
+				.telefonoCliente("569786790")
 				.fechaNacimiento(LocalDate.of(2001, 7, 21))
 				.direccion("C/Junco, 23")
 				.codigoPostal("41927")
@@ -188,7 +190,7 @@ public class DataSeed {
 				.dniCliente("22957465N")
 				.email("julipro@gmail.com")
 				.build();
-		clienteRepository.save(c3);
+		clienteService.saveArmor(c3, 3L);
 
 		Cliente c4 = Cliente.builder()
 				.nombreCliente("Ana Garcia")
@@ -200,7 +202,7 @@ public class DataSeed {
 				.dniCliente("57398456M")
 				.email("ana@gmail.com")
 				.build();
-		clienteRepository.save(c4);
+		clienteService.saveArmor(c4, 4L);
 
 		Cliente c5 = Cliente.builder()
 				.nombreCliente("Sara Lopez")
@@ -212,7 +214,7 @@ public class DataSeed {
 				.dniCliente("25896547P")
 				.email("sara@gmail.com")
 				.build();
-		clienteRepository.save(c5);
+		clienteService.saveArmor(c5, 5L);
 
 		Cliente c6 = Cliente.builder()
 				.nombreCliente("Marta Blazquez")
@@ -224,7 +226,7 @@ public class DataSeed {
 				.dniCliente("77844090S")
 				.email("mastabs@gmail.com")
 				.build();
-		clienteRepository.save(c6);
+		clienteService.saveArmor(c6, 6L);
 
 		Cliente c7 = Cliente.builder()
 				.nombreCliente("Pedro Jimenez")
@@ -236,7 +238,7 @@ public class DataSeed {
 				.dniCliente("11223344A")
 				.email("pedro@gmail.com")
 				.build();
-		clienteRepository.save(c7);
+		clienteService.saveArmor(c7, 7L);
 
 		Cliente c8 = Cliente.builder()
 				.nombreCliente("Lucia Fernandez")
@@ -248,7 +250,7 @@ public class DataSeed {
 				.dniCliente("22334455B")
 				.email("lucia@gmail.com")
 				.build();
-		clienteRepository.save(c8);
+		clienteService.saveArmor(c8, 8L);
 
 		Cliente c9 = Cliente.builder()
 				.nombreCliente("Raul Moreno")
@@ -260,7 +262,7 @@ public class DataSeed {
 				.dniCliente("33445566C")
 				.email("raul@gmail.com")
 				.build();
-		clienteRepository.save(c9);
+		clienteService.saveArmor(c9, 9L);
 
 		Cliente c10 = Cliente.builder()
 				.nombreCliente("Elena Castro")
@@ -272,9 +274,9 @@ public class DataSeed {
 				.dniCliente("44556677E")
 				.email("elena@gmail.com")
 				.build();
-		clienteRepository.save(c10);
+		clienteService.saveArmor(c10, 10L);
 
-		// ==================== TATUAJES ====================
+		//TATUAJES
 
 		Tatuaje t1 = Tatuaje.builder()
 				.cliente(c3).artista(a3)

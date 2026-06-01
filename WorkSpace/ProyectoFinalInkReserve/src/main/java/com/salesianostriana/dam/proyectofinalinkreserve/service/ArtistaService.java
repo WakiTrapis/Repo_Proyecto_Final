@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.CampoDuplicadoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Artista;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
@@ -44,11 +45,18 @@ public class ArtistaService extends BaseServiceImpl<Artista, Long, ArtistaReposi
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public void editarArtista(Artista artistaEditado) {
+	public void editarArtista(Artista artistaEditado, Long id) {
 		if (artistaEditado.getDniArtista() == null || !artistaEditado.getDniArtista().matches("^[0-9]{8}[A-Za-z]$")) {
 			throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
 		}
+	    if (artistaRepository.existsByDniArtistaAndIdNot(artistaEditado.getDniArtista(), id)) {
+	        throw new CampoDuplicadoException("Ya existe un artista con el DNI: " + artistaEditado.getDniArtista());
+	    }
+	    if (artistaRepository.existsByTelefonoArtistaAndIdNot(artistaEditado.getTelefonoArtista(), id)) {
+	        throw new CampoDuplicadoException("Ya existe un artista con el teléfono: " + artistaEditado.getTelefonoArtista());
+	    }
 		this.edit(artistaEditado);
+	    
 	}
 
 	public Page<Artista> findAllPaginado(Pageable pageable) {
@@ -62,12 +70,18 @@ public class ArtistaService extends BaseServiceImpl<Artista, Long, ArtistaReposi
 		return artistaRepository.findByNombreArtista(nombreArtista);
 	}
 
-	@Override
-	public Artista save(Artista artista) {
+	
+	public Artista saveArmor(Artista artista, Long id) {
 		if (artista.getDniArtista() == null || !artista.getDniArtista().matches("^[0-9]{8}[A-Za-z]$")) {
 			throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
 		}
-
+		if (artistaRepository.existsByDniArtistaAndIdNot(artista.getDniArtista(), id)) {
+	        throw new CampoDuplicadoException("Ya existe un artista con el DNI: " + artista.getDniArtista());
+	    }
+	    if (artistaRepository.existsByTelefonoArtistaAndIdNot(artista.getTelefonoArtista(), id)) {
+	        throw new CampoDuplicadoException("Ya existe un artista con el teléfono: " + artista.getTelefonoArtista());
+	    }
+	    
 		Artista guardado = super.save(artista);
 
 		User user = User.builder()

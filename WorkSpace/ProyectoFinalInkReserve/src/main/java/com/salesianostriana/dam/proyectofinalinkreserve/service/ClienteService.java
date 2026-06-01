@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.salesianostriana.dam.proyectofinalinkreserve.exception.CampoDuplicadoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.exception.DniInvalidoException;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cita;
 import com.salesianostriana.dam.proyectofinalinkreserve.model.Cliente;
@@ -43,18 +45,36 @@ public class ClienteService extends BaseServiceImpl <Cliente, Long, ClienteRepos
         return clienteRepository.findByNombreClienteContainingIgnoreCase(criterio, pageable);
     }
 	
-	public Cliente save(Cliente cliente) {
+	public Cliente saveArmor(Cliente cliente, Long id) {
         if (cliente.getDniCliente() == null || !cliente.getDniCliente().matches("^[0-9]{8}[A-Za-z]$")) {
             throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
         }
-        
+        if (clienteRepository.existsByTelefonoClienteAndIdNot(cliente.getTelefonoCliente(), id)) {
+            throw new CampoDuplicadoException("Ya existe un cliente con el teléfono: " + cliente.getTelefonoCliente());
+        }
+        if (clienteRepository.existsByEmailAndIdNot(cliente.getEmail(), id)) {
+            throw new CampoDuplicadoException("Ya existe un cliente con el email: " + cliente.getEmail());
+        }
+        if (clienteRepository.existsByDniClienteAndIdNot(cliente.getDniCliente(), id))
+            throw new CampoDuplicadoException("Ya existe un cliente con el DNI: " + cliente.getDniCliente());
         return super.save(cliente);
     }
 	
-	public void editarCliente(Cliente clienteEditado) {
+	public void editarCliente(Cliente clienteEditado, Long id) {
 	    if (clienteEditado.getDniCliente() == null || !clienteEditado.getDniCliente().matches("^[0-9]{8}[A-Za-z]$")) {
             throw new DniInvalidoException("El DNI introducido no es válido. Debe constar de 8 números y una letra (Ej: 12345678X).");
         }
+
+
+	        if (clienteRepository.existsByDniClienteAndIdNot(clienteEditado.getDniCliente(), id))
+	            throw new CampoDuplicadoException("Ya existe un cliente con el DNI: " + clienteEditado.getDniCliente());
+
+	        if (clienteRepository.existsByTelefonoClienteAndIdNot(clienteEditado.getTelefonoCliente(), id))
+	            throw new CampoDuplicadoException("Ya existe un cliente con el teléfono: " + clienteEditado.getTelefonoCliente());
+
+	        if (clienteRepository.existsByEmailAndIdNot(clienteEditado.getEmail(), id))
+	            throw new CampoDuplicadoException("Ya existe un cliente con el email: " + clienteEditado.getEmail());
+	    
 	    this.edit(clienteEditado);
 	}
 	
