@@ -85,7 +85,12 @@ public class ClienteController {
 	
 	@PostMapping("/Dashboard/Clientes/Editar/submit")
 	public String submitEditar(@Valid @ModelAttribute("formularioCliente") Cliente cliente,
-			 Model model ) {
+			BindingResult bindingResult,Model model ) {
+		if (bindingResult.hasErrors()) {
+	        model.addAttribute("abrirModalCliente", true);
+	        cargarDatosDashboard(model, null, 0, 5); 
+	        return "DashboardClientes"; 
+	    }
 		try {
 			clienteService.editarCliente(cliente, cliente.getId());
 			return "redirect:/Dashboard/Clientes";
