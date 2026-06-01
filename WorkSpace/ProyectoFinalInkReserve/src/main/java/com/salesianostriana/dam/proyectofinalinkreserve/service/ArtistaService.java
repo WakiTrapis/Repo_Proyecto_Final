@@ -112,6 +112,13 @@ public class ArtistaService extends BaseServiceImpl<Artista, Long, ArtistaReposi
 		}
 	}
 
+	/**
+	 * Obtiene los datos necesarios para mostrar en el dashboard de artistas, incluyendo la lista de artistas paginada y el número total de páginas.
+	 * @param search
+	 * @param page
+	 * @param size
+	 * @return 
+	 */
 	public Map<String, Object> getDatosDashboard(String search, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Artista> artistaPage;

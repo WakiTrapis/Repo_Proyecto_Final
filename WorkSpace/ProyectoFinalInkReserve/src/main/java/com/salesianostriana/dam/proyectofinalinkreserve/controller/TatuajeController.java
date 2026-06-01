@@ -26,7 +26,14 @@ public class TatuajeController {
 	private final ArtistaService artistaService;
 	private final ClienteService clienteService;
 	
-	
+	/**
+	 * Método auxiliar para cargar los datos comunes del dashboard de tatuajes, incluyendo la lista de tatuajes filtrada y paginada, así como las listas completas de artistas y clientes para los formularios.
+	 * @param model
+	 * @param filtro
+	 * @param search
+	 * @param page
+	 * @param size
+	 */
 	private void cargarDatosDashboard(Model model, String filtro, String search, int page, int size) {
         model.addAllAttributes(tatuajeService.getDatosDashboard(filtro, search, page, size));
         model.addAttribute("listaArtistas", artistaService.findAll());

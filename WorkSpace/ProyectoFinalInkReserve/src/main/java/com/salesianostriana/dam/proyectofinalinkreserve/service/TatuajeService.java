@@ -80,6 +80,13 @@ public class TatuajeService extends BaseServiceImpl <Tatuaje, Long, TatuajeRepos
 	    return tatuajeRepository.countByEstado(estado);
 	}
 
+	/**
+	 * Obtiene los datos necesarios para mostrar en el dashboard de Tatuajes, incluyendo la lista de artistas tatuajes y el número total de páginas.
+	 * @param search
+	 * @param page
+	 * @param size
+	 * @return 
+	 */
 	public Map<String, Object> getDatosDashboard(String filtro, String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Tatuaje> tatuajePage;
