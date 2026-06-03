@@ -424,7 +424,7 @@ los flujos principales de la aplicación.
 
 El documento completo de casos de prueba se encuentra en:
 
-📄 [`docs/CasosPrueba_InkReserve(1).pdf`](docs/CasosPrueba_InkReserve(1).pdf)
+📄 [`CasosPrueba_InkReserve.pdf`](CasosPrueba_InkReserve.pdf)
 
 ### Resumen
 
